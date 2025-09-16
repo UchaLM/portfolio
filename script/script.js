@@ -89,7 +89,7 @@ function typeWriter(element, text, speed = 100) {
 document.addEventListener("DOMContentLoaded", () => {
   const typingElement = document.querySelector(".typing-text")
   if (typingElement) {
-    const text = 'console.log("Hola, soy Lucio");'
+    const text = 'System.out.println("Hola, soy Lucio");'
     setTimeout(() => {
       typeWriter(typingElement, text, 80)
     }, 1000)
