@@ -1,335 +1,400 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucio Ucha - Cybersecurity Portfolio</title>
-    <link rel="stylesheet" href="./styles/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="./images/logo.png">
+    <title>Portfolio | Offensive Security & Dev</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['"Fira Code"', 'monospace'],
+                    },
+                    colors: {
+                        terminal: {
+                            bg: '#0D1117',
+                            card: '#161B22',
+                            border: '#30363D',
+                            text: '#C9D1D9',
+                            green: '#238636',
+                            greenHover: '#2EA043',
+                            accent: '#58A6FF'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #010409; color: #C9D1D9; }
+        .cursor-blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #010409; }
+        ::-webkit-scrollbar-thumb { background: #30363D; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #58A6FF; }
+
+        /* Carousel Utilities */
+        .carousel-track { transition: transform 0.5s ease-in-out; }
+    </style>
 </head>
-<body>
-    <header class="header">
-        <nav class="nav">
-            <div class="nav-brand">
-                <span class="terminal-cursor">&gt;</span> Lucio Ucha
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#about" class="nav-link">About Me</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#experience" class="nav-link">Experience</a></li>
-                <li><a href="#cybersecurity" class="nav-link">Cybersecurity</a></li>
-                <li><a href="#machines" class="nav-link">Machines</a></li>
-            </ul>
-            <div class="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </nav>
-    </header>
+<body class="font-mono antialiased min-h-screen flex flex-col">
 
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    <span class="typing-text">System.out.println("Hi, I'm Lucio");</span>
-                </h1>
-                <p class="hero-subtitle">Programming Student at EPET Nº12</p>
-                <p class="hero-description">Software Development | Aspiring AI Red Teamer</p>
-                <div class="hero-buttons">
-                    <a href="#projects" class="btn btn-primary">View Projects</a>
-                    <a href="#about" class="btn btn-secondary">Learn More</a>
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 border-b border-terminal-border bg-terminal-bg/90 backdrop-blur-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-terminal text-terminal-green"></i>
+                    <span class="font-bold text-white tracking-wider">YOUR_NAME<span class="text-terminal-accent">.sh</span></span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#about" class="hover:text-white transition-colors px-3 py-2 rounded-md text-sm">~/about</a>
+                        <a href="#projects" class="hover:text-white transition-colors px-3 py-2 rounded-md text-sm">~/projects</a>
+                        <a href="#writeups" class="hover:text-white transition-colors px-3 py-2 rounded-md text-sm">~/writeups</a>
+                        <a href="#skills" class="hover:text-white transition-colors px-3 py-2 rounded-md text-sm">~/skills</a>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="https://github.com/" target="_blank" class="text-gray-400 hover:text-white transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
+                    <a href="https://linkedin.com/" target="_blank" class="text-gray-400 hover:text-terminal-accent transition-colors"><i class="fa-brands fa-linkedin text-xl"></i></a>
                 </div>
             </div>
         </div>
-    </section>
+    </nav>
 
-    <section id="about" class="section">
-        <div class="container">
-            <h2 class="section-title">
-                <span class="section-number">01.</span> About Me
-            </h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>Hello! I'm Lucio Ucha, a programming student at EPET Nº12. My passion for technology has led me to explore different programming languages and web development frameworks.</p>
-                    <p>I am currently honing my software development skills with a strong focus on information security, as my ultimate goal is to specialize in AI Red Teaming and Adversarial Machine Learning.</p>
-                    <p>I love solving complex problems, scripting automated tools, and understanding how systems work under the hood to secure them effectively.</p>
+    <!-- Main Content -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12">
+        
+        <!-- Hero / Terminal Section -->
+        <section id="about" class="mb-20 pt-8">
+            <div class="bg-terminal-card rounded-lg border border-terminal-border shadow-2xl overflow-hidden max-w-4xl mx-auto">
+                <!-- Terminal Header -->
+                <div class="bg-[#161B22] border-b border-terminal-border px-4 py-2 flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <div class="ml-2 text-xs text-gray-500 font-sans">guest@kali:~</div>
                 </div>
-                <div class="about-stats">
-                    <div class="stat-item">
-                        <span class="stat-number">2</span>
-                        <span class="stat-label">Years Studying</span>
+                <!-- Terminal Body -->
+                <div class="p-6 text-sm sm:text-base leading-relaxed">
+                    <div class="mb-4">
+                        <span class="text-terminal-green font-bold">┌──(guest㉿kali)-[~]</span><br>
+                        <span class="text-terminal-green font-bold">└─$</span> <span class="text-white">whoami</span>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-number">7</span>
-                        <span class="stat-label">Technologies</span>
+                    <div class="mb-6 text-gray-300">
+                        <p class="mb-2">> Junior Offensive Security Specialist & Python Developer.</p>
+                        <p class="mb-2">> Currently pursuing <span class="text-terminal-accent">Hack The Box (CPTS Path)</span> and mastering Active Directory.</p>
+                        <p>> Purple Teaming focus: I code offensive tools in Python and study their detection in SIEM environments.</p>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-number">99</span>
-                        <span class="stat-label">% Eagerness to Learn</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="section section-alt">
-        <div class="container">
-            <h2 class="section-title">
-                <span class="section-number">02.</span> Projects
-            </h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>ZigzaG</h3>
-                        <div class="project-links">
-                            <a href="https://zigzagpatagonia.com" target="_blank" class="project-link">🔗</a>
-                        </div>
-                    </div>
-                    <p class="project-description">
-                        A website created as a school project for a local group of environmental activists.
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-tag">HTML</span>
-                        <span class="tech-tag">CSS</span>
-                        <span class="tech-tag">JavaScript</span>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>UCHA Enumerator</h3>
-                        <div class="project-links">
-                            <a href="https://github.com/UchaLM/ucha-enum" target="_blank" class="project-link">🔗</a>
-                        </div>
-                    </div>
-                    <p class="project-description">
-                        An enumeration tool built in Python to automate the reconnaissance phase of penetration testing engagements, with modules for network scanning, web enumeration, and service enumeration.
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Python</span>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>Backend Architecture</h3>
-                        <div class="project-links">
-                            <a href="#" class="project-link">🔗</a>
-                            <a href="#" class="project-link">📁</a>
-                        </div>
-                    </div>
-                    <p class="project-description">
-                        API or backend application demonstrating my server-side programming and logic skills.
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Java</span>
-                        <span class="tech-tag">API</span>
+                    
+                    <div class="mb-4">
+                        <span class="text-terminal-green font-bold">┌──(guest㉿kali)-[~]</span><br>
+                        <span class="text-terminal-green font-bold">└─$</span> <span id="typewriter-text" class="text-terminal-accent"></span><span class="cursor-blink bg-gray-400 inline-block w-2 h-4 ml-1 align-middle"></span>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="experience" class="section">
-        <div class="container">
-            <h2 class="section-title">
-                <span class="section-number">03.</span> Technical Experience
+        <!-- Projects Section -->
+        <section id="projects" class="mb-20 pt-16">
+            <h2 class="text-2xl font-bold text-white mb-8 border-b border-terminal-border pb-2">
+                <i class="fa-solid fa-folder-open mr-2 text-terminal-accent"></i> ~/featured_projects
             </h2>
-            <div class="skills-container">
-                <div class="skills-category">
-                    <h3>Programming Languages</h3>
-                    <div class="skills-grid">
-                        <div class="skill-item">
-                            <span class="skill-icon">☕</span>
-                            <span class="skill-name">Java</span>
-                        </div>
-                        <div class="skill-item">
-                            <span class="skill-icon">🐍</span>
-                            <span class="skill-name">Python</span>
-                        </div>
-                        <div class="skill-item">
-                            <span class="skill-icon">⚡</span>
-                            <span class="skill-name">JavaScript</span>
-                        </div>
-                        <div class="skill-item">
-                            <span class="skill-icon">🔧</span>
-                            <span class="skill-name">C++</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="skills-category">
-                    <h3>Web Technologies</h3>
-                    <div class="skills-grid">
-                        <div class="skill-item">
-                            <span class="skill-icon">🌐</span>
-                            <span class="skill-name">HTML</span>
-                        </div>
-                        <div class="skill-item">
-                            <span class="skill-icon">🎨</span>
-                            <span class="skill-name">CSS</span>
-                        </div>
-                        <div class="skill-item">
-                            <span class="skill-icon">⚛️</span>
-                            <span class="skill-name">React</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="skills-category">
-                    <h3>Currently Learning</h3>
-                    <div class="skills-grid">
-                        <div class="skill-item learning">
-                            <span class="skill-icon">🔒</span>
-                            <span class="skill-name">Cybersecurity</span>
-                        </div>
-                        <div class="skill-item learning">
-                            <span class="skill-icon">🗄️</span>
-                            <span class="skill-name">Databases</span>
-                        </div>
-                        <div class="skill-item learning">
-                            <span class="skill-icon">🌐</span>
-                            <span class="skill-name">Networking</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="cybersecurity" class="section section-alt">
-        <div class="container">
-            <h2 class="section-title">
-                <span class="section-number">04.</span> Cybersecurity
-            </h2>
-            <div class="cybersecurity-content">
-                <div class="cyber-intro">
-                    <p>Information security is my core passion. I am constantly learning about the latest threats, protection techniques, offensive security, and infrastructure vulnerabilities.</p>
-                </div>
-
-                <div class="cyber-areas">
-                    <div class="cyber-card">
-                        <div class="cyber-icon">🛡️</div>
-                        <h3>Defensive Security</h3>
-                        <p>Learning about system hardening, threat detection, and incident response fundamentals.</p>
-                        <div class="cyber-status">In Progress</div>
-                    </div>
-
-                    <div class="cyber-card">
-                        <div class="cyber-icon">🔍</div>
-                        <h3>Vulnerability Analysis</h3>
-                        <p>Studying ethical pentesting techniques, network enumeration, and web app security.</p>
-                        <div class="cyber-status">In Progress</div>
-                    </div>
-
-                    <div class="cyber-card">
-                        <div class="cyber-icon">🤖</div>
-                        <h3>AI Red Teaming</h3>
-                        <p>Exploring prompt injection, adversarial machine learning, and AI model vulnerabilities.</p>
-                        <div class="cyber-status">Future Goal</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="machines" class="section">
-        <div class="container">
-            <h2 class="section-title">
-                <span class="section-number">05.</span> Machines & CTFs
-            </h2>
-            <p class="section-subtitle" style="color: var(--text-muted); margin-bottom: 2rem;">Swipe to view compromised machines in controlled environments.</p>
             
-            <div class="machines-carousel">
-                <div class="machine-card" data-modal="modal-enum">
-                    <div class="machine-header">
-                        <span class="machine-difficulty easy">Easy</span>
-                        <span class="machine-platform">Hack The Box</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Project 1: UCHA Scanner -->
+                <div class="bg-terminal-card border border-terminal-border rounded-lg p-6 hover:border-terminal-green transition-all duration-300 group">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white group-hover:text-terminal-green transition-colors">ucha-scanner</h3>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fa-brands fa-github text-xl"></i></a>
                     </div>
-                    <div class="machine-icon">🔍</div>
-                    <h3 class="machine-title">Network Enum</h3>
-                    <p class="machine-attack">Technique: Nmap Scanning & Service Enumeration</p>
-                    <span class="tech-tag mt-auto">Read Write-up ➜</span>
+                    <p class="text-gray-400 text-sm mb-4">Multithreaded network scanner developed from scratch in Python. Uses the sockets library for fast port enumeration, banner grabbing, and basic web directory fuzzing.</p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="px-2 py-1 text-xs rounded bg-blue-900/30 text-blue-400 border border-blue-800">Python 3</span>
+                        <span class="px-2 py-1 text-xs rounded bg-purple-900/30 text-purple-400 border border-purple-800">Sockets</span>
+                        <span class="px-2 py-1 text-xs rounded bg-red-900/30 text-red-400 border border-red-800">Offensive Tooling</span>
+                    </div>
                 </div>
 
-                <div class="machine-card" data-modal="modal-brute">
-                    <div class="machine-header">
-                        <span class="machine-difficulty medium">Medium</span>
-                        <span class="machine-platform">Hack The Box</span>
+                <!-- Project 2: Purple Team Lab -->
+                <div class="bg-terminal-card border border-terminal-border rounded-lg p-6 hover:border-terminal-accent transition-all duration-300 group">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white group-hover:text-terminal-accent transition-colors">Purple Team SIEM Lab</h3>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fa-solid fa-arrow-up-right-from-square text-lg"></i></a>
                     </div>
-                    <div class="machine-icon">🔓</div>
-                    <h3 class="machine-title">Login Bypass</h3>
-                    <p class="machine-attack">Technique: Brute Force / Dictionary Attacks</p>
-                    <span class="tech-tag mt-auto">Read Write-up ➜</span>
+                    <p class="text-gray-400 text-sm mb-4">Local lab documenting the execution of automated attacks (Nmap, dirb, custom scripts) and their corresponding detection and log analysis using Splunk Enterprise.</p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="px-2 py-1 text-xs rounded bg-green-900/30 text-green-400 border border-green-800">Splunk</span>
+                        <span class="px-2 py-1 text-xs rounded bg-blue-900/30 text-blue-400 border border-blue-800">Blue Team</span>
+                        <span class="px-2 py-1 text-xs rounded bg-orange-900/30 text-orange-400 border border-orange-800">Log Analysis</span>
+                    </div>
                 </div>
 
-                <div class="machine-card disabled">
-                    <div class="machine-header">
-                        <span class="machine-difficulty" style="color: var(--text-muted)">Pending</span>
-                        <span class="machine-platform">Hack The Box</span>
+            </div>
+        </section>
+
+        <!-- Write-ups Carousel Section -->
+        <section id="writeups" class="mb-20 pt-16">
+            <h2 class="text-2xl font-bold text-white mb-8 border-b border-terminal-border pb-2">
+                <i class="fa-solid fa-flag mr-2 text-terminal-accent"></i> ~/htb_writeups
+            </h2>
+
+            <div class="relative w-full max-w-4xl mx-auto">
+                <!-- Carousel Wrapper -->
+                <div class="overflow-hidden rounded-lg border border-terminal-border bg-terminal-card relative shadow-2xl">
+                    <div id="carousel-track" class="flex carousel-track w-full">
+                        
+                        <!-- Slide 1 -->
+                        <div class="w-full flex-shrink-0 p-8 sm:p-12">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-3xl font-bold text-white"><i class="fa-brands fa-windows text-blue-400 mr-3"></i>HTB: Active</h3>
+                                <span class="px-3 py-1 bg-green-900/30 text-green-400 border border-green-800 rounded-full text-xs font-bold uppercase tracking-wider">Easy</span>
+                            </div>
+                            <div class="space-y-4 mb-8 text-gray-300">
+                                <p><strong class="text-terminal-accent">OS:</strong> Windows</p>
+                                <p><strong class="text-terminal-accent">Vulnerabilities / Techniques:</strong></p>
+                                <ul class="list-disc pl-5 space-y-1 text-sm text-gray-400">
+                                    <li>SMB Null Session Enumeration</li>
+                                    <li>Exploiting Group Policy Preferences (GPP) Passwords</li>
+                                    <li>Kerberoasting & Ticket Extraction</li>
+                                    <li>Active Directory Privilege Escalation</li>
+                                </ul>
+                            </div>
+                            <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-terminal-green hover:bg-terminal-greenHover transition-colors w-full sm:w-auto">
+                                <i class="fa-solid fa-book-open mr-2"></i> Read Write-up
+                            </a>
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="w-full flex-shrink-0 p-8 sm:p-12">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-3xl font-bold text-white"><i class="fa-brands fa-linux text-yellow-500 mr-3"></i>HTB: Lame</h3>
+                                <span class="px-3 py-1 bg-green-900/30 text-green-400 border border-green-800 rounded-full text-xs font-bold uppercase tracking-wider">Easy</span>
+                            </div>
+                            <div class="space-y-4 mb-8 text-gray-300">
+                                <p><strong class="text-terminal-accent">OS:</strong> Linux</p>
+                                <p><strong class="text-terminal-accent">Vulnerabilities / Techniques:</strong></p>
+                                <ul class="list-disc pl-5 space-y-1 text-sm text-gray-400">
+                                    <li>Samba v3.0.20 CVE-2007-2447</li>
+                                    <li>Distcc Daemon Command Execution</li>
+                                    <li>Anonymous FTP Enumeration</li>
+                                    <li>Linux Privilege Escalation via SUID</li>
+                                </ul>
+                            </div>
+                            <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-terminal-green hover:bg-terminal-greenHover transition-colors w-full sm:w-auto">
+                                <i class="fa-solid fa-book-open mr-2"></i> Read Write-up
+                            </a>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="w-full flex-shrink-0 p-8 sm:p-12">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-3xl font-bold text-white"><i class="fa-brands fa-windows text-blue-400 mr-3"></i>HTB: Forest</h3>
+                                <span class="px-3 py-1 bg-orange-900/30 text-orange-400 border border-orange-800 rounded-full text-xs font-bold uppercase tracking-wider">Medium</span>
+                            </div>
+                            <div class="space-y-4 mb-8 text-gray-300">
+                                <p><strong class="text-terminal-accent">OS:</strong> Windows (Domain Controller)</p>
+                                <p><strong class="text-terminal-accent">Vulnerabilities / Techniques:</strong></p>
+                                <ul class="list-disc pl-5 space-y-1 text-sm text-gray-400">
+                                    <li>AS-REP Roasting (Impacket-GetNPUsers)</li>
+                                    <li>BloodHound Graph Enumeration</li>
+                                    <li>Abusing Account Operators Group</li>
+                                    <li>DCSync Attack (secretsdump)</li>
+                                </ul>
+                            </div>
+                            <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-terminal-green hover:bg-terminal-greenHover transition-colors w-full sm:w-auto">
+                                <i class="fa-solid fa-book-open mr-2"></i> Read Write-up
+                            </a>
+                        </div>
+
                     </div>
-                    <div class="machine-icon" style="filter: grayscale(1); opacity: 0.5;">🔒</div>
-                    <h3 class="machine-title">Next Target</h3>
-                    <p class="machine-attack">Upcoming machine walkthrough...</p>
+
+                    <!-- Navigation Arrows -->
+                    <button id="prevBtn" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-terminal-green text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors focus:outline-none z-10 border border-gray-600 hover:border-transparent">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button id="nextBtn" class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-terminal-green text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors focus:outline-none z-10 border border-gray-600 hover:border-transparent">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <!-- Dots Indicators -->
+                <div class="flex justify-center mt-6 space-x-3" id="carousel-dots">
+                    <!-- Dots will be populated by JS -->
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2026 Lucio Ucha. Built with HTML, CSS, and JavaScript.</p>
-                <div class="footer-links">
-                    <a href="mailto:lucio@ejemplo.com" class="footer-link">📧 Contact</a>
-                    <a href="#" class="footer-link">💼 LinkedIn</a>
-                    <a href="#" class="footer-link">🐙 GitHub</a>
+        <!-- Skills Section -->
+        <section id="skills" class="mb-20 pt-16">
+            <h2 class="text-2xl font-bold text-white mb-8 border-b border-terminal-border pb-2">
+                <i class="fa-solid fa-microchip mr-2 text-terminal-accent"></i> ~/skills_&_technologies
+            </h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Offensive -->
+                <div class="bg-[#0D1117] border border-terminal-border rounded-lg p-5">
+                    <h4 class="text-terminal-accent font-bold mb-4 border-b border-terminal-border/50 pb-2">Offensive Security</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li>
+                            <i class="fa-solid fa-angle-right text-terminal-green mr-2"></i><strong class="text-gray-300">Web Pentesting:</strong><br>
+                            <span class="pl-5 text-xs text-gray-500 leading-tight block mt-1">Burp Suite, SQLi, Command Injection, Web Fuzzing, Brute Force</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-angle-right text-terminal-green mr-2"></i><strong class="text-gray-300">Network Enum & Exploit:</strong><br>
+                            <span class="pl-5 text-xs text-gray-500 leading-tight block mt-1">Nmap, Metasploit Framework, Netcat</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-angle-right text-terminal-green mr-2"></i><strong class="text-gray-300">Active Directory:</strong><br>
+                            <span class="pl-5 text-xs text-gray-500 leading-tight block mt-1">BloodHound, Impacket, NetExec</span>
+                        </li>
+                    </ul>
                 </div>
+                
+                <!-- Defensive -->
+                <div class="bg-[#0D1117] border border-terminal-border rounded-lg p-5">
+                    <h4 class="text-terminal-accent font-bold mb-4 border-b border-terminal-border/50 pb-2">Defensive / SOC</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><i class="fa-solid fa-angle-right text-terminal-green mr-2"></i>Splunk SIEM Basics</li>
+                        <li><i class="fa-solid fa-angle-right text-terminal-green mr-2"></i>Log Analysis & Detection</li>
+                        <li><i class="fa-solid fa-angle-right text-terminal-green mr-2"></i>Network Traffic Analysis</li>
+                    </ul>
+                </div>
+
+                <!-- Development -->
+                <div class="bg-[#0D1117] border border-terminal-border rounded-lg p-5">
+                    <h4 class="text-terminal-accent font-bold mb-4 border-b border-terminal-border/50 pb-2">Development</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><i class="fa-brands fa-python text-terminal-green mr-2"></i>Python 3 (Sockets, Auto)</li>
+                        <li><i class="fa-solid fa-angle-right text-terminal-green mr-2"></i>Bash Scripting</li>
+                        <li><i class="fa-brands fa-git-alt text-terminal-green mr-2"></i>Git & GitHub</li>
+                    </ul>
+                </div>
+
+                <!-- Core -->
+                <div class="bg-[#0D1117] border border-terminal-border rounded-lg p-5">
+                    <h4 class="text-terminal-accent font-bold mb-4 border-b border-terminal-border/50 pb-2">Core OS & Net</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><i class="fa-brands fa-linux text-terminal-green mr-2"></i>Linux (Kali, Fedora)</li>
+                        <li><i class="fa-brands fa-windows text-terminal-green mr-2"></i>Windows Server</li>
+                        <li><i class="fa-solid fa-network-wired text-terminal-green mr-2"></i>TCP/IP & Subnetting</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Additional Technologies (Web & Software) -->
+            <div class="mt-8 bg-[#0D1117] border border-terminal-border rounded-lg p-6">
+                <h4 class="text-terminal-accent font-bold mb-4 border-b border-terminal-border/50 pb-2">
+                    <i class="fa-solid fa-layer-group mr-2"></i>Additional Stack & Familiar Technologies
+                </h4>
+                <p class="text-sm text-gray-400 mb-5">
+                    > Technologies I have practical experience with through development projects, academic background, and self-hosting. This foundational knowledge enhances my code review and web exploitation capabilities:
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-orange-500 transition-colors cursor-default"><i class="fa-brands fa-html5 mr-2 text-orange-500"></i>HTML/CSS</span>
+                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-yellow-400 transition-colors cursor-default"><i class="fa-brands fa-js mr-2 text-yellow-400"></i>JavaScript</span>
+                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-400 transition-colors cursor-default"><i class="fa-brands fa-react mr-2 text-blue-400"></i>React</span>
+                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-300 transition-colors cursor-default"><i class="fa-solid fa-database mr-2 text-blue-300"></i>SQL</span>
+                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-indigo-400 transition-colors cursor-default"><i class="fa-brands fa-php mr-2 text-indigo-400"></i>PHP</span>
+                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-red-500 transition-colors cursor-default"><i class="fa-brands fa-java mr-2 text-red-500"></i>Java</span>
+                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-500 transition-colors cursor-default"><i class="fa-brands fa-wordpress mr-2 text-blue-500"></i>WordPress</span>
+                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-green-500 transition-colors cursor-default"><i class="fa-brands fa-joomla mr-2 text-green-500"></i>Joomla</span>
+                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-teal-400 transition-colors cursor-default"><i class="fa-solid fa-microchip mr-2 text-teal-400"></i>C++ (Arduino)</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-terminal-border mt-auto">
+        <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-gray-500 text-sm">© 2026 Your_Name. Developed with <i class="fa-solid fa-code text-terminal-accent mx-1"></i> and mate.</p>
+            <div class="flex space-x-6">
+                <a href="mailto:your.email@example.com" class="text-gray-500 hover:text-white transition-colors"><i class="fa-solid fa-envelope text-lg"></i></a>
+                <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-hackerrank text-lg"></i></a>
             </div>
         </div>
     </footer>
 
-    <div id="modal-enum" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="writeup-header">
-                <h2>Write-up: Network Enum</h2>
-                <span class="machine-difficulty easy">Easy</span>
-            </div>
-            <div class="writeup-body">
-                <p>The primary objective of this lab was to establish the basics of infrastructure reconnaissance, a critical phase before any exploitation.</p>
-                <h3>1. Active Reconnaissance</h3>
-                <p>We started with an exhaustive port scan using **Nmap** to discover exposed services on the target:</p>
-                <pre><code>nmap -sC -sV -p- 10.10.X.X -oN initial_scan.txt</code></pre>
-                <p>Ports 22 (SSH) and 80 (HTTP) were discovered. The <code>-sV</code> flag allowed us to identify the exact version of the running web server, which is the vital first step in searching for known vulnerabilities (CVEs), while <code>-sC</code> ran default enumeration scripts.</p>
-                <h3>2. Result Analysis</h3>
-                <p>With the obtained information, the next logical step is directory enumeration on port 80 using tools like Gobuster or Feroxbuster to map the web attack surface.</p>
-            </div>
-        </div>
-    </div>
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Typewriter Effect ---
+            const textToType = "./execute_cpts_path.sh && init_soc_defense";
+            const typeWriterElement = document.getElementById('typewriter-text');
+            let i = 0;
 
-    <div id="modal-brute" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="writeup-header">
-                <h2>Write-up: Login Bypass</h2>
-                <span class="machine-difficulty medium">Medium</span>
-            </div>
-            <div class="writeup-body">
-                <p>The objective of this machine was to compromise a web authentication panel vulnerable to brute force attacks, demonstrating the importance of robust password policies and rate limiting.</p>
-                <h3>1. Vector Identification</h3>
-                <p>After enumerating the web application, we located a login form. When attempting basic SQL injections (<code>' OR 1=1 --</code>), we verified the inputs were sanitized. However, there were no lockout mechanisms after multiple failed attempts.</p>
-                <h3>2. Exploitation</h3>
-                <p>We proceeded to perform a dictionary attack using **Hydra**, intercepting the POST request to analyze the required parameters.</p>
-                <pre><code>hydra -l admin -P /usr/share/wordlists/rockyou.txt 10.10.X.X http-post-form "/login.php:user=^USER^&pass=^PASS^:F=Incorrect login"</code></pre>
-                <p>By using the <i>rockyou</i> wordlist, we successfully obtained valid credentials and breached the perimeter, gaining access to the administrator dashboard.</p>
-            </div>
-        </div>
-    </div>
+            function typeWriter() {
+                if (i < textToType.length) {
+                    typeWriterElement.innerHTML += textToType.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, Math.random() * 50 + 50);
+                }
+            }
+            setTimeout(typeWriter, 1000);
 
-    <script src="./script/script.js"></script>
+            // --- Carousel Logic ---
+            const track = document.getElementById('carousel-track');
+            const slides = Array.from(track.children);
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const dotsContainer = document.getElementById('carousel-dots');
+            
+            let currentIndex = 0;
+
+            // Create dots dynamically
+            slides.forEach((_, idx) => {
+                const dot = document.createElement('button');
+                dot.classList.add('w-3', 'h-3', 'rounded-full', 'transition-colors', 'focus:outline-none');
+                dot.classList.add(idx === 0 ? 'bg-terminal-green' : 'bg-gray-600');
+                dot.addEventListener('click', () => goToSlide(idx));
+                dotsContainer.appendChild(dot);
+            });
+
+            const dots = Array.from(dotsContainer.children);
+
+            function updateCarousel() {
+                track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                
+                // Update dots styling
+                dots.forEach((dot, idx) => {
+                    if(idx === currentIndex) {
+                        dot.classList.remove('bg-gray-600');
+                        dot.classList.add('bg-terminal-green');
+                    } else {
+                        dot.classList.remove('bg-terminal-green');
+                        dot.classList.add('bg-gray-600');
+                    }
+                });
+            }
+
+            function goToSlide(index) {
+                currentIndex = index;
+                updateCarousel();
+            }
+
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex === slides.length - 1) ? 0 : currentIndex + 1;
+                updateCarousel();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex === 0) ? slides.length - 1 : currentIndex - 1;
+                updateCarousel();
+            });
+        });
+    </script>
 </body>
 </html>
