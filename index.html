@@ -1,401 +1,2629 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Offensive Security & Dev</title>
-    <link rel="icon" type="image/png" href="favicon(1).png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        mono: ['"Fira Code"', 'monospace'],
-                    },
-                    colors: {
-                        terminal: {
-                            bg: '#0D1117',
-                            card: '#161B22',
-                            border: '#30363D',
-                            text: '#C9D1D9',
-                            green: '#238636',
-                            greenHover: '#2EA043',
-                            accent: '#58A6FF'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color: #010409; color: #C9D1D9; }
-        .cursor-blink { animation: blink 1s step-end infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #010409; }
-        ::-webkit-scrollbar-thumb { background: #30363D; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #58A6FF; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kali@portfolio:~$ _</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous">
+<style>
+/* ═══════════════════════════════════════════════════
+   CSS VARIABLES
+═══════════════════════════════════════════════════ */
+:root {
+  --bg:           #080b08;
+  --green:        #39ff14;
+  --green-hi:     #7fff6a;
+  --green-dim:    #1e8c0a;
+  --green-glow:   rgba(57,255,20,0.18);
+  --green-subtle: rgba(57,255,20,0.06);
+  --red:          #e31337;
+  --cyan:         #00e5ff;
+  --yellow:       #f0db4f;
+  --orange:       #f96a2c;
+  --white:        #cde8c9;
+  --dim:          rgba(205,232,201,0.45);
+  --bar-h:        30px;
+  --bar-bg:       rgba(6,10,6,0.97);
+  --bar-border:   rgba(57,255,20,0.2);
+  --menu-bg:      rgba(8,13,8,0.98);
+  --icon-w:       76px;
+  --win-bg:       #0a0e0a;
+  --win-bar:      #070b07;
+  --font:         'JetBrains Mono','Courier New',monospace;
+}
 
-        /* Carousel Utilities */
-        .carousel-track { transition: transform 0.5s ease-in-out; }
-    </style>
+/* ═══════════════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:var(--font);color:var(--green);cursor:crosshair;user-select:none;-webkit-user-select:none}
+
+/* ═══════════════════════════════════════════════════
+   TASKBAR
+═══════════════════════════════════════════════════ */
+/* ═══ TASKBAR — KALI PANEL ═══ */
+#taskbar{
+  position:fixed;top:0;left:0;right:0;height:var(--bar-h);
+  background:#1a1a1a;
+  border-bottom:1px solid #0a0a0a;
+  display:flex;align-items:center;
+  padding:0;gap:0;z-index:9000;
+  box-shadow:0 2px 8px rgba(0,0,0,.7);
+}
+/* Left section */
+#bar-left{display:flex;align-items:center;height:100%;flex-shrink:0}
+/* Kali blue logo button */
+#kali-logo-btn{
+  width:var(--bar-h);height:var(--bar-h);
+  background:#3b78e7;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;
+  border-right:1px solid #2a5fba;
+  transition:background .12s;
+}
+#kali-logo-btn:hover{background:#4e8ef7}
+#kali-logo-btn img{width:18px;height:18px;object-fit:contain}
+#kali-logo-btn .kali-txt{color:#fff;font-size:14px;font-weight:900;letter-spacing:-1px;font-family:sans-serif}
+/* Quick launch area */
+.panel-sep{width:1px;height:18px;background:#3a3a3a;margin:0 4px;flex-shrink:0}
+.ql-btn{
+  width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;border-radius:3px;color:#bbb;font-size:14px;
+  transition:background .12s,color .12s;flex-shrink:0;margin:0 1px;
+}
+.ql-btn:hover{background:#333;color:#fff}
+/* Middle section */
+#bar-mid{flex:1;display:flex;align-items:center;gap:2px;overflow-x:auto;overflow-y:hidden;padding:0 4px;min-width:0;scrollbar-width:none}
+#bar-mid::-webkit-scrollbar{display:none}
+/* Workspace indicator */
+.ws-box{
+  height:22px;min-width:22px;padding:0 7px;
+  background:#2a2a2a;border:1px solid #444;border-radius:2px;
+  font-size:11px;color:#aaa;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;transition:all .12s;
+}
+.ws-box.active{background:#3b78e7;border-color:#2a5fba;color:#fff}
+.ws-box:hover:not(.active){background:#333;color:#ddd}
+/* Taskbar window buttons */
+.tb-win-btn{
+  height:24px;padding:0 9px 0 7px;
+  background:#2a2a2a;border:1px solid #3a3a3a;border-radius:3px;
+  color:#bbb;font-family:var(--font);font-size:10.5px;
+  cursor:pointer;white-space:nowrap;max-width:150px;
+  overflow:hidden;text-overflow:ellipsis;transition:all .12s;flex-shrink:0;
+  display:flex;align-items:center;gap:5px;
+}
+.tb-win-btn i{font-size:11px;color:#888;flex-shrink:0}
+.tb-win-btn.tb-active{background:#333;border-color:#555;color:#eee}
+.tb-win-btn.tb-active i{color:#3b78e7}
+.tb-win-btn:hover{background:#363636;color:#ddd}
+/* Right section — system tray */
+#bar-right{display:flex;align-items:center;gap:0;height:100%;flex-shrink:0;padding-right:4px}
+.tray-icon{
+  width:26px;height:var(--bar-h);display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:#bbb;cursor:pointer;transition:background .12s,color .12s;
+  flex-shrink:0;position:relative;
+}
+.tray-icon:hover{background:#2a2a2a;color:#fff}
+.tray-icon.tray-active{color:#3b78e7}
+#tray-clock{
+  font-size:11.5px;font-weight:600;color:#ccc;
+  padding:0 8px;cursor:default;white-space:nowrap;
+  display:flex;align-items:center;height:var(--bar-h);
+  transition:background .12s;
+}
+#tray-clock:hover{background:#2a2a2a;color:#fff}
+.tray-sep{width:1px;height:16px;background:#3a3a3a;margin:0 2px;flex-shrink:0}
+/* App menu button */
+#apps-btn{
+  background:none;border:none;color:#ccc;font-family:var(--font);
+  font-size:12px;font-weight:500;padding:0 10px;cursor:pointer;
+  height:var(--bar-h);display:flex;align-items:center;gap:6px;
+  transition:background .12s,color .12s;white-space:nowrap;
+}
+#apps-btn:hover,#apps-btn.open{background:#2a2a2a;color:#fff}
+/* ═══ APP MENU — WHISKER STYLE ═══ */
+#app-menu{
+  position:fixed;top:var(--bar-h);left:0;
+  width:560px;height:420px;
+  background:#1e1e1e;border:1px solid #333;border-top:none;
+  z-index:8999;display:none;
+  box-shadow:4px 6px 24px rgba(0,0,0,.85);
+  flex-direction:row;overflow:hidden;
+}
+#app-menu.open{display:flex}
+/* Left category pane */
+.menu-cat-pane{
+  width:38%;flex-shrink:0;
+  background:#181818;
+  border-right:1px solid #2a2a2a;
+  overflow-y:auto;padding:6px 0;
+  display:flex;flex-direction:column;
+}
+.menu-cat-pane::-webkit-scrollbar{width:3px}
+.menu-cat-pane::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
+.wm-cat{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 14px;font-size:12px;color:#888;
+  cursor:pointer;transition:background .1s,color .1s;
+  border-left:3px solid transparent;white-space:nowrap;
+  user-select:none;
+}
+.wm-cat:hover{background:#232323;color:#ccc;border-left-color:#444}
+.wm-cat.wm-active{background:#252525;color:#fff;border-left-color:#3b78e7}
+.wm-cat-ico{width:18px;height:18px;object-fit:contain;flex-shrink:0;opacity:.7}
+.wm-cat.wm-active .wm-cat-ico{opacity:1}
+.wm-cat-txt{flex:1;font-size:12px}
+/* Right applications pane */
+.menu-app-pane{
+  flex:1;overflow-y:auto;padding:4px 0;
+  background:#1e1e1e;
+}
+.menu-app-pane::-webkit-scrollbar{width:4px}
+.menu-app-pane::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
+.wm-section-hdr{
+  font-size:9px;color:#444;letter-spacing:2px;text-transform:uppercase;
+  padding:7px 14px 3px;pointer-events:none;
+}
+.wm-item{
+  display:flex;align-items:center;gap:10px;
+  padding:7px 14px;font-size:12px;color:#bbb;
+  cursor:pointer;transition:background .08s;
+}
+.wm-item:hover{background:#2a2a2a;color:#fff}
+.wm-item .wm-ico{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.wm-item .wm-ico img{width:20px;height:20px;object-fit:contain}
+.wm-item .wm-ico i{font-size:16px;color:#888}
+.wm-item:hover .wm-ico i{color:#bbb}
+.wm-item-name{flex:1;line-height:1.3}
+.wm-item-desc{font-size:10px;color:#555;margin-top:1px}
+.wm-divider{height:1px;background:#252525;margin:4px 8px}
+/* ═══ KALI UNDERCOVER — static bottom-right ═══ */
+#ico-undercover{
+  position:absolute!important;
+  right:16px;bottom:16px;
+  z-index:500;
+  /* override any organic placement */
+  transform:none!important;
+}
+#ico-undercover .icon-box{border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.05)}
+#ico-undercover .icon-label{color:rgba(205,232,201,.5)}
+
+/* ═══════════════════════════════════════════════════
+   APP MENU
+═══════════════════════════════════════════════════ */
+/* menu styles defined above in Whisker block */
+
+/* ═══════════════════════════════════════════════════
+   DESKTOP
+═══════════════════════════════════════════════════ */
+#desktop{position:fixed;top:var(--bar-h);left:0;right:0;bottom:0;overflow:hidden;
+  background-color:#080b08;
+  background-image:url('fondoascii.jpg');
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;}
+#grid-layer{position:absolute;inset:0;background-image:linear-gradient(rgba(57,255,20,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+#scanlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px);pointer-events:none;z-index:0}
+#sys-info{position:absolute;top:12px;left:14px;font-size:10px;line-height:2;color:rgba(57,255,20,.22);pointer-events:none;z-index:1}
+#sys-info span{color:rgba(57,255,20,.38)}
+#watermark{position:absolute;bottom:14px;left:14px;font-size:10px;color:rgba(57,255,20,.16);pointer-events:none;z-index:1;letter-spacing:1px}
+
+/* ── Icon image styles ── */
+.icon-img{width:36px;height:36px;object-fit:contain;z-index:2;position:relative;pointer-events:none;flex-shrink:0;image-rendering:crisp-edges}
+.icon-fa{font-size:26px;z-index:2;position:relative;line-height:1}
+/* SVG security icons — white mask on coloured bg */
+.icon-svg-wrap{width:36px;height:36px;z-index:2;position:relative;display:flex;align-items:center;justify-content:center}
+.icon-svg-wrap svg{width:32px;height:32px}
+/* Remove old sym rules but keep selector for safety */
+.icon-sym,.icon-sym2{display:none}
+
+/* ══ TOAST NOTIFICATION ══ */
+#toast-stack{position:fixed;top:38px;right:10px;z-index:99800;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.toast{
+  background:rgba(10,16,10,.96);
+  border:1px solid rgba(57,255,20,.3);
+  border-left:3px solid var(--green);
+  color:#c8ffc8;font-family:var(--font);font-size:11.5px;
+  padding:8px 14px;border-radius:4px;
+  box-shadow:0 4px 20px rgba(0,0,0,.7);
+  display:flex;align-items:center;gap:9px;
+  min-width:240px;max-width:340px;
+  animation:toast-in .22s cubic-bezier(.34,1.4,.64,1) forwards;
+  pointer-events:auto;cursor:default;
+}
+.toast.toast-out{animation:toast-out .22s ease-in forwards}
+.toast-ico{color:var(--green);font-size:13px;flex-shrink:0}
+.toast-txt{flex:1;line-height:1.45}
+.toast-close{color:rgba(57,255,20,.4);cursor:pointer;font-size:14px;flex-shrink:0;padding:0 2px;transition:color .12s}
+.toast-close:hover{color:var(--green)}
+@keyframes toast-in{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes toast-out{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* ══ LOCK SCREEN ══ */
+#lockscreen{
+  position:fixed;inset:0;z-index:98000;display:none;
+  background:rgba(4,8,4,.82);
+  backdrop-filter:blur(18px) brightness(.6);
+  -webkit-backdrop-filter:blur(18px) brightness(.6);
+  flex-direction:column;align-items:center;justify-content:center;
+  font-family:var(--font);
+}
+#lockscreen.active{display:flex;animation:lock-in .3s ease-out}
+@keyframes lock-in{from{opacity:0}to{opacity:1}}
+.lock-time{font-size:64px;font-weight:300;color:#fff;letter-spacing:2px;text-shadow:0 0 30px rgba(57,255,20,.2);margin-bottom:6px}
+.lock-date{font-size:14px;color:rgba(255,255,255,.5);letter-spacing:3px;margin-bottom:42px}
+.lock-card{display:flex;flex-direction:column;align-items:center;gap:14px}
+.lock-avatar{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#1a2a1a 0%,#0d1a0d 100%);border:2px solid rgba(57,255,20,.35);display:flex;align-items:center;justify-content:center;font-size:42px;box-shadow:0 0 30px rgba(57,255,20,.15)}
+.lock-user{font-size:18px;color:#fff;letter-spacing:1px;font-weight:500}
+.lock-host{font-size:12px;color:rgba(57,255,20,.5);letter-spacing:2px;margin-top:-8px}
+.lock-pw-wrap{display:flex;align-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(57,255,20,.25);border-radius:6px;overflow:hidden;width:260px;height:38px}
+.lock-pw{flex:1;background:none;border:none;outline:none;color:#fff;font-family:var(--font);font-size:14px;padding:0 14px;letter-spacing:3px}
+.lock-pw::placeholder{letter-spacing:1px;color:rgba(255,255,255,.3);font-size:12px}
+.lock-pw-ico{color:rgba(57,255,20,.4);padding:0 12px;font-size:13px}
+.lock-unlock{width:260px;height:36px;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.35);border-radius:6px;color:var(--green);font-family:var(--font);font-size:13px;cursor:pointer;letter-spacing:2px;transition:all .15s}
+.lock-unlock:hover{background:rgba(57,255,20,.22);border-color:var(--green);box-shadow:0 0 15px rgba(57,255,20,.2)}
+.lock-hint{font-size:10px;color:rgba(57,255,20,.3);letter-spacing:1px;margin-top:4px}
+
+/* ═══════════════════════════════════════════════════
+   DESKTOP ICONS
+═══════════════════════════════════════════════════ */
+.icon{position:absolute;width:var(--icon-w);display:flex;flex-direction:column;align-items:center;gap:6px;padding:7px 5px;border:1px solid transparent;border-radius:5px;cursor:default;z-index:100;transition:border-color .15s,background .15s}
+.icon:hover{background:rgba(57,255,20,.07);border-color:rgba(57,255,20,.25)}
+.icon.selected{background:rgba(57,255,20,.12);border-color:rgba(57,255,20,.45)}
+.icon.dragging{cursor:grabbing;opacity:.9;border-color:var(--green);background:rgba(57,255,20,.08);box-shadow:0 0 18px rgba(57,255,20,.35),0 4px 24px rgba(0,0,0,.5);z-index:9100!important;transition:none}
+.icon-box{width:52px;height:52px;border:1.5px solid;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-direction:column;font-weight:700;position:relative;overflow:hidden;transition:box-shadow .2s}
+.icon-box::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.12) 3px,rgba(0,0,0,.12) 4px);pointer-events:none;z-index:1}
+.icon:hover .icon-box{box-shadow:0 0 10px currentColor}
+.icon-tag{font-size:7.5px;font-weight:400;letter-spacing:1px;opacity:.65;position:absolute;top:4px;left:0;right:0;text-align:center;z-index:2}
+.icon-sym{font-size:17px;font-weight:700;line-height:1;z-index:2;position:relative}
+.icon-sym2{font-size:12px;font-weight:700;line-height:1;z-index:2;position:relative}
+.icon-label{font-size:10px;color:var(--white);text-align:center;line-height:1.25;text-shadow:1px 1px 3px rgba(0,0,0,.9),-1px -1px 3px rgba(0,0,0,.9);max-width:70px;word-break:break-word}
+/* Tech colours */
+.icon-html .icon-box{color:#e44d26;border-color:#e44d2650;background:#e44d2610}
+.icon-css  .icon-box{color:#2965f1;border-color:#2965f150;background:#2965f110}
+.icon-js   .icon-box{color:#f0db4f;border-color:#f0db4f50;background:#f0db4f10}
+.icon-php  .icon-box{color:#8892bf;border-color:#8892bf50;background:#8892bf10}
+.icon-sql  .icon-box{color:#00b4d8;border-color:#00b4d850;background:#00b4d810}
+.icon-py   .icon-box{color:#4b8bbe;border-color:#4b8bbe50;background:#4b8bbe10}
+.icon-cpp  .icon-box{color:#5c9fd6;border-color:#5c9fd650;background:#5c9fd610}
+.icon-laravel .icon-box{color:#ff2d20;border-color:#ff2d2050;background:#ff2d2010}
+.icon-asm  .icon-box{color:#39ff14;border-color:#39ff1450;background:#39ff1410}
+/* Portfolio colours */
+.icon-whoami  .icon-box{color:#7fff6a;border-color:#7fff6a50;background:#7fff6a10}
+.icon-cv      .icon-box{color:#b0c4de;border-color:#b0c4de50;background:#b0c4de10}
+.icon-folder  .icon-box{color:#febc2e;border-color:#febc2e50;background:#febc2e10}
+.icon-github  .icon-box{color:#9b71ea;border-color:#9b71ea50;background:#9b71ea10}
+.icon-contact .icon-box{color:#ff5f57;border-color:#ff5f5750;background:#ff5f5710}
+.icon-term    .icon-box{color:#39ff14;border-color:#39ff1450;background:#080b0890}
+/* Tool colours */
+.icon-nmap     .icon-box{color:#00e5ff;border-color:#00e5ff50;background:#00e5ff10}
+.icon-gobuster .icon-box{color:#ff9f0a;border-color:#ff9f0a50;background:#ff9f0a10}
+.icon-msf      .icon-box{color:#e31337;border-color:#e3133750;background:#e3133710}
+.icon-sqlmap   .icon-box{color:#00bfa5;border-color:#00bfa550;background:#00bfa510}
+.icon-wireshark .icon-box{color:#1a9fd4;border-color:#1a9fd450;background:#1a9fd410}
+.icon-burp      .icon-box{color:#ff6633;border-color:#ff663350;background:#ff663310}
+
+@keyframes icon-flash{0%{box-shadow:0 0 0 rgba(57,255,20,0)}40%{box-shadow:0 0 30px rgba(57,255,20,.7),0 0 60px rgba(57,255,20,.3)}100%{box-shadow:0 0 0 rgba(57,255,20,0)}}
+.icon.flash .icon-box{animation:icon-flash .45s ease-out forwards}
+
+/* ═══════════════════════════════════════════════════
+   WIRESHARK — 3-PANE PACKET ANALYSER
+═══════════════════════════════════════════════════ */
+.ws-app{display:flex;flex-direction:column;height:100%;background:#232629;color:#d0d0d0;font-family:'Segoe UI',Arial,sans-serif;font-size:12px;cursor:default;overflow:hidden}
+/* Menu bar */
+.ws-menubar{height:22px;background:#2a2a2a;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;padding:0 4px;flex-shrink:0;gap:0}
+.ws-mb{padding:2px 9px;font-size:11.5px;color:#c8c8c8;cursor:pointer;border-radius:2px;white-space:nowrap}
+.ws-mb:hover{background:#3c3c3c}
+/* Toolbar */
+.ws-tb{height:30px;background:#2a2a2a;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;padding:0 5px;gap:1px;flex-shrink:0}
+.ws-tbb{width:26px;height:22px;background:none;border:1px solid transparent;border-radius:3px;color:#b0b0b0;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .1s}
+.ws-tbb:hover{background:#3c3c3c;border-color:#555}
+.ws-tbb.active{color:#4da6ff}
+.ws-tb-sep{width:1px;height:18px;background:#454545;margin:0 3px;flex-shrink:0}
+/* Filter bar */
+.ws-filterbar{height:28px;background:#2c2c2c;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;padding:0 7px;gap:5px;flex-shrink:0}
+.ws-f-bm{color:#3d9eff;font-size:14px;cursor:pointer;flex-shrink:0}
+.ws-f-inp{flex:1;background:#1a1a1a;border:1px solid #404040;border-radius:3px;padding:2px 8px;font-size:11px;color:#d0d0d0;font-family:'Segoe UI',Arial,sans-serif;outline:none;cursor:text}
+.ws-f-inp:focus{border-color:#3d9eff}
+.ws-f-inp::placeholder{color:#555}
+.ws-f-dd,.ws-f-plus{width:20px;height:20px;background:#333;border:1px solid #505050;border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;transition:background .1s;flex-shrink:0}
+.ws-f-dd:hover,.ws-f-plus:hover{background:#444;color:#d0d0d0}
+/* Pane wrapper — fills remaining height */
+.ws-panes{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+/* Column header strip */
+.ws-col-hdr-row{height:20px;background:#2d2d2d;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;flex-shrink:0;user-select:none}
+.ws-ch{padding:0 6px;font-size:11px;font-weight:600;color:#a0a0a0;border-right:1px solid #3a3a3a;white-space:nowrap;overflow:hidden;height:100%;display:flex;align-items:center;cursor:default}
+.ws-ch:hover{background:#363636;color:#d0d0d0}
+/* Packet list */
+.ws-pkt-list{flex:1;overflow-y:auto;overflow-x:hidden;background:#1a1a1a;min-height:60px}
+.ws-pkt-list::-webkit-scrollbar{width:8px}
+.ws-pkt-list::-webkit-scrollbar-track{background:#252525}
+.ws-pkt-list::-webkit-scrollbar-thumb{background:#505050;border-radius:2px}
+.ws-row{display:flex;align-items:center;height:18px;cursor:pointer;font-size:11px;font-family:'Consolas','Courier New',monospace;border-bottom:1px solid rgba(255,255,255,.025);flex-shrink:0}
+.ws-row:hover{filter:brightness(1.3)}
+.ws-row.ws-sel{background:#2d6a9f!important;color:#fff!important}
+.ws-c{padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:100%;display:flex;align-items:center;flex-shrink:0}
+/* Protocol row colours */
+.ws-tcp  {background:#1a1a1a;color:#c8c8c8}
+.ws-http {background:#122010;color:#90d890}
+.ws-tls  {background:#1c1426;color:#c0a0e0}
+.ws-dns  {background:#001422;color:#80b8e0}
+.ws-dhcp {background:#1e0a28;color:#c888e8}
+.ws-arp  {background:#201c00;color:#d8c860}
+.ws-icmp {background:#001a1a;color:#70d8c8}
+/* Pane resize handle */
+.ws-sep{height:5px;background:#2d2d2d;border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a;cursor:row-resize;flex-shrink:0;display:flex;align-items:center;justify-content:center;user-select:none}
+.ws-sep:hover{background:#383838}
+.ws-sep::after{content:'';width:32px;height:2px;background:#555;border-radius:1px}
+/* Detail pane */
+.ws-detail{overflow-y:auto;flex-shrink:0;background:#1c1c1c;min-height:40px}
+.ws-detail::-webkit-scrollbar{width:8px}
+.ws-detail::-webkit-scrollbar-thumb{background:#505050;border-radius:2px}
+.ws-ti{font-size:11px;font-family:'Consolas','Courier New',monospace;color:#c8c8c8;padding:1px 6px;cursor:pointer;line-height:1.65;display:flex;align-items:flex-start}
+.ws-ti:hover{background:#2c2c2c}
+.ws-ti.ws-ti-sec{color:#88c0f8}
+.ws-ti-arr{width:14px;flex-shrink:0;font-size:9px;color:#707070;padding-top:1px}
+.ws-ti-kv-key{color:#88c0f8}
+.ws-ti-kv-val{color:#c8c8c8}
+.ws-ti-http{color:#90d890}
+.ws-ti-indent1{padding-left:20px}
+.ws-ti-indent2{padding-left:34px}
+.ws-ti-indent3{padding-left:48px}
+/* Hex dump pane */
+.ws-hex{overflow-y:auto;flex-shrink:0;background:#161616;min-height:40px;font-family:'Consolas','Courier New',monospace;font-size:11px;color:#c8c8c8;padding:4px 0}
+.ws-hex::-webkit-scrollbar{width:8px}
+.ws-hex::-webkit-scrollbar-thumb{background:#505050;border-radius:2px}
+.ws-hrow{display:flex;padding:1px 10px;line-height:1.6}
+.ws-haddr{color:#707070;min-width:44px;user-select:none}
+.ws-hbytes{flex:0 0 280px;letter-spacing:1.2px;color:#78d0d0}
+.ws-hascii{color:#a8d0a8;letter-spacing:.3px}
+/* Status bar */
+.ws-statusbar{height:22px;background:#282828;border-top:1px solid #1a1a1a;display:flex;align-items:center;padding:0 10px;gap:10px;flex-shrink:0;font-size:11px;color:#808080}
+.ws-status-sep{width:1px;height:13px;background:#444}
+.ws-status-pkts{color:#4da6ff}
+/* Column widths */
+.ws-c-no  {width:42px}
+.ws-c-t   {width:82px}
+.ws-c-src {width:130px}
+.ws-c-dst {width:130px}
+.ws-c-pr  {width:70px}
+.ws-c-ln  {width:50px}
+.ws-c-inf {flex:1;min-width:0}
+
+/* ═══════════════════════════════════════════════════
+   BURP SUITE — REPEATER TAB
+═══════════════════════════════════════════════════ */
+.burp-app{display:flex;flex-direction:row;height:100%;background:#282c34;color:#abb2bf;font-family:'Segoe UI',Arial,sans-serif;font-size:12px;cursor:default;overflow:hidden}
+.burp-main{display:flex;flex-direction:column;flex:1;overflow:hidden;min-width:0}
+/* Native menu bar */
+.burp-nmbar{height:22px;background:#21252b;border-bottom:1px solid #171a1f;display:flex;align-items:center;padding:0 8px;flex-shrink:0;gap:0}
+.burp-nm{padding:2px 9px;font-size:11.5px;color:#9da5b4;cursor:pointer;border-radius:2px;white-space:nowrap}
+.burp-nm:hover{background:#2c313c}
+.burp-nm-title{flex:1;text-align:center;font-size:11px;color:#4b5263;pointer-events:none}
+.burp-nm-ctrls{display:flex;gap:1px}
+.burp-nm-ctrl{width:22px;height:18px;background:none;border:none;color:#4b5263;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;border-radius:2px;transition:background .1s}
+.burp-nm-ctrl:hover{background:#3a3f4b;color:#abb2bf}
+/* App tab bar */
+.burp-tabbar{height:34px;background:#21252b;border-bottom:1px solid #171a1f;display:flex;align-items:stretch;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+.burp-tabbar::-webkit-scrollbar{display:none}
+.burp-tab{padding:0 13px;font-size:12px;color:#5c6370;cursor:pointer;display:flex;align-items:center;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .12s;user-select:none}
+.burp-tab:hover{color:#abb2bf;background:rgba(255,255,255,.03)}
+.burp-tab.act{color:#d4d4d4;border-bottom-color:#e8510a}
+.burp-tab-space{flex:1}
+.burp-tab-icons{display:flex;align-items:center;padding:0 6px;gap:2px}
+.burp-ti-btn{width:24px;height:24px;background:none;border:1px solid transparent;border-radius:3px;color:#5c6370;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.burp-ti-btn:hover{background:#2c313c;border-color:#3a3f4b;color:#abb2bf}
+/* Repeater sub-tab strip */
+.burp-rep-stabs{height:28px;background:#282c34;border-bottom:1px solid #1e2228;display:flex;align-items:center;padding:0 6px;gap:3px;flex-shrink:0}
+.burp-stab{height:22px;padding:0 10px;background:#1e2228;border:1px solid #3a3f4b;border-radius:3px 3px 0 0;font-size:11px;color:#9da5b4;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .12s;user-select:none}
+.burp-stab.act{background:#282c34;border-bottom-color:#282c34;color:#d4d4d4}
+.burp-stab .bsc{color:#5c6370;font-size:10px;padding:1px 2px;border-radius:2px}
+.burp-stab .bsc:hover{background:#3a3f4b;color:#abb2bf}
+.burp-stab-add{width:22px;height:22px;border:1px solid #3a3f4b;border-radius:3px;color:#5c6370;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1;transition:all .12s}
+.burp-stab-add:hover{background:#2c313c;color:#abb2bf}
+/* Repeater toolbar */
+.burp-rep-tb{height:36px;background:#282c34;border-bottom:1px solid #1e2228;display:flex;align-items:center;padding:0 10px;gap:6px;flex-shrink:0}
+.burp-send{background:#e8510a;border:none;color:#fff;font-family:'Segoe UI',Arial,sans-serif;font-size:12px;font-weight:600;padding:4px 16px;border-radius:3px;cursor:pointer;transition:background .12s;flex-shrink:0}
+.burp-send:hover{background:#ff6633}
+.burp-send:active{background:#c04000}
+.burp-send.busy{background:#555;cursor:wait;pointer-events:none}
+.burp-cancel{background:#2c313c;border:1px solid #3a3f4b;color:#abb2bf;font-family:'Segoe UI',Arial,sans-serif;font-size:12px;padding:4px 12px;border-radius:3px;cursor:pointer;transition:background .12s;flex-shrink:0}
+.burp-cancel:hover{background:#3a3f4b}
+.burp-nav{display:flex;border:1px solid #3a3f4b;border-radius:3px;overflow:hidden;flex-shrink:0}
+.burp-navb{background:#1e2228;border:none;border-right:1px solid #3a3f4b;color:#5c6370;width:20px;height:24px;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;transition:background .1s}
+.burp-navb:last-child{border-right:none}
+.burp-navb:hover{background:#2c313c;color:#abb2bf}
+.burp-ai{background:none;border:1px solid #3a3f4b;color:#9da5b4;font-family:'Segoe UI',Arial,sans-serif;font-size:11px;padding:3px 10px;border-radius:3px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .12s;flex-shrink:0}
+.burp-ai:hover{background:#2c313c;border-color:#555;color:#d4d4d4}
+.burp-ai-ico{color:#c084fc;font-size:10px}
+.burp-target{margin-left:auto;font-size:11.5px;color:#5c6370;display:flex;align-items:center;gap:5px;flex-shrink:0}
+.burp-target-lbl{color:#9da5b4}
+.burp-target-ico{color:#5c6370;cursor:pointer;font-size:12px;padding:2px;border-radius:2px}
+.burp-target-ico:hover{background:#3a3f4b;color:#abb2bf}
+.burp-layout{display:flex;border:1px solid #3a3f4b;border-radius:3px;overflow:hidden;flex-shrink:0}
+.burp-layb{background:#1e2228;border:none;border-right:1px solid #3a3f4b;color:#5c6370;width:24px;height:24px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all .1s}
+.burp-layb:last-child{border-right:none}
+.burp-layb.on,.burp-layb:hover{background:#3a3f4b;color:#d4d4d4}
+/* Split body */
+.burp-split{flex:1;display:flex;overflow:hidden;min-height:0}
+.burp-pane{display:flex;flex-direction:column;overflow:hidden;min-width:0;background:#1e2228;flex:1}
+.burp-pane-hdr{height:28px;background:#21252b;border-bottom:1px solid #171a1f;display:flex;align-items:center;padding:0 14px;font-size:13px;font-weight:600;color:#d4d4d4;flex-shrink:0}
+.burp-ptabs{height:27px;background:#282c34;border-bottom:1px solid #1e2228;display:flex;align-items:center;padding:0 8px;gap:2px;flex-shrink:0}
+.burp-ptab{padding:3px 9px;font-size:11px;color:#5c6370;cursor:pointer;border-radius:3px;transition:all .12s;user-select:none}
+.burp-ptab:hover{color:#abb2bf;background:#2c313c}
+.burp-ptab.on{color:#d4d4d4;background:#3a3f4b}
+.burp-ptab-icons{display:flex;gap:2px;margin-left:auto}
+.burp-ptab-ico{width:22px;height:22px;background:none;border:none;color:#5c6370;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;border-radius:2px;transition:all .1s}
+.burp-ptab-ico:hover{background:#3a3f4b;color:#abb2bf}
+/* HTTP syntax-highlighted editor */
+.burp-ed{flex:1;overflow:auto;padding:6px 12px;font-family:'Consolas','JetBrains Mono','Courier New',monospace;font-size:12px;line-height:1.7;background:#1e2228;color:#abb2bf;white-space:pre;cursor:text;user-select:text;-webkit-user-select:text;outline:none;min-height:0;scrollbar-width:thin;scrollbar-color:#3a3f4b #1e2228}
+.burp-ed::-webkit-scrollbar{width:6px;height:6px}
+.burp-ed::-webkit-scrollbar-track{background:#1e2228}
+.burp-ed::-webkit-scrollbar-thumb{background:#3a3f4b;border-radius:3px}
+/* Syntax tokens */
+.ht-ln{color:#4b5263;min-width:26px;display:inline-block;text-align:right;padding-right:12px;user-select:none}
+.ht-mth{color:#e06c75;font-weight:700}
+.ht-path{color:#98c379}
+.ht-proto{color:#c678dd}
+.ht-hk{color:#61afef}
+.ht-hv{color:#abb2bf}
+.ht-stat-ok{color:#98c379;font-weight:700}
+.ht-stat-err{color:#e06c75;font-weight:700}
+.ht-jk{color:#61afef}
+.ht-js{color:#98c379}
+.ht-jn{color:#d19a66}
+.ht-jb{color:#c678dd}
+.ht-flag{color:#e5c07b;background:rgba(229,192,123,.12);padding:1px 2px;border-radius:2px}
+/* Split handle */
+.burp-sph{width:4px;background:#171a1f;cursor:col-resize;flex-shrink:0;border-left:1px solid #3a3f4b;border-right:1px solid #3a3f4b;transition:background .15s}
+.burp-sph:hover,.burp-sph.drag{background:#e8510a}
+/* Pane footer */
+.burp-pfooter{height:30px;background:#21252b;border-top:1px solid #171a1f;display:flex;align-items:center;padding:0 8px;gap:6px;flex-shrink:0}
+.burp-srchwrap{display:flex;align-items:center;flex:1;background:#1e2228;border:1px solid #3a3f4b;border-radius:3px;padding:0 6px;gap:4px;height:20px;max-width:240px}
+.burp-si{flex:1;background:none;border:none;outline:none;font-family:'Segoe UI',Arial,sans-serif;font-size:11px;color:#9da5b4;cursor:text}
+.burp-si::placeholder{color:#3a3f4b}
+.burp-srch-ico{color:#3a3f4b;font-size:11px}
+.burp-hlc{font-size:11px;color:#5c6370}
+/* Bottom bar */
+.burp-bottom{height:24px;background:#21252b;border-top:1px solid #171a1f;display:flex;align-items:center;padding:0 8px;gap:6px;flex-shrink:0}
+.burp-bbtngroup{display:flex;gap:2px}
+.burp-bbt{width:22px;height:18px;background:#1e2228;border:1px solid #3a3f4b;border-radius:3px;color:#5c6370;cursor:pointer;font-size:9px;display:flex;align-items:center;justify-content:center;transition:all .1s}
+.burp-bbt:hover{background:#3a3f4b;color:#abb2bf}
+.burp-bstatus{font-size:11px;color:#98c379;margin-left:auto}
+.burp-bsrchwrap{display:flex;align-items:center;background:#1e2228;border:1px solid #3a3f4b;border-radius:3px;padding:0 6px;gap:4px;height:18px;min-width:140px}
+.burp-bsi{flex:1;background:none;border:none;outline:none;font-family:'Segoe UI',Arial,sans-serif;font-size:10.5px;color:#9da5b4;cursor:text;min-width:80px}
+.burp-bsi::placeholder{color:#3a3f4b}
+/* Right sidebar */
+.burp-sidebar{width:30px;background:#21252b;border-left:1px solid #171a1f;display:flex;flex-direction:column;align-items:center;padding:6px 0;gap:0;flex-shrink:0}
+.burp-sb-item{writing-mode:vertical-rl;transform:rotate(180deg);font-size:10.5px;color:#5c6370;cursor:pointer;padding:10px 6px;border-left:2px solid transparent;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:4px;user-select:none}
+.burp-sb-item:hover{color:#abb2bf;background:#2c313c}
+.burp-sb-item.on{color:#d4d4d4;border-left-color:#e8510a}
+.burp-sb-ico{transform:rotate(180deg);font-size:12px}
+
+/* ═══════════════════════════════════════════════════
+   WINDOW SYSTEM
+═══════════════════════════════════════════════════ */
+.win{position:fixed;min-width:320px;min-height:220px;background:var(--win-bg);border:1px solid rgba(57,255,20,.22);border-radius:8px;box-shadow:0 28px 90px rgba(0,0,0,.8),inset 0 1px 0 rgba(57,255,20,.07);display:flex;flex-direction:column;overflow:hidden;animation:win-open .2s cubic-bezier(.34,1.4,.64,1)}
+@keyframes win-open{from{opacity:0;transform:scale(.88) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes win-close{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.88) translateY(8px)}}
+.win.win-closing{animation:win-close .16s ease-in forwards}
+.win.winfocus{border-color:rgba(57,255,20,.42);box-shadow:0 28px 90px rgba(0,0,0,.8),0 0 30px rgba(57,255,20,.07)}
+.win-bar{height:30px;background:var(--win-bar);border-bottom:1px solid rgba(57,255,20,.08);display:flex;align-items:center;padding:0 10px 0 14px;cursor:grab;flex-shrink:0;user-select:none}
+.win-bar:active{cursor:grabbing}
+.win-title-txt{flex:1;text-align:left;font-size:11px;color:rgba(205,232,201,.45);letter-spacing:.3px;pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:4px}
+.win-spacer{display:none}
+.win-dots{display:flex;gap:5px;align-items:center;flex-shrink:0;margin-left:auto}
+.win-dot{
+  width:14px;height:14px;border-radius:50%;cursor:pointer;
+  position:relative;border:1px solid rgba(255,255,255,.1);outline:none;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#454545 0%,#333 100%);
+  transition:background .12s,border-color .12s;
+  box-shadow:0 1px 2px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07);
+}
+.win-dot::after{
+  content:attr(data-icon);font-size:9px;font-weight:900;
+  color:rgba(255,255,255,.8);line-height:1;
+  opacity:0;transition:opacity .12s;
+}
+.win-dots:hover .win-dot::after{opacity:1}
+.win-dot:hover{background:linear-gradient(180deg,#555 0%,#404040 100%);border-color:rgba(255,255,255,.18)}
+.win-dot.wdc:hover{background:linear-gradient(180deg,#1a6bbf 0%,#0e4d8f 100%);border-color:rgba(70,140,220,.5)}
+.win-dot.wdm:hover{background:linear-gradient(180deg,#555 0%,#404040 100%)}
+.win-dot.wdx:hover{background:linear-gradient(180deg,#555 0%,#404040 100%)}
+.win-body{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.win-rh{position:absolute;bottom:0;right:0;width:18px;height:18px;cursor:se-resize;z-index:20}
+.win-rh::after{content:'⋱';position:absolute;bottom:3px;right:4px;font-size:12px;color:rgba(57,255,20,.3);line-height:1}
+
+/* ═══════════════════════════════════════════════════
+   SHARED TERMINAL STYLES
+═══════════════════════════════════════════════════ */
+.term-wrap{display:flex;flex-direction:column;height:100%;background:#060a06}
+.term-out{flex:1;overflow-y:auto;padding:10px 14px;font-size:12px;line-height:1.65;color:#c8ffc8;white-space:pre-wrap;word-break:break-all}
+.term-out::-webkit-scrollbar{width:4px}
+.term-out::-webkit-scrollbar-thumb{background:rgba(57,255,20,.3);border-radius:2px}
+.term-in-row{display:flex;align-items:center;padding:6px 14px;border-top:1px solid rgba(57,255,20,.12);background:#060a06;flex-shrink:0}
+.term-prompt{color:var(--green);font-size:12px;white-space:nowrap;flex-shrink:0}
+.term-input{flex:1;background:none;border:none;outline:none;color:#c8ffc8;font-family:var(--font);font-size:12px;caret-color:var(--green);cursor:text}
+/* coloring helpers */
+.g{color:var(--green)}.r{color:var(--red)}.c{color:var(--cyan)}.y{color:var(--yellow)}.w{color:var(--white)}.d{color:var(--dim)}.o{color:var(--orange)}.b{font-weight:700}
+
+/* ═══════════════════════════════════════════════════
+   NANO EDITOR
+═══════════════════════════════════════════════════ */
+.nano-wrap{display:flex;flex-direction:column;height:100%;background:#060a06}
+.nano-hdr{background:#0a0e0a;border-bottom:1px solid rgba(57,255,20,.12);padding:4px 14px;font-size:11px;color:rgba(205,232,201,.55);display:flex;justify-content:space-between;flex-shrink:0}
+.nano-hdr .nh-f{color:var(--green-hi)}
+.nano-body{flex:1;overflow-y:auto;padding:14px 18px;font-size:12px;line-height:1.9;color:#c8ffc8;white-space:pre}
+.nano-body::-webkit-scrollbar{width:4px}
+.nano-body::-webkit-scrollbar-thumb{background:rgba(57,255,20,.3);border-radius:2px}
+.nano-foot{background:#0a0e0a;border-top:1px solid rgba(57,255,20,.12);padding:5px 8px;display:flex;flex-wrap:wrap;gap:4px 14px;flex-shrink:0}
+.nano-sc{font-size:10px;color:rgba(205,232,201,.45)}
+.nano-sc b{background:rgba(57,255,20,.14);color:var(--green);padding:1px 4px;border-radius:2px;font-weight:500}
+
+/* ═══════════════════════════════════════════════════
+   PDF VIEWER
+═══════════════════════════════════════════════════ */
+.pdf-wrap{display:flex;flex-direction:column;height:100%}
+.pdf-bar{display:flex;align-items:center;gap:8px;padding:6px 12px;background:#0a0e0a;border-bottom:1px solid rgba(57,255,20,.12);flex-shrink:0}
+.pdf-btn{background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.2);color:var(--green);font-family:var(--font);font-size:10px;padding:3px 10px;border-radius:3px;cursor:pointer;transition:background .12s}
+.pdf-btn:hover{background:rgba(57,255,20,.18)}
+.pdf-info{font-size:10px;color:var(--dim);flex:1;text-align:center}
+.pdf-body{flex:1;overflow-y:auto;background:#1c1c1c;display:flex;justify-content:center;padding:20px 16px}
+.pdf-body::-webkit-scrollbar{width:5px}
+.pdf-body::-webkit-scrollbar-thumb{background:rgba(57,255,20,.25);border-radius:3px}
+.pdf-pg{background:#f5f2ea;color:#1a1a1a;width:100%;max-width:560px;padding:44px 52px;font-family:Georgia,serif;font-size:12px;line-height:1.75;border-radius:2px;box-shadow:0 4px 30px rgba(0,0,0,.6)}
+.pdf-n1{font-size:22px;font-weight:700;letter-spacing:1px;margin-bottom:2px;color:#111;font-family:Georgia,serif}
+.pdf-n2{font-size:10px;color:#444;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+.pdf-ct{font-size:11px;color:#555;margin-bottom:20px;border-bottom:2px solid #222;padding-bottom:16px}
+.pdf-sec{margin-bottom:18px}
+.pdf-sh{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#111;border-bottom:1px solid #ccc;padding-bottom:4px;margin-bottom:10px;font-family:'JetBrains Mono','Courier New',monospace}
+.pdf-en{margin-bottom:10px}
+.pdf-et{font-size:12px;font-weight:700;color:#1a1a1a}
+.pdf-es{font-size:11px;color:#666;font-style:italic}
+.pdf-eb{font-size:11.5px;color:#333;margin-top:3px}
+.pdf-sg{display:flex;flex-wrap:wrap;gap:6px 20px}
+.pdf-si{font-size:11px;color:#333}
+.pdf-si::before{content:'▸ ';color:#555}
+
+/* ═══════════════════════════════════════════════════
+   FILE EXPLORER
+═══════════════════════════════════════════════════ */
+.expl-wrap{display:flex;flex-direction:column;height:100%}
+.expl-nav{display:flex;align-items:center;gap:6px;padding:5px 10px;background:#0a0e0a;border-bottom:1px solid rgba(57,255,20,.12);flex-shrink:0}
+.expl-nav-btn{background:none;border:1px solid rgba(57,255,20,.15);color:var(--dim);font-family:var(--font);font-size:11px;padding:2px 7px;border-radius:3px;cursor:pointer;transition:all .12s}
+.expl-nav-btn:hover{background:var(--green-subtle);color:var(--white)}
+.expl-path{flex:1;background:rgba(57,255,20,.04);border:1px solid rgba(57,255,20,.12);border-radius:3px;padding:2px 8px;font-size:11px;color:var(--green)}
+.expl-body{display:flex;flex:1;overflow:hidden}
+.expl-side{width:140px;border-right:1px solid rgba(57,255,20,.1);padding:8px 0;overflow-y:auto;flex-shrink:0;background:#080b08}
+.expl-si{padding:5px 12px;font-size:11px;color:var(--dim);cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .1s}
+.expl-si:hover{background:var(--green-subtle);color:var(--white)}
+.expl-si.active{background:rgba(57,255,20,.12);color:var(--green)}
+.expl-main{flex:1;padding:12px;overflow-y:auto;display:flex;flex-wrap:wrap;align-content:flex-start;gap:6px}
+.expl-main::-webkit-scrollbar{width:4px}
+.expl-main::-webkit-scrollbar-thumb{background:rgba(57,255,20,.25);border-radius:2px}
+.expl-item{width:76px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:4px;cursor:pointer;border:1px solid transparent;transition:all .12s;text-align:center}
+.expl-item:hover{background:rgba(57,255,20,.07);border-color:rgba(57,255,20,.2)}
+.expl-item-ico{font-size:28px;line-height:1}
+.expl-item-name{font-size:10px;color:var(--white);word-break:break-word;text-shadow:1px 1px 3px rgba(0,0,0,.8)}
+
+/* ═══════════════════════════════════════════════════
+   CONTACT SHELL
+═══════════════════════════════════════════════════ */
+.csh-wrap{display:flex;flex-direction:column;height:100%;background:#060a06}
+.csh-out{flex:1;overflow-y:auto;padding:12px 14px;font-size:12px;line-height:1.7;color:#c8ffc8;white-space:pre-wrap}
+.csh-out::-webkit-scrollbar{width:4px}
+.csh-out::-webkit-scrollbar-thumb{background:rgba(57,255,20,.3);border-radius:2px}
+.csh-in-row{display:flex;align-items:center;padding:6px 14px;border-top:1px solid rgba(57,255,20,.12);background:#060a06;flex-shrink:0}
+.csh-prompt{color:var(--cyan);font-size:12px;white-space:nowrap;flex-shrink:0}
+.csh-input{flex:1;background:none;border:none;outline:none;color:var(--white);font-family:var(--font);font-size:12px;caret-color:var(--cyan);cursor:text}
+
+/* ═══════════════════════════════════════════════════
+   OVERLAYS
+═══════════════════════════════════════════════════ */
+#vignette{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 60%,rgba(0,0,0,.72) 100%);pointer-events:none;z-index:9990}
+#glitch-layer{position:fixed;inset:0;pointer-events:none;z-index:9989;opacity:0;animation:g-stripe 9s steps(1) infinite}
+@keyframes g-stripe{0%,94%,100%{opacity:0;transform:none}95%{opacity:1;transform:translateY(2px) scaleY(.5);background:rgba(57,255,20,.03)}96%{opacity:0}97%{opacity:1;transform:translateY(-3px);background:rgba(227,19,55,.04)}98%{opacity:0}}
+
+/* ═══════════════════════════════════════════════════
+   CONTEXT MENU
+═══════════════════════════════════════════════════ */
+#ctx-menu{position:fixed;background:var(--menu-bg);border:1px solid var(--bar-border);padding:4px 0;min-width:178px;z-index:8998;display:none;backdrop-filter:blur(14px);box-shadow:4px 4px 20px rgba(0,0,0,.7)}
+#ctx-menu.open{display:block}
+.ctx-item{padding:5px 14px;font-size:12px;color:var(--white);cursor:pointer;transition:background .1s}
+.ctx-item:hover{background:rgba(57,255,20,.1);color:var(--green)}
+.ctx-div{height:1px;background:var(--bar-border);margin:4px 0}
+
+/* ═══════════════════════════════════════════════════
+   BOOT SCREEN
+═══════════════════════════════════════════════════ */
+#boot-screen{position:fixed;inset:0;background:#000;z-index:99999;display:flex;flex-direction:column;align-items:flex-start;padding:20px 30px;transition:opacity .6s}
+#boot-screen.fade-out{opacity:0;pointer-events:none}
+#boot-text{font-size:12px;line-height:1.8;color:var(--green);white-space:pre;overflow:hidden}
+#boot-cur{display:inline-block;width:8px;height:14px;background:var(--green);vertical-align:middle;animation:blink .7s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ═══════════════════════════════════════════════════
+   EASTER EGG — CRASH
+═══════════════════════════════════════════════════ */
+#crash{position:fixed;inset:0;background:#000;z-index:999999;display:none;flex-direction:column;align-items:center;justify-content:center;font-family:var(--font)}
+#crash-del{position:absolute;inset:0;padding:16px;overflow:hidden;font-size:11px;line-height:1.55;color:#ff1111;white-space:pre-wrap;word-break:break-all;background:#000;display:none}
+#crash-msg{color:var(--green);text-align:center;display:none;animation:pulse-g 1.4s ease-in-out infinite}
+#crash-msg .cr-big{font-size:32px;letter-spacing:8px;font-weight:700;text-shadow:0 0 20px var(--green),0 0 40px rgba(57,255,20,.4);display:block}
+#crash-msg .cr-sm{font-size:11px;opacity:.5;margin-top:12px;display:block;letter-spacing:3px}
+@keyframes pulse-g{0%,100%{text-shadow:0 0 12px var(--green)}50%{text-shadow:0 0 30px var(--green),0 0 60px rgba(57,255,20,.5)}}
+@keyframes do-crash{0%{filter:none}10%{filter:hue-rotate(90deg) saturate(10) brightness(2);transform:skewX(-3deg)}20%{filter:invert(1);transform:skewX(2deg) translateY(-4px)}30%{filter:hue-rotate(180deg) saturate(8);transform:skewX(-1deg)}40%,60%,80%{filter:none;transform:none}50%{filter:invert(.8) hue-rotate(270deg);transform:translateX(4px)}70%{filter:saturate(20) brightness(.2);transform:skewY(1deg)}90%{filter:hue-rotate(360deg) saturate(5);transform:translateY(2px)}}
+.crashing{animation:do-crash .7s linear forwards!important}
+
+@media(max-width:640px){
+  :root{--bar-h:26px;--icon-w:66px}
+  #clock{min-width:120px;font-size:10px}
+  .icon-box{width:44px;height:44px}
+  .icon-sym{font-size:14px}
+}
+</style>
 </head>
-<body class="font-mono antialiased min-h-screen flex flex-col">
+<body>
 
-    <!-- Navbar -->
-    <nav class="sticky top-0 z-50 border-b border-terminal-border bg-terminal-bg/90 backdrop-blur-sm">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center space-x-2">
-                    <i class="fa-solid fa-terminal text-terminal-green"></i>
-                    <span class="font-bold text-white tracking-wider">lucio_ucha<span class="text-terminal-accent">.sh</span></span>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#about" class="hover:text-white transition-colors px-3 py-2 rounded-md text-sm">~/about</a>
-                        <a href="#projects" class="hover:text-white transition-colors px-3 py-2 rounded-md text-sm">~/projects</a>
-                        <a href="#writeups" class="hover:text-white transition-colors px-3 py-2 rounded-md text-sm">~/writeups</a>
-                        <a href="#skills" class="hover:text-white transition-colors px-3 py-2 rounded-md text-sm">~/skills</a>
-                    </div>
-                </div>
-                <div class="flex space-x-4">
-                    <a href="https://github.com/UchaLM" target="_blank" class="text-gray-400 hover:text-white transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
-                    <a href="https://linkedin.com/" target="_blank" class="text-gray-400 hover:text-terminal-accent transition-colors"><i class="fa-brands fa-linkedin text-xl"></i></a>
-                </div>
-            </div>
+<!-- BOOT -->
+<div id="boot-screen"><div id="boot-text"></div><span id="boot-cur"></span></div>
+
+<!-- OVERLAYS -->
+<div id="vignette"></div>
+<div id="glitch-layer"></div>
+
+<!-- CRASH SCREEN -->
+<div id="crash">
+  <div id="crash-del"></div>
+  <div id="crash-msg">
+    <span class="cr-big">CTRL+R</span>
+    <span class="cr-sm">system failure — press ctrl+r to reboot</span>
+  </div>
+</div>
+
+<!-- TASKBAR -->
+<div id="taskbar">
+  <!-- Left: Logo + Apps Menu + Separator + Quick Launch -->
+  <div id="bar-left">
+    <div id="kali-logo-btn" onclick="toggleMenu(event)" title="Applications">
+      <span class="kali-txt">K</span>
+    </div>
+    <div class="panel-sep"></div>
+    <button id="apps-btn" onclick="toggleMenu(event)">Applications</button>
+    <div class="panel-sep"></div>
+    <div class="ql-btn" onclick="openTerminal()" title="Terminal"><i class="fa-solid fa-terminal"></i></div>
+    <div class="ql-btn" onclick="(()=>{const el=WM.open('projects','Projects/ — Thunar',buildExplorer('/root/Desktop/Projects',projectItems()),{w:680,h:440});if(el&&el.dataset.exInited!=='1'){el.dataset.exInited='1';setTimeout(()=>wireExplorer(el),80);}})()" title="Files"><i class="fa-solid fa-folder"></i></div>
+    <div class="ql-btn" onclick="WM.open('whoami','whoami.txt — nano',buildNano())" title="whoami.txt"><i class="fa-solid fa-user-secret"></i></div>
+    <div class="panel-sep"></div>
+  </div>
+  <!-- Middle: Workspace + Window buttons -->
+  <div id="bar-mid">
+    <div class="ws-box active" title="Workspace 1">1</div>
+    <div class="panel-sep" style="margin:0 5px"></div>
+  </div>
+  <!-- Right: System Tray -->
+  <div id="bar-right">
+    <div class="tray-sep"></div>
+    <div class="tray-icon" id="tray-net" title="Network: Connected — eth0"><i class="fa-solid fa-ethernet" id="net-icon"></i></div>
+    <div class="tray-icon" id="tray-vol" title="Volume" onclick="systemNotify('Volume control — disabled in demo')"><i class="fa-solid fa-volume-high"></i></div>
+    <div class="tray-icon" id="tray-bat" title="Battery"><i class="fa-solid fa-battery-three-quarters" id="bat-icon"></i></div>
+    <div class="tray-sep"></div>
+    <div id="tray-clock">00:00</div>
+    <div class="tray-sep"></div>
+    <div class="tray-icon" title="Lock Screen" onclick="openLock()"><i class="fa-solid fa-lock"></i></div>
+    <div class="tray-icon" title="Log Out" onclick="systemNotify('Log out — disabled in demo environment')"><i class="fa-solid fa-right-from-bracket"></i></div>
+  </div>
+</div>
+
+<!-- APP MENU — Whisker Style -->
+<div id="app-menu">
+  <!-- Left: Category pane -->
+  <div class="menu-cat-pane" id="wm-cat-pane">
+    <div class="wm-cat wm-active" data-cat="favorites" onclick="wmSelectCat(this)">
+      <i class="fa-solid fa-star wm-cat-ico" style="font-size:14px"></i>
+      <span class="wm-cat-txt">Favorites</span>
+    </div>
+    <div class="wm-cat" data-cat="portfolio" onclick="wmSelectCat(this)">
+      <i class="fa-solid fa-user-secret wm-cat-ico" style="font-size:14px"></i>
+      <span class="wm-cat-txt">Portfolio</span>
+    </div>
+    <div class="wm-cat" data-cat="security" onclick="wmSelectCat(this)">
+      <i class="fa-solid fa-shield-halved wm-cat-ico" style="font-size:14px"></i>
+      <span class="wm-cat-txt">Security Tools</span>
+    </div>
+    <div class="wm-cat" data-cat="secondary" onclick="wmSelectCat(this)">
+      <i class="fa-solid fa-toolbox wm-cat-ico" style="font-size:14px"></i>
+      <span class="wm-cat-txt">Secondary Tools</span>
+    </div>
+    <div class="wm-cat" data-cat="dev" onclick="wmSelectCat(this)">
+      <i class="fa-solid fa-code wm-cat-ico" style="font-size:14px"></i>
+      <span class="wm-cat-txt">Development</span>
+    </div>
+    <div class="wm-cat" data-cat="social" onclick="wmSelectCat(this)">
+      <i class="fa-solid fa-globe wm-cat-ico" style="font-size:14px"></i>
+      <span class="wm-cat-txt">System &amp; Social</span>
+    </div>
+    <div class="wm-cat" data-cat="session" onclick="wmSelectCat(this)">
+      <i class="fa-solid fa-power-off wm-cat-ico" style="font-size:14px"></i>
+      <span class="wm-cat-txt">Session</span>
+    </div>
+  </div>
+  <!-- Right: Applications pane (populated by JS) -->
+  <div class="menu-app-pane" id="wm-app-pane"></div>
+</div>
+
+<!-- DESKTOP -->
+<div id="desktop" oncontextmenu="openCtx(event)">
+  <div id="grid-layer"></div>
+  <div id="scanlines"></div>
+  <div id="sys-info">
+    <div>OS:&nbsp;&nbsp; <span>Kali Linux 2024.4</span></div>
+    <div>USER: <span>root@portfolio</span></div>
+    <div>ARCH: <span>x86_64 GNU/Linux</span></div>
+    <div>UP:&nbsp;&nbsp; <span id="uptime">0:00:00</span></div>
+  </div>
+<!-- TOAST STACK -->
+<div id="toast-stack"></div>
+
+<!-- LOCK SCREEN -->
+<div id="lockscreen">
+  <div class="lock-time" id="lock-time">00:00</div>
+  <div class="lock-date" id="lock-date">WEDNESDAY, DECEMBER 15</div>
+  <div class="lock-card">
+    <div class="lock-avatar">🐉</div>
+    <div class="lock-user">root</div>
+    <div class="lock-host">kali@portfolio</div>
+    <div class="lock-pw-wrap">
+      <span class="lock-pw-ico"><i class="fa-solid fa-lock"></i></span>
+      <input class="lock-pw" type="password" placeholder="Enter password…" autocomplete="off" id="lock-pw-input">
+    </div>
+    <button class="lock-unlock" onclick="unlock()">UNLOCK</button>
+    <div class="lock-hint">Press Enter or click Unlock</div>
+  </div>
+</div>
+  <div id="watermark">[ XFCE 4.18 · Kali Linux Rolling · kernel 6.11.0-kali-amd64 ]</div>
+
+  <!-- ══ CORE PORTFOLIO ICONS ══ -->
+  <div class="icon icon-whoami" id="ico-whoami">
+    <div class="icon-box"><div class="icon-tag">.txt</div><img class="icon-img" src="iconos/user.png" alt="whoami"></div>
+    <div class="icon-label">whoami.txt</div></div>
+  <div class="icon icon-cv" id="ico-cv">
+    <div class="icon-box"><div class="icon-tag">.pdf</div><img class="icon-img" src="iconos/pdf.png" alt="CV"></div>
+    <div class="icon-label">CV_Ucha.pdf</div></div>
+  <div class="icon icon-folder" id="ico-projects">
+    <div class="icon-box"><div class="icon-tag">dir</div><img class="icon-img" src="iconos/folder.png" alt="Projects"></div>
+    <div class="icon-label">Projects/</div></div>
+  <div class="icon icon-folder" id="ico-labs">
+    <div class="icon-box"><div class="icon-tag">dir</div><img class="icon-img" src="iconos/folder-lab.png" alt="Labs"></div>
+    <div class="icon-label">Labs/</div></div>
+  <div class="icon icon-contact" id="ico-contact">
+    <div class="icon-box"><div class="icon-tag">.sh</div><img class="icon-img" src="iconos/mail.png" alt="Contact"></div>
+    <div class="icon-label">Contact.sh</div></div>
+  <div class="icon icon-term" id="ico-terminal">
+    <div class="icon-box"><div class="icon-tag">bash</div><img class="icon-img" src="iconos/terminal.png" alt="Terminal"></div>
+    <div class="icon-label">Terminal</div></div>
+
+  <!-- ══ PRIMARY SECURITY TOOLS ══ -->
+  <div class="icon icon-nmap" id="ico-nmap">
+    <div class="icon-box"><div class="icon-tag">scan</div><img class="icon-img" src="iconos/kali-nmap.svg" alt="Nmap"></div>
+    <div class="icon-label">Nmap</div></div>
+  <div class="icon icon-gobuster" id="ico-gobuster">
+    <div class="icon-box"><div class="icon-tag">fuzz</div><img class="icon-img" src="iconos/kali-gobuster.svg" alt="Gobuster"></div>
+    <div class="icon-label">Gobuster</div></div>
+  <div class="icon icon-msf" id="ico-msf">
+    <div class="icon-box"><div class="icon-tag">msf6</div><img class="icon-img" src="iconos/kali-metasploit-framework.svg" alt="Metasploit"></div>
+    <div class="icon-label">Metasploit</div></div>
+  <div class="icon icon-sqlmap" id="ico-sqlmap">
+    <div class="icon-box"><div class="icon-tag">sqli</div><img class="icon-img" src="iconos/kali-sqlmap.svg" alt="SQLmap"></div>
+    <div class="icon-label">SQLmap</div></div>
+  <div class="icon icon-wireshark" id="ico-wireshark">
+    <div class="icon-box"><div class="icon-tag">.pcap</div><img class="icon-img" src="iconos/kali-wireshark.svg" alt="Wireshark"></div>
+    <div class="icon-label">Wireshark</div></div>
+  <div class="icon icon-burp" id="ico-burp">
+    <div class="icon-box"><div class="icon-tag">proxy</div><img class="icon-img" src="iconos/kali-burpsuite.svg" alt="Burp Suite"></div>
+    <div class="icon-label">Burp Suite</div></div>
+  <div class="icon icon-hashcat" id="ico-hashcat">
+    <div class="icon-box"><div class="icon-tag">crack</div><img class="icon-img" src="iconos/kali-hashcat.svg" alt="Hashcat"></div>
+    <div class="icon-label">Hashcat</div></div>
+  <div class="icon icon-hydra" id="ico-hydra">
+    <div class="icon-box"><div class="icon-tag">brute</div><img class="icon-img" src="iconos/kali-hydra.svg" alt="Hydra"></div>
+    <div class="icon-label">Hydra</div></div>
+  <div class="icon icon-cme" id="ico-cme">
+    <div class="icon-box"><div class="icon-tag">cme</div><img class="icon-img" src="iconos/kali-crackmapexec.svg" alt="CrackMapExec"></div>
+    <div class="icon-label">CrackMapExec</div></div>
+
+  <!-- ══ KALI UNDERCOVER — pinned bottom-right ══ -->
+  <div class="icon" id="ico-undercover">
+    <div class="icon-box" style="border-color:rgba(255,255,255,.12);background:rgba(30,30,30,.5)"><img class="icon-img" src="iconos/kali-undercover.svg" alt="Kali Undercover"></div>
+    <div class="icon-label">kali-undercover</div></div>
+
+  <!-- ══ GITHUB — desktop shortcut ══ -->
+  <div class="icon icon-github" id="ico-github">
+    <div class="icon-box"><div class="icon-tag">link</div><img class="icon-img" src="iconos/github-original.svg" alt="GitHub"></div>
+    <div class="icon-label">GitHub</div></div>
+</div>
+
+<!-- CONTEXT MENU -->
+<div id="ctx-menu">
+  <div class="ctx-item" onclick="openTerminal()">Open Terminal Here</div>
+  <div class="ctx-item" onclick="systemNotify('New Folder — feature disabled in demo environment')">New Folder</div>
+  <div class="ctx-item" onclick="systemNotify('New Document — feature disabled in demo environment')">New Document</div>
+  <div class="ctx-div"></div>
+  <div class="ctx-item" onclick="systemNotify('Icons arranged by type')">Arrange Icons</div>
+  <div class="ctx-item" onclick="systemNotify('Desktop refreshed')">Refresh Desktop</div>
+  <div class="ctx-div"></div>
+  <div class="ctx-item" onclick="systemNotify('Desktop Settings — feature disabled in demo environment')">Desktop Settings…</div>
+</div>
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════
+   BOOT
+═══════════════════════════════════════ */
+(function boot(){
+  const lines=['BIOS 2.7 | UEFI Secure Boot: DISABLED','Loading initramfs...                  [  OK  ]','Mounting /dev/nvme0n1p2...            [  OK  ]','Starting udevd...                     [  OK  ]','Starting NetworkManager...            [  OK  ]','Starting lightdm Display Manager...','','  ██╗  ██╗ █████╗ ██╗     ██╗','  ██║ ██╔╝██╔══██╗██║     ██║','  █████╔╝ ███████║██║     ██║','  ██╔═██╗ ██╔══██║██║     ██║','  ██║  ██╗██║  ██║███████╗██║','  ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝','','root@portfolio:~# startx &','Loading XFCE session...','Initialising portfolio environment...',''];
+  const el=document.getElementById('boot-text');
+  let li=0,ci=0,cur='';
+  function tick(){
+    if(li>=lines.length){setTimeout(()=>{document.getElementById('boot-screen').classList.add('fade-out');setTimeout(()=>document.getElementById('boot-screen').remove(),700);},300);return;}
+    const s=lines[li];
+    if(ci<s.length){cur+=s[ci++];el.textContent=el.textContent.replace(/[^\n]*$/,cur);setTimeout(tick,s.startsWith('  ██')?5:16);}
+    else{el.textContent+='\n';cur='';li++;ci=0;setTimeout(tick,28);}
+  }
+  tick();
+})();
+
+/* ═══════════════════════════════════════
+   CLOCK & UPTIME & BATTERY
+═══════════════════════════════════════ */
+const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],MONS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function tick_clock(){
+  const n=new Date(),p=v=>String(v).padStart(2,'0');
+  const clk=document.getElementById('tray-clock');
+  if(clk)clk.textContent=`${p(n.getHours())}:${p(n.getMinutes())}`;
+}
+tick_clock();setInterval(tick_clock,1000);
+let upt=0;setInterval(()=>{upt++;const h=Math.floor(upt/3600),m=Math.floor((upt%3600)/60),s=upt%60,p=v=>String(v).padStart(2,'0');const el=document.getElementById('uptime');if(el)el.textContent=`${h}:${p(m)}:${p(s)}`;},1000);
+
+/* Battery icon update */
+let batLv=78,batCh=false;
+const BAT_ICONS=['fa-battery-empty','fa-battery-quarter','fa-battery-half','fa-battery-three-quarters','fa-battery-full'];
+function renderBat(){
+  const p=Math.round(Math.max(0,Math.min(100,batLv)));
+  const ico=document.getElementById('bat-icon');
+  if(!ico)return;
+  const idx=p<10?0:p<30?1:p<55?2:p<80?3:4;
+  ico.className='fa-solid '+BAT_ICONS[idx];
+  ico.style.color=p<20?'#e31337':p<40?'#f0a500':'';
+  const t=document.getElementById('tray-bat');
+  if(t)t.title=`Battery: ${p}%${batCh?' (charging)':''}`;
+}
+renderBat();setInterval(()=>{batCh?(batLv+=0.09,batLv>100&&(batCh=false)):(batLv-=0.04,batLv<12&&(batCh=true));renderBat();},2500);
+
+/* Network blink */
+setInterval(()=>{
+  const ic=document.getElementById('net-icon');
+  if(!ic)return;
+  ic.style.color='#3b78e7';
+  setTimeout(()=>{ic.style.color='';},180);
+},1800+Math.random()*2200);
+
+/* ═══════════════════════════════════════
+   WHISKER MENU DATA REGISTRY
+═══════════════════════════════════════ */
+const WM_CATS = {
+  favorites: {
+    label: 'Favorites',
+    items: [
+      { ico:'iconos/terminal.png', name:'Terminal Emulator', desc:'Open a new terminal window',    fn:"openTerminal()" },
+      { ico:'iconos/folder.png',   name:'Files (Thunar)',    desc:'Browse the desktop filesystem', fn:"(()=>{const el=WM.open('projects','Projects/ — Thunar',buildExplorer('/root/Desktop/Projects',projectItems()),{w:680,h:440});if(el&&el.dataset.exInited!=='1'){el.dataset.exInited='1';setTimeout(()=>wireExplorer(el),80);}})()" },
+    ]
+  },
+  portfolio: {
+    label: 'Portfolio',
+    items: [
+      { ico:'iconos/user.png', name:'whoami.txt',   desc:'Personal identification & bio',    fn:"WM.open('whoami','whoami.txt — nano',buildNano())" },
+      { ico:'iconos/pdf.png',  name:'CV_Ucha.pdf',  desc:'Download curriculum vitae',        fn:"WM.open('cv','CV_Ucha.pdf',buildCV())" },
+      { ico:'iconos/mail.png', name:'Contact.sh',   desc:'Send an encrypted message',        fn:"openContact()" },
+    ]
+  },
+  security: {
+    label: 'Security Tools',
+    items: [
+      { ico:'iconos/kali-nmap.svg',                 name:'Nmap',           desc:'Network scanner & port mapper',      fn:"WM.open('nmap','Nmap 7.94 — Network Scanner',buildAutoTerm('nmap'),{w:720,h:500,onOpen:e=>runNmap(e)})" },
+      { ico:'iconos/kali-gobuster.svg',             name:'Gobuster',       desc:'Directory & DNS fuzzer',             fn:"WM.open('gobuster','Gobuster 3.6 — Dir Fuzzer',buildAutoTerm('gobuster'),{w:740,h:500,onOpen:e=>runGobuster(e)})" },
+      { ico:'iconos/kali-metasploit-framework.svg', name:'Metasploit',     desc:'Exploitation framework (msf6)',      fn:"WM.open('msf','Metasploit Framework 6',buildAutoTerm('msf'),{w:750,h:520,onOpen:e=>runMSF(e)})" },
+      { ico:'iconos/kali-sqlmap.svg',               name:'SQLmap',         desc:'SQL injection & DB takeover',        fn:"WM.open('sqlmap','SQLmap 1.8 — SQL Injector',buildAutoTerm('sqlmap'),{w:760,h:520,onOpen:e=>runSQLmap(e)})" },
+      { ico:'iconos/kali-wireshark.svg',            name:'Wireshark',      desc:'Network packet analyser',            fn:"openWireshark()" },
+      { ico:'iconos/kali-burpsuite.svg',            name:'Burp Suite',     desc:'HTTP intercept proxy & scanner',     fn:"openBurp()" },
+      { ico:'iconos/kali-hashcat.svg',              name:'Hashcat',        desc:'GPU-accelerated password cracker',   fn:"WM.open('hashcat','Hashcat 6.2.6 — Hash Cracker',buildAutoTerm('hashcat'),{w:740,h:500,onOpen:e=>runHashcat(e)})" },
+      { ico:'iconos/kali-hydra.svg',                name:'Hydra',          desc:'Network login brute-forcer',         fn:"WM.open('hydra','Hydra 9.5 — Login Cracker',buildAutoTerm('hydra'),{w:740,h:500,onOpen:e=>runHydra(e)})" },
+      { ico:'iconos/kali-crackmapexec.svg',         name:'CrackMapExec',   desc:'SMB/domain post-exploitation',       fn:"WM.open('cme','CrackMapExec 5.4 — CME',buildAutoTerm('cme'),{w:780,h:520,onOpen:e=>runCME(e)})" },
+    ]
+  },
+  secondary: {
+    label: 'Secondary Tools',
+    items: [
+      { ico:'iconos/kali-ffuf.svg',             name:'ffuf',             desc:'Fast web fuzzer',                    fn:"systemNotify('ffuf — feature disabled in demo environment')" },
+      { ico:'iconos/kali-medusa.svg',           name:'Medusa',           desc:'Parallel network login auditor',     fn:"systemNotify('Medusa — feature disabled in demo environment')" },
+      { ico:'iconos/kali-zaproxy.svg',          name:'ZAP Proxy',        desc:'OWASP Zed Attack Proxy',             fn:"systemNotify('ZAP Proxy — feature disabled in demo environment')" },
+      { ico:'iconos/kali-passing-the-hash.svg', name:'Passing the Hash', desc:'PTH credential reuse toolkit',       fn:"systemNotify('Passing the Hash — feature disabled in demo environment')" },
+      { ico:'iconos/kali-wordlists.svg',        name:'Wordlists',        desc:'SecLists & rockyou dictionary sets', fn:"systemNotify('Wordlists — feature disabled in demo environment')" },
+    ]
+  },
+  dev: {
+    label: 'Development',
+    items: [
+      { ico:'iconos/asm.svg',                name:'ARM Assembly',  desc:'.asm low-level programming',    fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/cplusplus-original.svg', name:'C++',           desc:'Systems & exploit development', fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/css3-original.svg',      name:'CSS3',          desc:'Stylesheets & UI design',       fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/html5-original.svg',     name:'HTML5',         desc:'Markup & web structure',        fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/java-original.svg',      name:'Java',          desc:'JVM language & Android dev',    fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/javascript-original.svg',name:'JavaScript',    desc:'Browser & Node.js scripting',   fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/laravel-original.svg',   name:'Laravel',       desc:'PHP MVC web framework',         fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/mysql-original.svg',     name:'MySQL',         desc:'Relational database server',    fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/php-original.svg',       name:'PHP',           desc:'Server-side scripting',         fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/python-original.svg',    name:'Python',        desc:'Scripting & automation',        fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/kali-android-sdk.svg',   name:'Android SDK',   desc:'Mobile application development',fn:"systemNotify('Feature disabled in demo environment')" },
+    ]
+  },
+  social: {
+    label: 'System & Social',
+    items: [
+      { ico:'iconos/linkedin-original.svg', name:'LinkedIn', desc:'Professional network profile', fn:"window.open('https://linkedin.com','_blank')" },
+    ]
+  },
+  session: {
+    label: 'Session',
+    items: [
+      { fa:'fa-lock',               name:'Lock Screen', desc:'Lock the current session',   fn:"openLock()" },
+      { fa:'fa-right-from-bracket', name:'Log Out…',    desc:'End session and log out',    fn:"systemNotify('Log out — disabled in demo environment')" },
+    ]
+  },
+};
+
+function wmBuildPane(catKey) {
+  const cat = WM_CATS[catKey];
+  if (!cat) return;
+  const pane = document.getElementById('wm-app-pane');
+  pane.innerHTML = '';
+  const hdr = document.createElement('div');
+  hdr.className = 'wm-section-hdr';
+  hdr.textContent = '── ' + cat.label;
+  pane.appendChild(hdr);
+  cat.items.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'wm-item';
+    const icoHTML = item.fa
+      ? `<i class="fa-solid fa-${item.fa}"></i>`
+      : `<img src="${item.ico}" alt="${item.name}">`;
+    el.innerHTML = `
+      <div class="wm-ico">${icoHTML}</div>
+      <div>
+        <div class="wm-item-name">${item.name}</div>
+        <div class="wm-item-desc">${item.desc || ''}</div>
+      </div>`;
+    el.addEventListener('click', () => {
+      closeAll();
+      // eslint-disable-next-line no-new-func
+      new Function(item.fn)();
+    });
+    pane.appendChild(el);
+  });
+}
+
+function wmSelectCat(catEl) {
+  document.querySelectorAll('.wm-cat').forEach(c => c.classList.remove('wm-active'));
+  catEl.classList.add('wm-active');
+  wmBuildPane(catEl.dataset.cat);
+}
+
+/* ═══════════════════════════════════════
+   UI HELPERS
+═══════════════════════════════════════ */
+function toggleMenu(e){
+  e.stopPropagation();
+  const m=document.getElementById('app-menu'),b=document.getElementById('apps-btn');
+  const opening=!m.classList.contains('open');
+  m.classList.toggle('open');
+  b.classList.toggle('open',opening);
+  if(opening){
+    // Always reset to Favorites on open
+    document.querySelectorAll('.wm-cat').forEach(c=>c.classList.remove('wm-active'));
+    const favCat=document.querySelector('.wm-cat[data-cat="favorites"]');
+    if(favCat)favCat.classList.add('wm-active');
+    wmBuildPane('favorites');
+  }
+}
+function switchWS(el){/* no-op */}
+function openCtx(e){e.preventDefault();const cm=document.getElementById('ctx-menu');let x=e.clientX,y=e.clientY;if(x+180>window.innerWidth)x=window.innerWidth-184;if(y+200>window.innerHeight)y=window.innerHeight-204;cm.style.left=x+'px';cm.style.top=y+'px';cm.classList.add('open');}
+function closeAll(){document.getElementById('app-menu').classList.remove('open');document.getElementById('apps-btn').classList.remove('open');document.getElementById('ctx-menu').classList.remove('open');}
+document.addEventListener('click',closeAll);
+document.getElementById('app-menu').addEventListener('click',e=>e.stopPropagation());
+document.getElementById('desktop').addEventListener('click',()=>document.querySelectorAll('.icon').forEach(i=>i.classList.remove('selected')));
+function H(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+/* ═══════════════════════════════════════
+   WINDOW MANAGER
+═══════════════════════════════════════ */
+const WM=(()=>{
+  let zTop=10000;
+  const reg={};
+  const DW=720,DH=490;
+
+  function front(id){
+    const w=reg[id];if(!w)return;
+    w.el.style.zIndex=++zTop;
+    document.querySelectorAll('.win').forEach(v=>v.classList.remove('winfocus'));
+    document.querySelectorAll('.tb-win-btn').forEach(b=>b.classList.remove('tb-active'));
+    w.el.classList.add('winfocus');
+    document.getElementById('tb-'+id)?.classList.add('tb-active');
+  }
+
+  function addTB(id,title){
+    const b=document.createElement('button');
+    b.className='tb-win-btn tb-active';b.id='tb-'+id;
+    // pick a representative icon from the icon on the desktop
+    const deskIco=document.querySelector(`#ico-${id} .icon-img`);
+    const faIco=document.querySelector(`#ico-${id} .icon-fa`);
+    let icoHTML='<i class="fa-solid fa-window-maximize"></i>';
+    if(deskIco){icoHTML=`<img src="${deskIco.src}" style="width:12px;height:12px;object-fit:contain">`;}
+    else if(faIco){icoHTML=faIco.outerHTML;}
+    b.innerHTML=`${icoHTML}<span>${title.replace(/ —.*/,'').substring(0,18)}</span>`;
+    b.onclick=()=>{
+      const w=reg[id];if(!w)return;
+      if(w.min){w.el.style.display='flex';w.min=false;front(id);}
+      else if(+w.el.style.zIndex===zTop){w.el.style.display='none';w.min=true;b.classList.remove('tb-active');}
+      else{front(id);}
+    };
+    document.getElementById('bar-mid').appendChild(b);
+  }
+
+  function dragWin(el,id){
+    const bar=el.querySelector('.win-bar');
+    let on=false,ox=0,oy=0;
+    bar.addEventListener('mousedown',e=>{if(e.target.classList.contains('win-dot'))return;e.preventDefault();on=true;const r=el.getBoundingClientRect();ox=e.clientX-r.left;oy=e.clientY-r.top;front(id);});
+    document.addEventListener('mousemove',e=>{if(!on)return;el.style.left=Math.max(0,e.clientX-ox)+'px';el.style.top=Math.max(29,e.clientY-oy)+'px';});
+    document.addEventListener('mouseup',()=>{on=false;});
+    bar.addEventListener('touchstart',e=>{if(e.target.classList.contains('win-dot'))return;const t=e.touches[0],r=el.getBoundingClientRect();ox=t.clientX-r.left;oy=t.clientY-r.top;front(id);},{passive:true});
+    bar.addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches[0];el.style.left=Math.max(0,t.clientX-ox)+'px';el.style.top=Math.max(29,t.clientY-oy)+'px';},{passive:false});
+  }
+
+  function resizeWin(el){
+    const h=el.querySelector('.win-rh');
+    let on=false,sx,sy,sw,sh;
+    h.addEventListener('mousedown',e=>{e.preventDefault();e.stopPropagation();on=true;sx=e.clientX;sy=e.clientY;sw=el.offsetWidth;sh=el.offsetHeight;});
+    document.addEventListener('mousemove',e=>{if(!on)return;el.style.width=Math.max(340,sw+e.clientX-sx)+'px';el.style.height=Math.max(240,sh+e.clientY-sy)+'px';});
+    document.addEventListener('mouseup',()=>{on=false;});
+  }
+
+  return{
+    open(id,title,body,opts={}){
+      if(reg[id]){reg[id].min?((reg[id].el.style.display='flex'),(reg[id].min=false),front(id)):front(id);return reg[id].el;}
+      const w=opts.w||DW,h=opts.h||DH;
+      const x=Math.max(40,(window.innerWidth-w)/2+(Math.random()-.5)*80);
+      const y=Math.max(40,Math.min((window.innerHeight-h)/2+(Math.random()-.5)*60,window.innerHeight-h-20));
+      const el=document.createElement('div');
+      el.className='win winfocus';el.id='win-'+id;
+      el.style.cssText=`left:${x}px;top:${y}px;width:${w}px;height:${h}px;z-index:${++zTop}`;
+      el.innerHTML=`<div class="win-bar"><div class="win-dots"><div class="win-dot wdc" data-icon="×" onclick="WM.close('${id}')"></div><div class="win-dot wdm" data-icon="–" onclick="WM.min('${id}')"></div><div class="win-dot wdx" data-icon="□" onclick="WM.max('${id}')"></div></div><div class="win-title-txt">${H(title)}</div><div class="win-spacer"></div></div><div class="win-body">${body}</div><div class="win-rh"></div>`;
+      document.getElementById('desktop').appendChild(el);
+      reg[id]={el,min:false,max:false,prev:''};
+      dragWin(el,id);resizeWin(el);addTB(id,title);
+      el.addEventListener('mousedown',()=>front(id));
+      if(opts.onOpen)setTimeout(()=>opts.onOpen(el),60);
+      return el;
+    },
+    close(id){
+      const w=reg[id];if(!w)return;
+      w.el.classList.add('win-closing');
+      setTimeout(()=>{w.el.remove();document.getElementById('tb-'+id)?.remove();delete reg[id];},160);
+    },
+    min(id){const w=reg[id];if(!w)return;w.el.style.display='none';w.min=true;document.getElementById('tb-'+id)?.classList.remove('tb-active');},
+    max(id){
+      const w=reg[id];if(!w)return;
+      if(w.max){w.el.style.cssText=w.prev;w.max=false;}
+      else{w.prev=w.el.style.cssText;const bh=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bar-h'));w.el.style.cssText=`left:0;top:${bh}px;width:100%;height:calc(100vh - ${bh}px);z-index:${++zTop};border-radius:0;`;w.max=true;}
+    }
+  };
+})();
+
+/* ═══════════════════════════════════════
+   AUTO-TYPER ENGINE
+═══════════════════════════════════════ */
+function autoType(pre,lines,{ms=18,lineMs=80,onDone}={}){
+  let li=0;
+  function nl(){
+    if(li>=lines.length){onDone&&onDone();return;}
+    const l=lines[li++];
+    if(typeof l==='string'){type(l,()=>setTimeout(nl,lineMs));}
+    else if(l.t==='instant'){pre.textContent+=l.s+'\n';scroll();setTimeout(nl,l.d??lineMs);}
+    else if(l.t==='pause'){setTimeout(nl,l.d??500);}
+  }
+  function type(txt,cb){
+    let i=0;
+    function s(){if(i<txt.length){pre.textContent+=txt[i++];scroll();setTimeout(s,ms+(Math.random()-.4)*ms*.5);}else{pre.textContent+='\n';scroll();cb&&cb();}}
+    s();
+  }
+  function scroll(){const p=pre.closest('.term-out')||pre.parentElement;if(p)p.scrollTop=p.scrollHeight;}
+  nl();
+}
+
+/* ═══════════════════════════════════════
+   CONTENT BUILDERS
+═══════════════════════════════════════ */
+function buildAutoTerm(id){return`<div class="term-wrap"><div class="term-out"><pre id="atp-${id}" style="margin:0;font-size:12px;line-height:1.65;color:#c8ffc8;white-space:pre-wrap;word-break:break-all;"></pre></div></div>`;}
+
+/* ── NANO ── */
+function buildNano(){
+  const txt=H(`  ╔═══════════════════════════════════════════════╗
+  ║          IDENTIFICATION RECORD                ║
+  ╚═══════════════════════════════════════════════╝
+
+  Handle   :  Lucio Ucha
+  Role     :  Cybersecurity Engineer & Red Team Dev
+  Location :  [Your City / Country]
+  Contact  :  ./Contact.sh  |  GitHub → ico-github
+
+  ─────────────────────────────────────────────────
+
+  [[ ABOUT ]]
+
+  Full-stack developer who lives in the terminal.
+  Specializing in offensive security, red teaming,
+  and building tools that break things — ethically.
+
+  When I'm not hacking  →  I'm building the web.
+  When I'm not building →  I'm breaking things.
+
+  ─────────────────────────────────────────────────
+
+  [[ STACK ]]
+
+  Languages  :  Python · C++ · ARM Assembly
+                JavaScript · PHP · SQL
+  Frameworks :  Laravel · React · Node.js
+  Security   :  Metasploit · Burp Suite
+                Nmap · SQLmap · Wireshark
+  Focus      :  Red Teaming · Pentesting
+                CTF · OSCP (in progress)
+
+  ─────────────────────────────────────────────────
+
+  [[ PHILOSOPHY ]]
+
+  "The quieter you become, the more you can hear."
+                                    — Kali Linux
+
+  ─────────────────────────────────────────────────
+  // EOF  —  whoami.txt  —  root@portfolio`);
+  return`<div class="nano-wrap"><div class="nano-hdr"><span>GNU nano 7.2</span><span class="nh-f">whoami.txt</span><span style="color:var(--yellow)">Modified</span></div><div class="nano-body">${txt}</div><div class="nano-foot"><span class="nano-sc"><b>^G</b> Help</span><span class="nano-sc"><b>^X</b> Exit</span><span class="nano-sc"><b>^O</b> Write</span><span class="nano-sc"><b>^W</b> Search</span><span class="nano-sc"><b>^K</b> Cut</span><span class="nano-sc"><b>^U</b> Paste</span></div></div>`;
+}
+
+/* ── CV PDF ── */
+function buildCV(){
+  return`<div class="pdf-wrap"><div class="pdf-bar"><span class="pdf-info">📄 CV_Ucha.pdf — Page 1 / 1</span><button class="pdf-btn" onclick="alert('In a real deployment this would download your CV PDF!')">⬇ Download PDF</button><button class="pdf-btn">🔍 100%</button></div><div class="pdf-body"><div class="pdf-pg">
+<div class="pdf-n1">LUCIO UCHA</div><div class="pdf-n2">Cybersecurity Engineer &amp; Red Team Developer</div>
+<div class="pdf-ct">✉ contact@portfolio.dev &nbsp;·&nbsp; 🌐 github.com/LucioUcha &nbsp;·&nbsp; 📍 [City, Country] &nbsp;·&nbsp; 🔗 portfolio.lucio</div>
+<div class="pdf-sec"><div class="pdf-sh">Professional Summary</div><div class="pdf-eb">Results-driven cybersecurity professional with expertise in offensive security, penetration testing, and full-stack web development. Proven ability to identify and exploit vulnerabilities across web applications and network infrastructure. Passionate about building secure systems and sharing knowledge through CTF writeups and open-source tooling.</div></div>
+<div class="pdf-sec"><div class="pdf-sh">Experience</div>
+<div class="pdf-en"><div class="pdf-et">Senior Penetration Tester</div><div class="pdf-es">SecureTech Ltd · 2022 – Present</div><div class="pdf-eb">Led red team engagements for financial and healthcare clients. Developed custom C2 frameworks and evasion tooling in Python and C++. Reported 40+ critical vulnerabilities.</div></div>
+<div class="pdf-en"><div class="pdf-et">Full-Stack Developer (Laravel / JS)</div><div class="pdf-es">WebForge Agency · 2020 – 2022</div><div class="pdf-eb">Built enterprise Laravel applications. Implemented security hardening across REST APIs and authentication flows.</div></div></div>
+<div class="pdf-sec"><div class="pdf-sh">Education</div>
+<div class="pdf-en"><div class="pdf-et">B.Sc. Computer Science — Security Track</div><div class="pdf-es">University of [City] · 2016 – 2020</div></div>
+<div class="pdf-en"><div class="pdf-et">Certifications</div><div class="pdf-es">OSCP (in progress) · CEH · CompTIA Security+</div></div></div>
+<div class="pdf-sec"><div class="pdf-sh">Technical Skills</div><div class="pdf-sg"><span class="pdf-si">Python</span><span class="pdf-si">C++ / C</span><span class="pdf-si">ARM Assembly</span><span class="pdf-si">JavaScript / Node.js</span><span class="pdf-si">PHP / Laravel</span><span class="pdf-si">SQL / PostgreSQL</span><span class="pdf-si">Metasploit</span><span class="pdf-si">Burp Suite</span><span class="pdf-si">Nmap / Masscan</span><span class="pdf-si">SQLmap</span><span class="pdf-si">Ghidra / GDB</span><span class="pdf-si">Wireshark</span><span class="pdf-si">Docker / Linux</span><span class="pdf-si">Git / CI/CD</span></div></div>
+<div class="pdf-sec"><div class="pdf-sh">Notable Projects</div>
+<div class="pdf-en"><div class="pdf-et">ARM Shellcode Lab</div><div class="pdf-eb">Custom shellcode crafting toolkit for ARM64 Linux targets with automated gadget chaining.</div></div>
+<div class="pdf-en"><div class="pdf-et">Web Vulnerability Scanner</div><div class="pdf-eb">Python-based scanner combining SQLi, XSS, SSRF, and LFI detection modules.</div></div></div>
+<div style="text-align:center;font-size:10px;color:#888;margin-top:24px;border-top:1px solid #ccc;padding-top:10px;">References available on request · Last updated Dec 2024</div>
+</div></div></div>`;
+}
+
+/* ── EXPLORER ── */
+function projectItems(){return[{i:'📁',n:'web-vuln-scanner'},{i:'📁',n:'arm-shellcode-lab'},{i:'📁',n:'ctf-writeups'},{i:'📁',n:'laravel-pentest-api'},{i:'📁',n:'c2-framework-poc'},{i:'📁',n:'network-mapper'},{i:'📄',n:'README.md'},{i:'⚙',n:'.gitconfig'}];}
+function labItems(){return[{i:'📄',n:'buffer-overflow-101.md'},{i:'📄',n:'sql-injection-lab.md'},{i:'📄',n:'priv-escalation.md'},{i:'📄',n:'xss-payloads.txt'},{i:'🔧',n:'reverse-shells.sh'},{i:'📄',n:'lfi-rfi-notes.md'},{i:'📄',n:'ssrf-techniques.md'},{i:'🔧',n:'auto-enum.py'},{i:'📄',n:'ctf-template.md'}];}
+function buildExplorer(path,items){
+  const its=items.map(it=>`<div class="expl-item"><div class="expl-item-ico">${it.i}</div><div class="expl-item-name">${H(it.n)}</div></div>`).join('');
+  return`<div class="expl-wrap"><div class="expl-nav"><button class="expl-nav-btn">◀</button><button class="expl-nav-btn">▶</button><button class="expl-nav-btn">▲</button><div class="expl-path">${H(path)}</div></div><div class="expl-body"><div class="expl-side"><div class="expl-si active">📁 Desktop</div><div class="expl-si">🏠 Home</div><div class="expl-si">💻 Computer</div><div class="expl-si">📦 Downloads</div><div class="expl-si">🔖 Bookmarks</div><div style="height:1px;background:rgba(57,255,20,.1);margin:6px 0"></div><div class="expl-si">💀 Metasploit</div><div class="expl-si">🔑 Wordlists</div></div><div class="expl-main">${its}</div></div></div>`;
+}
+
+/* ── CONTACT ── */
+function buildContact(){return`<div class="csh-wrap"><div class="csh-out" id="csh-out"></div><div class="csh-in-row"><span class="csh-prompt" id="csh-prompt">$ </span><input class="csh-input" id="csh-input" type="text" autocomplete="off" spellcheck="false" placeholder="type here..."></div></div>`;}
+
+/* ── MASTER TERMINAL ── */
+function buildTerminal(){return`<div class="term-wrap"><div class="term-out" id="term-out"></div><div class="term-in-row"><span class="term-prompt" id="term-prompt">root@kali:~# </span><input class="term-input" id="term-in" type="text" autocomplete="off" spellcheck="false"></div></div>`;}
+
+/* ═══════════════════════════════════════
+   OPEN HELPERS
+═══════════════════════════════════════ */
+function openTerminal(){
+  const el=WM.open('terminal','Terminal Emulator — root@kali',buildTerminal(),{w:740,h:500});
+  if(el&&el.dataset.inited!=='1'){el.dataset.inited='1';setTimeout(()=>initTerminal(el),80);}
+}
+function openContact(){
+  const el=WM.open('contact','Contact.sh — bash',buildContact(),{w:620,h:440});
+  if(el&&el.dataset.inited!=='1'){el.dataset.inited='1';setTimeout(()=>initContact(el),80);}
+}
+
+/* ═══════════════════════════════════════
+   NMAP
+═══════════════════════════════════════ */
+function runNmap(wEl){
+  const pre=wEl.querySelector('#atp-nmap');
+  autoType(pre,[
+    {t:'instant',s:'root@kali:~# nmap -sV -p- portfolio.lucio',d:600},
+    {t:'instant',s:'',d:200},
+    {t:'instant',s:'Starting Nmap 7.94SVN ( https://nmap.org )',d:300},
+    {t:'instant',s:'Nmap scan report for portfolio.lucio (127.0.0.1)',d:150},
+    {t:'instant',s:'Host is up (0.00013s latency).',d:200},
+    {t:'instant',s:'Not shown: 65520 closed tcp ports (reset)',d:200},
+    {t:'instant',s:'PORT      STATE  SERVICE      VERSION',d:100},
+    {t:'instant',s:'──────────────────────────────────────────────────',d:100},
+    {t:'pause',d:350},
+    {t:'instant',s:'22/tcp    open   ssh          OpenSSH 9.3 (protocol 2.0)',d:120},
+    {t:'instant',s:'80/tcp    open   http         Apache httpd 2.4.57',d:120},
+    {t:'instant',s:'443/tcp   open   https        nginx 1.24.0',d:120},
+    {t:'instant',s:'3000/tcp  open   node.js      Express.js framework',d:120},
+    {t:'instant',s:'5432/tcp  open   postgresql   PostgreSQL 15.4',d:120},
+    {t:'instant',s:'8080/tcp  open   http-proxy   Burp Suite Community',d:120},
+    {t:'instant',s:'',d:150},
+    {t:'instant',s:'╔════════════════════════════════════════════════╗',d:50},
+    {t:'instant',s:'║    SKILL SCAN RESULTS — portfolio.lucio        ║',d:50},
+    {t:'instant',s:'╠════════════════════════════════════════════════╣',d:50},
+    {t:'instant',s:'║  PORT / PATH     SKILL           LEVEL         ║',d:50},
+    {t:'instant',s:'╠════════════════════════════════════════════════╣',d:50},
+    {t:'pause',d:300},
+    {t:'instant',s:'║  /python         Python 3        [EXPERT]      ║',d:90},
+    {t:'instant',s:'║  /cpp            C++ / ARM ASM   [ADVANCED]    ║',d:90},
+    {t:'instant',s:'║  /web            HTML · CSS · JS [EXPERT]      ║',d:90},
+    {t:'instant',s:'║  /php            PHP · Laravel   [ADVANCED]    ║',d:90},
+    {t:'instant',s:'║  /db             SQL · NoSQL     [PROFICIENT]  ║',d:90},
+    {t:'instant',s:'║  /security       Red Teaming     [ADVANCED]    ║',d:90},
+    {t:'instant',s:'║  /ctf            CTF / Pwn       [ADVANCED]    ║',d:90},
+    {t:'instant',s:'╚════════════════════════════════════════════════╝',d:200},
+    {t:'instant',s:'',d:150},
+    {t:'instant',s:'Nmap done: 1 IP (1 host up) scanned in 138.47 seconds',d:200},
+    {t:'instant',s:'root@kali:~# _',d:50},
+  ],{ms:0,lineMs:0});
+}
+
+/* ═══════════════════════════════════════
+   GOBUSTER
+═══════════════════════════════════════ */
+function runGobuster(wEl){
+  const pre=wEl.querySelector('#atp-gobuster');
+  autoType(pre,[
+    {t:'instant',s:'root@kali:~# gobuster dir -u http://portfolio.lucio -w /usr/share/wordlists/dirb/common.txt -t 50',d:700},
+    {t:'instant',s:'',d:100},
+    {t:'instant',s:'═══════════════════════════════════════════════',d:60},
+    {t:'instant',s:'Gobuster v3.6   by OJ Reeves & Christian Medhurst',d:60},
+    {t:'instant',s:'═══════════════════════════════════════════════',d:60},
+    {t:'instant',s:'[+] URL:       http://portfolio.lucio',d:80},
+    {t:'instant',s:'[+] Threads:   50',d:60},
+    {t:'instant',s:'[+] Wordlist:  /usr/share/wordlists/dirb/common.txt',d:60},
+    {t:'instant',s:'[+] Status:    200,204,301,302,307,401,403',d:60},
+    {t:'instant',s:'═══════════════════════════════════════════════',d:200},
+    {t:'pause',d:400},
+    {t:'instant',s:'/about           (Status: 200) [Size: 1337]',d:170},
+    {t:'instant',s:'/assets          (Status: 301) [→ /assets/]',d:140},
+    {t:'instant',s:'/contact         (Status: 200) [Size: 512]',d:160},
+    {t:'instant',s:'/cv              (Status: 200) [Size: 51200]',d:150},
+    {t:'instant',s:'/github          (Status: 301) [→ https://github.com/LucioUcha]',d:150},
+    {t:'instant',s:'/labs            (Status: 200) [Size: 3072]',d:160},
+    {t:'instant',s:'/projects        (Status: 200) [Size: 4096]',d:150},
+    {t:'instant',s:'/skills          (Status: 200) [Size: 2048]',d:160},
+    {t:'instant',s:'/ctf-writeups    (Status: 200) [Size: 8192]',d:150},
+    {t:'instant',s:'/.env            (Status: 403) [Restricted]',d:160},
+    {t:'instant',s:'/admin           (Status: 401) [Auth Required]',d:160},
+    {t:'instant',s:'/api/v1          (Status: 403) [Restricted]',d:160},
+    {t:'pause',d:300},
+    {t:'instant',s:'/secret          (Status: 200) [Size: 42]  ←  /secret/hire-me 👀',d:400},
+    {t:'instant',s:'',d:200},
+    {t:'instant',s:'═══════════════════════════════════════════════',d:60},
+    {t:'instant',s:'Finished. 2024/12/15 14:35:22',d:150},
+    {t:'instant',s:'═══════════════════════════════════════════════',d:80},
+    {t:'instant',s:'root@kali:~# _',d:50},
+  ],{ms:0,lineMs:0});
+}
+
+/* ═══════════════════════════════════════
+   METASPLOIT
+═══════════════════════════════════════ */
+function runMSF(wEl){
+  const pre=wEl.querySelector('#atp-msf');
+  const BANNER=[
+    {t:'instant',s:'root@kali:~# msfconsole',d:700},{t:'pause',d:500},
+    {t:'instant',s:'       =[ metasploit v6.3.44-dev                          ]',d:50},
+    {t:'instant',s:'+ -- --=[ 2374 exploits - 1232 auxiliary - 416 post       ]',d:50},
+    {t:'instant',s:'+ -- --=[ 1351 payloads - 46 encoders - 11 nops           ]',d:50},
+    {t:'instant',s:'+ -- --=[ 9 evasion                                       ]',d:50},
+    {t:'instant',s:'',d:100},
+    {t:'instant',s:'Metasploit tip: Enable verbose logging with set VERBOSE true',d:300},
+    {t:'instant',s:'',d:200},
+  ];
+  autoType(pre,BANNER,{ms:0,lineMs:0,onDone(){
+    autoType(pre,['msf6 > use exploit/multi/handler',{t:'instant',s:'[*] Using configured payload generic/shell_reverse_tcp',d:200}],{ms:30,lineMs:180,onDone(){
+      autoType(pre,['msf6 exploit(multi/handler) > set LHOST 0.0.0.0',{t:'instant',s:'LHOST => 0.0.0.0',d:120}],{ms:28,lineMs:180,onDone(){
+        autoType(pre,['msf6 exploit(multi/handler) > set LPORT 4444',{t:'instant',s:'LPORT => 4444',d:120}],{ms:28,lineMs:180,onDone(){
+          autoType(pre,['msf6 exploit(multi/handler) > exploit',{t:'pause',d:600},{t:'instant',s:'[*] Started reverse TCP handler on 0.0.0.0:4444',d:200},{t:'instant',s:'[*] Sending stage to portfolio.lucio...',d:400},{t:'instant',s:'[*] Meterpreter session 1 opened (0.0.0.0:4444 → 127.0.0.1:53421)',d:200},{t:'instant',s:'',d:200}],{ms:24,lineMs:180,onDone(){
+            autoType(pre,['meterpreter > sysinfo',{t:'instant',s:'Computer    : portfolio.lucio',d:80},{t:'instant',s:'OS          : Ubuntu 22.04 (Linux 6.11.0)',d:80},{t:'instant',s:'Architecture: x64',d:80},{t:'instant',s:'Meterpreter : x64/linux',d:200}],{ms:28,lineMs:160,onDone(){
+              autoType(pre,['meterpreter > getuid',{t:'instant',s:'Server username: root',d:200},'meterpreter > _'],{ms:28,lineMs:160});
+            }});
+          }});
+        }});
+      }});
+    }});
+  }});
+}
+
+/* ═══════════════════════════════════════
+   SQLMAP
+═══════════════════════════════════════ */
+function runSQLmap(wEl){
+  const pre=wEl.querySelector('#atp-sqlmap');
+  const P1=[
+    {t:'instant',s:'root@kali:~# sqlmap -u "http://portfolio.local/api/profile?id=1" --dbs --batch',d:700},
+    {t:'instant',s:'',d:150},
+    {t:'instant',s:'        ___',d:40},{t:'instant',s:'       __H__',d:40},
+    {t:'instant',s:' ___ ___[(]_____ ___ ___  {1.8.3#stable}',d:40},
+    {t:'instant',s:'|_ -| . [)]     | .\'| . |',d:40},
+    {t:'instant',s:'|___|_  [.]_|_|_|__,|  _|',d:40},
+    {t:'instant',s:'      |_|V...       |_|   https://sqlmap.org',d:40},
+    {t:'instant',s:'',d:200},
+    {t:'instant',s:'[14:40:22] [INFO] testing connection to the target URL',d:150},
+    {t:'instant',s:'[14:40:23] [INFO] target URL content is stable',d:150},
+    {t:'instant',s:'[14:40:23] [WARNING] heuristic: parameter \'id\' might be injectable (MySQL)',d:200},
+    {t:'instant',s:'[14:40:24] [INFO] GET parameter \'id\' is injectable (boolean-based blind)',d:150},
+    {t:'instant',s:'[14:40:25] [INFO] target DBMS: MySQL',d:200},
+    {t:'instant',s:'',d:100},
+    {t:'instant',s:'available databases [3]:',d:100},
+    {t:'instant',s:'[*] information_schema',d:100},
+    {t:'instant',s:'[*] portfolio_db',d:100},
+    {t:'instant',s:'[*] sys',d:300},
+    {t:'instant',s:'',d:300},
+  ];
+  autoType(pre,P1,{ms:0,lineMs:0,onDone(){
+    const P2=[
+      {t:'instant',s:'root@kali:~# sqlmap -u "...?id=1" -D portfolio_db --tables --batch',d:600},
+      {t:'instant',s:'',d:200},
+      {t:'instant',s:'Database: portfolio_db  [4 tables]',d:100},
+      {t:'instant',s:'+────────────+',d:50},
+      {t:'instant',s:'| skills     |',d:60},{t:'instant',s:'| projects   |',d:60},
+      {t:'instant',s:'| experience |',d:60},{t:'instant',s:'| contacts   |',d:60},
+      {t:'instant',s:'+────────────+',d:300},
+      {t:'instant',s:'',d:300},
+    ];
+    autoType(pre,P2,{ms:0,lineMs:0,onDone(){
+      const P3=[
+        {t:'instant',s:'root@kali:~# sqlmap -u "...?id=1" -D portfolio_db -T skills --dump --batch',d:600},
+        {t:'instant',s:'',d:200},
+        {t:'instant',s:'Database: portfolio_db  |  Table: skills  |  [9 entries]',d:100},
+        {t:'instant',s:'+────+────────────────────+────────────+─────────────+',d:50},
+        {t:'instant',s:'| id | name               | level      | category    |',d:50},
+        {t:'instant',s:'+────+────────────────────+────────────+─────────────+',d:50},
+        {t:'instant',s:'| 1  | Python             | Expert     | Languages   |',d:80},
+        {t:'instant',s:'| 2  | C++                | Advanced   | Languages   |',d:80},
+        {t:'instant',s:'| 3  | ARM Assembly       | Advanced   | Low-Level   |',d:80},
+        {t:'instant',s:'| 4  | JavaScript         | Expert     | Web         |',d:80},
+        {t:'instant',s:'| 5  | PHP / Laravel      | Advanced   | Web         |',d:80},
+        {t:'instant',s:'| 6  | SQL / NoSQL        | Proficient | Databases   |',d:80},
+        {t:'instant',s:'| 7  | Penetration Test   | Advanced   | Security    |',d:80},
+        {t:'instant',s:'| 8  | Red Teaming        | Advanced   | Security    |',d:80},
+        {t:'instant',s:'| 9  | CTF / Pwning       | Advanced   | Security    |',d:80},
+        {t:'instant',s:'+────+────────────────────+────────────+─────────────+',d:200},
+        {t:'instant',s:'',d:100},
+        {t:'instant',s:'[14:40:31] [INFO] table dumped to /tmp/sqlmap/portfolio_db/skills.csv',d:200},
+        {t:'instant',s:'root@kali:~# _',d:50},
+      ];
+      autoType(pre,P3,{ms:0,lineMs:0});
+    }});
+  }});
+}
+
+/* ═══════════════════════════════════════
+   CONTACT SHELL
+═══════════════════════════════════════ */
+function initContact(wEl){
+  const out=wEl.querySelector('#csh-out');
+  const inp=wEl.querySelector('#csh-input');
+  const prm=wEl.querySelector('#csh-prompt');
+  if(!out||!inp)return;
+  const data={name:'',email:'',msg:''};
+  let st=0;
+  function pr(t){out.textContent+=t+'\n';out.scrollTop=out.scrollHeight;}
+  setTimeout(()=>{
+    ['#!/bin/bash',
+     '[*] Establishing encrypted channel...',
+     '[*] Protocol : AES-256-GCM over TLS 1.3',
+     '[*] Status   : SECURE CONNECTION ESTABLISHED',
+     '',
+     '╔════════════════════════════════════════╗',
+     '║   SECURE CONTACT — root@portfolio      ║',
+     '╚════════════════════════════════════════╝',
+     '',
+     '[*] Simulated form. Reach me directly at:',
+     '[*] → contact@portfolio.dev',
+     '[*] → github.com/LucioUcha',
+     '',
+     '[*] Or fill in below 👇',
+     '',
+    ].forEach(l=>pr(l));
+    prm.textContent='[?] Your name: ';
+    inp.focus();
+  },150);
+  inp.addEventListener('keydown',e=>{
+    if(e.key!=='Enter')return;
+    const v=inp.value.trim();inp.value='';
+    if(st===0){if(!v){pr('[!] Name cannot be empty.');return;}data.name=v;pr(`[?] Your name: ${v}`);pr('');prm.textContent='[?] Your email: ';st=1;}
+    else if(st===1){if(!v.includes('@')){pr('[!] Enter a valid email.');return;}data.email=v;pr(`[?] Your email: ${v}`);pr('');prm.textContent='[?] Message: ';st=2;}
+    else if(st===2){if(!v){pr('[!] Message cannot be empty.');return;}data.msg=v;pr(`[?] Message: ${v}`);pr('');pr('[*] Encrypting payload...');
+      setTimeout(()=>{pr('[*] Dispatching to → contact@portfolio.dev...');
+        setTimeout(()=>{pr('');pr('╔════════════════════════════════════════╗');pr('║  ✓  Message transmitted successfully   ║');pr('╠════════════════════════════════════════╣');pr(`║  From  : ${data.name.substring(0,30).padEnd(30)}║`);pr(`║  Email : ${data.email.substring(0,30).padEnd(30)}║`);pr('╚════════════════════════════════════════╝');pr('');pr("[*] I'll get back to you soon. Stay stealthy.");pr('');prm.textContent='$ ';st=3;},700);},600);
+    } else pr('[!] Session closed. Reload window to restart.');
+  });
+}
+
+/* ═══════════════════════════════════════
+   MASTER TERMINAL
+═══════════════════════════════════════ */
+function initTerminal(wEl){
+  const out=wEl.querySelector('#term-out');
+  const inp=wEl.querySelector('#term-in');
+  if(!out||!inp)return;
+  let hist=[],hi=-1,cwd='/root/Desktop';
+
+  function pr(html){const d=document.createElement('div');d.innerHTML=html;out.appendChild(d);out.scrollTop=out.scrollHeight;}
+  function ln(){pr('');}
+
+  // MOTD
+  pr(`<span class="g">root@kali</span><span class="d">:</span><span class="c">~#</span> <span class="w">Welcome to</span> <span class="g b">Kali Portfolio Terminal v2.0</span>`);
+  pr(`<span class="d">Type <span class="w">help</span> for commands. Double-click desktop icons to launch tools.</span>`);
+  pr(`<span class="d">────────────────────────────────────────────</span>`);
+  ln();
+
+  const CMDS={
+    help(){
+      pr(`<span class="g b">Available commands:</span>`);
+      [['ls','List desktop files'],['pwd','Working directory'],['whoami','Current user'],['uname -a','System info'],['cat whoami.txt','Personal bio'],['cat README.md','Portfolio README'],['neofetch','Fancy system info'],['date','Current date/time'],['history','Command history'],['clear','Clear terminal'],['echo &lt;text&gt;','Print to stdout'],['sudo rm -rf /','⚠️  You were warned.']].forEach(([c,d])=>pr(`  <span class="c">${c.padEnd(22)}</span><span class="d">${d}</span>`));
+    },
+    ls(){
+      pr(`<span class="d">total 9 items in ${cwd}</span>`);
+      [['drwxr-xr-x','Projects/','📁'],['drwxr-xr-x','Labs/','🔬'],['-rw-r--r--','whoami.txt','📄'],['-rw-r--r--','CV_Ucha.pdf','📄'],['-rwxr-xr-x','Contact.sh','🔧'],['-rw-r--r--','README.md','📄']].forEach(([p,n,i])=>pr(`  <span class="d">${p}</span>  <span class="c">${i} ${n}</span>`));
+    },
+    pwd(){pr(`<span class="w">${cwd}</span>`);},
+    whoami(){pr(`<span class="g">root</span>`);},
+    date(){pr(`<span class="w">${new Date().toString()}</span>`);},
+    history(){hist.forEach((h,i)=>pr(`  <span class="d">${String(i+1).padStart(3,'0')}</span>  <span class="w">${H(h)}</span>`));},
+    'uname -a'(){pr(`<span class="w">Linux kali 6.11.0-kali-amd64 #1 SMP PREEMPT_DYNAMIC Kali 6.11.0-1kali2 x86_64 GNU/Linux</span>`);},
+    'cat whoami.txt'(){
+      [
+        `<span class="g">Handle</span>   :  Lucio Ucha`,
+        `<span class="g">Role</span>     :  Cybersecurity Engineer &amp; Red Team Developer`,
+        `<span class="g">Stack</span>    :  Python · C++ · ARM ASM · JavaScript · PHP · Laravel`,
+        `<span class="g">Focus</span>    :  Red Teaming · Penetration Testing · CTF`,
+        ``,
+        `<span class="d">"The quieter you become, the more you can hear."</span>`,
+        `<span class="d">                                      — Kali Linux</span>`,
+      ].forEach(l=>pr(`  ${l}`));
+    },
+    'cat README.md'(){
+      pr(`<span class="y"># Portfolio README</span>`);
+      pr(`<span class="w">Interactive portfolio simulating Kali Linux XFCE desktop.</span>`);
+      pr(`<span class="w">Double-click icons to open tools and portfolio sections.</span>`);
+      pr(`<span class="d">Hint: Try <span class="r">sudo rm -rf /</span> if you're feeling brave 😈</span>`);
+    },
+    neofetch(){
+      [
+        `<span class="g">       .;ldkO0000Okdl;.</span>           <span class="w b">root@kali-portfolio</span>`,
+        `<span class="g">     .d0XK000000000KKkol:.</span>        <span class="d">───────────────────────────────</span>`,
+        `<span class="g">   .dKXK0000000000000KKkxl.</span>       <span class="d">OS:</span>      <span class="w">Kali GNU/Linux Rolling</span>`,
+        `<span class="g">  cKXK0000000000000000KKx</span>          <span class="d">Kernel:</span>  <span class="w">6.11.0-kali-amd64</span>`,
+        `<span class="g"> .xKXK000000000000000000K</span>          <span class="d">Shell:</span>   <span class="w">zsh 5.9</span>`,
+        `<span class="g"> lKXK00000000000000000000</span>          <span class="d">DE:</span>      <span class="w">XFCE 4.18</span>`,
+        `<span class="g"> OKXK0000000000000000000.</span>          <span class="d">WM:</span>      <span class="w">Xfwm4</span>`,
+        `<span class="g"> .xKXK00000000000000000</span>           <span class="d">CPU:</span>     <span class="w">portfolio.lucio</span>`,
+        `<span class="g">   .dKXK000000000000000.</span>          <span class="d">Skills:</span>  <span class="g">Python C++ JS PHP ARM SQL</span>`,
+        `<span class="g">     .d0XK0000000KXkdl.</span>          <span class="d">Focus:</span>   <span class="r">Red Team · Pentesting · CTF</span>`,
+        `<span class="g">       .;ldkO000Okdl;.</span>`,
+      ].forEach(l=>pr(l));
+    },
+  };
+
+  function runCmd(raw){
+    const cmd=raw.trim();
+    if(!cmd)return;
+    if(hist[hist.length-1]!==cmd)hist.push(cmd);
+    hi=hist.length;
+    pr(`<span class="g">root@kali</span><span class="d">:</span><span class="c">${cwd.replace('/root','')}</span><span class="d">#</span> <span class="w">${H(cmd)}</span>`);
+    if(cmd==='clear'){out.innerHTML='';return;}
+    if(cmd==='sudo rm -rf /'||cmd==='sudo rm -rf /*'||cmd==='sudo rm -rf'){triggerCrash();return;}
+    if(cmd.startsWith('echo ')){pr(`<span class="w">${H(cmd.slice(5))}</span>`);ln();return;}
+    const fn=CMDS[cmd];
+    if(fn){fn();}
+    else{pr(`<span class="r">zsh: command not found: ${H(cmd)}</span> <span class="d">(try <span class="w">help</span>)</span>`);}
+    ln();
+  }
+
+  inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){runCmd(inp.value);inp.value='';hi=hist.length;}
+    if(e.key==='ArrowUp'){if(hi>0){hi--;inp.value=hist[hi]||'';}e.preventDefault();}
+    if(e.key==='ArrowDown'){hi=Math.min(hi+1,hist.length);inp.value=hist[hi]||'';e.preventDefault();}
+    if(e.key==='Tab')e.preventDefault();
+  });
+  wEl.querySelector('.term-wrap')?.addEventListener('click',()=>inp.focus());
+  setTimeout(()=>inp.focus(),120);
+}
+
+/* ═══════════════════════════════════════
+   EASTER EGG — CRASH
+═══════════════════════════════════════ */
+function triggerCrash(){
+  const cs=document.getElementById('crash');
+  const del=document.getElementById('crash-del');
+  const msg=document.getElementById('crash-msg');
+  cs.style.display='flex';
+  del.style.display='block';
+  const PATHS=['/bin/bash','/bin/sh','/usr/bin/python3','/usr/bin/nmap','/usr/bin/sqlmap','/usr/lib/x86_64-linux-gnu/libc.so.6','/etc/passwd','/etc/shadow','/etc/sudoers','/root/.bashrc','/root/.zshrc','/root/.ssh/id_rsa','/root/.ssh/authorized_keys','/var/log/syslog','/var/log/auth.log','/home/user/Documents/','/home/user/Desktop/','/usr/share/metasploit-framework/','/usr/share/wordlists/','/boot/vmlinuz-6.11.0','/boot/initrd.img-6.11.0','/lib/systemd/systemd','/usr/sbin/sshd','/tmp/','/proc/self/exe','/etc/network/interfaces','/etc/apt/sources.list','/dev/null','/usr/bin/gpg','/usr/bin/curl','/usr/bin/wget','/usr/local/bin/msfconsole','/usr/share/common-licenses/','/var/cache/apt/archives/','/usr/lib/python3/dist-packages/','/root/Desktop/','/root/.local/share/'];
+  let content='',i=0;
+  const iv=setInterval(()=>{
+    const extra=Math.random()>.6?'/'+Math.random().toString(36).slice(2,10):'';
+    content+=`removed '${PATHS[i%PATHS.length]+extra}'\n`;
+    del.textContent=content;
+    del.scrollTop=del.scrollHeight;
+    i++;
+    if(i>120){
+      clearInterval(iv);
+      document.body.classList.add('crashing');
+      setTimeout(()=>{
+        document.body.classList.remove('crashing');
+        del.style.display='none';
+        msg.style.display='block';
+      },750);
+    }
+  },25);
+}
+
+/* ═══════════════════════════════════════
+   HASHCAT — GPU hash cracking simulation
+═══════════════════════════════════════ */
+function runHashcat(wEl){
+  const pre=wEl.querySelector(`#atp-hashcat`);
+  const HASH='$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy';
+  const lines=[
+    {t:'instant',s:'root@kali:~# hashcat -a 0 -m 3200 hash_file.txt /usr/share/wordlists/rockyou.txt',d:700},
+    {t:'instant',s:'',d:150},
+    {t:'instant',s:'hashcat (v6.2.6) starting...',d:200},
+    {t:'instant',s:'',d:100},
+    {t:'instant',s:'OpenCL API (OpenCL 3.0 PoCL 3.1+debian) - Platform #1 [The pocl project]',d:80},
+    {t:'instant',s:'* Device #1: pthread-Intel(R) Core(TM) i9-13900K, 4096/8192 MB (1024 MB allocatable)',d:80},
+    {t:'instant',s:'',d:200},
+    {t:'instant',s:'Minimum password length supported: 0',d:80},
+    {t:'instant',s:'Maximum password length supported: 72',d:80},
+    {t:'instant',s:'',d:200},
+    {t:'instant',s:'Hashes: 1 digests; 1 unique digests, 1 unique salts',d:100},
+    {t:'instant',s:'Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates',d:100},
+    {t:'instant',s:'Rules: 1',d:100},
+    {t:'instant',s:'',d:300},
+    {t:'instant',s:'Dictionary cache built:',d:80},
+    {t:'instant',s:'* Filename..: /usr/share/wordlists/rockyou.txt',d:80},
+    {t:'instant',s:'* Passwords.: 14344384',d:80},
+    {t:'instant',s:'* Bytes.....: 139921497',d:80},
+    {t:'instant',s:'* Keyspace..: 14344384',d:80},
+    {t:'instant',s:'',d:400},
+    {t:'instant',s:'[s]tatus [p]ause [b]ypass [c]heckpoint [f]inish [q]uit => ',d:200},
+    {t:'instant',s:'',d:300},
+    {t:'instant',s:'Session..........: hashcat',d:100},
+    {t:'instant',s:'Status...........: Cracking',d:100},
+    {t:'instant',s:'Hash.Mode........: 3200 (bcrypt $2*$, Blowfish (Unix))',d:100},
+    {t:'instant',s:'Hash.Target......: hash_file.txt',d:100},
+    {t:'instant',s:'Time.Started.....: '+new Date().toUTCString(),d:100},
+    {t:'instant',s:'Time.Estimated...: 0:01:14 remaining',d:100},
+    {t:'instant',s:'Kernel.Feature...: Pure Kernel',d:100},
+    {t:'instant',s:'Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)',d:100},
+    {t:'instant',s:'Guess.Queue......: 1/1 (100.00%)',d:100},
+    {t:'instant',s:'Speed.#1.........:      214 H/s (10.53ms) @ Accel:4 Loops:128 Thr:1 Vec:8',d:100},
+    {t:'instant',s:'Recovered........: 0/1 (0.00%) Digests (total), 0/1 (0.00%) Digests (new)',d:100},
+    {t:'instant',s:'Progress.........: 12288/14344384 (0.09%)',d:100},
+    {t:'instant',s:'Rejected.........: 0/12288 (0.00%)',d:100},
+    {t:'instant',s:'Restore.Point....: 12288/14344384 (0.09%)',d:100},
+    {t:'instant',s:'Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:896-1024',d:100},
+    {t:'instant',s:'Candidate.Engine.: Device Generator',d:100},
+    {t:'instant',s:'Candidates.#1....: celtic10 -> conchita',d:100},
+    {t:'instant',s:'Hardware.Mon.#1..: Util: 91%',d:600},
+    {t:'instant',s:'',d:400},
+    {t:'instant',s:'Progress.........: 38% (0:01:14 remaining)  [########........] ',d:200},
+    {t:'pause',d:1200},
+    {t:'instant',s:'',d:200},
+    {t:'instant',s:`${HASH}:P@$$w0rd123`,d:300},
+    {t:'instant',s:'',d:200},
+    {t:'instant',s:'Session..........: hashcat',d:80},
+    {t:'instant',s:'Status...........: Cracked',d:80},
+    {t:'instant',s:'Recovered........: 1/1 (100.00%) Digests',d:80},
+    {t:'instant',s:'',d:200},
+    {t:'instant',s:'╔══════════════════════════════════════╗',d:60},
+    {t:'instant',s:'║  Hash Cracked: P@$$w0rd123           ║',d:60},
+    {t:'instant',s:'╚══════════════════════════════════════╝',d:200},
+    {t:'instant',s:'',d:100},
+    {t:'instant',s:'Started: '+new Date().toUTCString(),d:80},
+    {t:'instant',s:'Stopped: '+new Date(Date.now()+74000).toUTCString(),d:80},
+    {t:'instant',s:'root@kali:~# _',d:50},
+  ];
+  autoType(pre,lines,{ms:0,lineMs:0});
+}
+
+/* ═══════════════════════════════════════
+   HYDRA — SSH brute-force simulation
+═══════════════════════════════════════ */
+function runHydra(wEl){
+  const pre=wEl.querySelector(`#atp-hydra`);
+  const ATTEMPTS=[
+    ['root','toor'],['root','root'],['root','password'],['admin','admin'],
+    ['admin','password123'],['admin','123456'],['admin','root'],
+    ['admin','letmein'],['root','kali'],['admin','qwerty'],
+    ['admin','pass123'],['admin','test'],['root','1234'],
+    ['user','user'],['ubuntu','ubuntu'],['pi','raspberry'],
+    ['admin','secret'],['root','alpine'],['admin','P@$$w0rd123'],
+  ];
+  const lines=[
+    {t:'instant',s:'root@kali:~# hydra -L /usr/share/wordlists/metasploit/unix_users.txt -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.105 -t 4',d:700},
+    {t:'instant',s:'',d:150},
+    {t:'instant',s:'Hydra v9.5 (c) 2023 by van Hauser/THC & David Maciejak',d:100},
+    {t:'instant',s:'',d:100},
+    {t:'instant',s:'[WARNING] Many SSH configurations limit the number of parallel tasks; use -t 4',d:100},
+    {t:'instant',s:'[INFO] Testing if password authentication is supported by ssh://192.168.1.105:22',d:100},
+    {t:'instant',s:'[INFO] Successful, password authentication is supported',d:100},
+    {t:'instant',s:'[DATA] max 4 tasks per 1 server, overall 4 tasks, 14344384 login tries',d:100},
+    {t:'instant',s:'[DATA] attacking ssh://192.168.1.105:22/',d:200},
+    {t:'instant',s:'',d:200},
+  ];
+  ATTEMPTS.slice(0,-1).forEach(([u,p])=>{
+    lines.push({t:'instant',s:`[22][ssh] host: 192.168.1.105   login: ${u}   password: ${p}   FAILED`,d:90});
+  });
+  lines.push(
+    {t:'pause',d:600},
+    {t:'instant',s:'',d:200},
+    {t:'instant',s:'[22][ssh] host: 192.168.1.105   login: admin   password: P@$$w0rd123',d:300},
+    {t:'instant',s:'',d:200},
+    {t:'instant',s:'╔══════════════════════════════════════════════╗',d:60},
+    {t:'instant',s:"║  [SSH] Login found!                          ║",d:60},
+    {t:'instant',s:"║  Host: 192.168.1.105  Port: 22               ║",d:60},
+    {t:'instant',s:"║  User: admin   Pass: P@$$w0rd123             ║",d:60},
+    {t:'instant',s:'╚══════════════════════════════════════════════╝',d:200},
+    {t:'instant',s:'',d:100},
+    {t:'instant',s:'1 of 1 target successfully completed, 1 valid password found',d:200},
+    {t:'instant',s:'Hydra (https://github.com/vanhauser-thc/thc-hydra) finished.',d:100},
+    {t:'instant',s:'root@kali:~# _',d:50},
+  );
+  autoType(pre,lines,{ms:0,lineMs:0});
+}
+
+/* ═══════════════════════════════════════
+   CRACKMAPEXEC — SMB domain enum sim
+═══════════════════════════════════════ */
+function runCME(wEl){
+  const pre=wEl.querySelector(`#atp-cme`);
+  const STAMP=()=>new Date().toISOString().slice(11,19);
+  const lines=[
+    {t:'instant',s:'root@kali:~# crackmapexec smb 192.168.1.0/24 -u admin -p \'P@$$w0rd123\' --shares',d:700},
+    {t:'instant',s:'',d:150},
+    {t:'instant',s:'[*] Loading module: SMB',d:100},
+    {t:'instant',s:'[*] Loading module: LDAP',d:100},
+    {t:'instant',s:'[*] Loading module: WMI',d:100},
+    {t:'instant',s:'[*] Loading module: RDP',d:200},
+    {t:'instant',s:'[*] Initializing SMB protocol tree...',d:200},
+    {t:'instant',s:'',d:300},
+    {t:'instant',s:'SMB   192.168.1.1    445  ROUTER          [*] Windows 10.0 Build 19041 x64 (name:ROUTER) (domain:WORKGROUP) (signing:False) (SMBv1:False)',d:180},
+    {t:'instant',s:'SMB   192.168.1.1    445  ROUTER          [-] WORKGROUP\\admin:P@$$w0rd123 STATUS_LOGON_FAILURE',d:180},
+    {t:'instant',s:'',d:150},
+    {t:'instant',s:'SMB   192.168.1.5    445  DC01            [*] Windows Server 2019 Standard Evaluation 17763 x64 (name:DC01) (domain:PORTFOLIO.LAB) (signing:True) (SMBv1:False)',d:180},
+    {t:'instant',s:'SMB   192.168.1.5    445  DC01            [+] PORTFOLIO.LAB\\admin:P@$$w0rd123 (Pwn3d!)',d:180},
+    {t:'instant',s:'SMB   192.168.1.5    445  DC01            [*] Enumerated shares',d:120},
+    {t:'instant',s:'SMB   192.168.1.5    445  DC01            Share           Permissions     Remark',d:100},
+    {t:'instant',s:'SMB   192.168.1.5    445  DC01            -----           -----------     ------',d:100},
+    {t:'instant',s:'SMB   192.168.1.5    445  DC01            ADMIN$          READ,WRITE      Remote Admin',d:100},
+    {t:'instant',s:'SMB   192.168.1.5    445  DC01            C$              READ,WRITE      Default share',d:100},
+    {t:'instant',s:'SMB   192.168.1.5    445  DC01            IPC$            READ            Remote IPC',d:100},
+    {t:'instant',s:'SMB   192.168.1.5    445  DC01            NETLOGON        READ,WRITE      Logon server share',d:100},
+    {t:'instant',s:'SMB   192.168.1.5    445  DC01            SYSVOL          READ            Logon server share',d:100},
+    {t:'instant',s:'SMB   192.168.1.5    445  DC01            SecretDocs      READ,WRITE      [!] Sensitive data?',d:300},
+    {t:'instant',s:'',d:200},
+    {t:'instant',s:'SMB   192.168.1.10   445  WORKSTATION01   [*] Windows 10.0 Build 19041 x64 (name:WORKSTATION01) (domain:PORTFOLIO.LAB) (signing:False) (SMBv1:False)',d:180},
+    {t:'instant',s:'SMB   192.168.1.10   445  WORKSTATION01   [+] PORTFOLIO.LAB\\admin:P@$$w0rd123 (Pwn3d!)',d:180},
+    {t:'instant',s:'SMB   192.168.1.10   445  WORKSTATION01   [*] Enumerated shares',d:120},
+    {t:'instant',s:'SMB   192.168.1.10   445  WORKSTATION01   Share           Permissions     Remark',d:100},
+    {t:'instant',s:'SMB   192.168.1.10   445  WORKSTATION01   -----           -----------     ------',d:100},
+    {t:'instant',s:'SMB   192.168.1.10   445  WORKSTATION01   ADMIN$          READ,WRITE      Remote Admin',d:100},
+    {t:'instant',s:'SMB   192.168.1.10   445  WORKSTATION01   C$              READ,WRITE      Default share',d:100},
+    {t:'instant',s:'SMB   192.168.1.10   445  WORKSTATION01   Users           READ            ',d:100},
+    {t:'instant',s:'',d:300},
+    {t:'instant',s:'╔═══════════════════════════════════════════════════╗',d:60},
+    {t:'instant',s:'║  CME SUMMARY — PORTFOLIO.LAB                      ║',d:60},
+    {t:'instant',s:'╠═══════════════════════════════════════════════════╣',d:60},
+    {t:'instant',s:'║  Hosts scanned:  254                              ║',d:60},
+    {t:'instant',s:'║  Hosts alive:      3                              ║',d:60},
+    {t:'instant',s:'║  Pwn3d:            2  (DC01, WORKSTATION01)       ║',d:60},
+    {t:'instant',s:'║  Credential:   admin / P@$$w0rd123                ║',d:60},
+    {t:'instant',s:'║  Domain:       PORTFOLIO.LAB                      ║',d:60},
+    {t:'instant',s:'╚═══════════════════════════════════════════════════╝',d:200},
+    {t:'instant',s:'',d:100},
+    {t:'instant',s:'root@kali:~# _',d:50},
+  ];
+  autoType(pre,lines,{ms:0,lineMs:0});
+}
+function openWireshark(){
+  const el=WM.open('wireshark','Wireshark — The Network Analyzer 4.0.6',buildWireshark(),{w:900,h:620});
+  if(el&&el.dataset.wsInited!=='1'){el.dataset.wsInited='1';setTimeout(()=>{initWireshark(el);wireWireshark(el);},80);}
+}
+
+function buildWireshark(){
+  return `<div class="ws-app">
+  <!-- Menu bar -->
+  <div class="ws-menubar">
+    <span class="ws-mb">File</span><span class="ws-mb">Edit</span><span class="ws-mb">View</span>
+    <span class="ws-mb">Go</span><span class="ws-mb">Capture</span><span class="ws-mb">Analyze</span>
+    <span class="ws-mb">Statistics</span><span class="ws-mb">Telephony</span>
+    <span class="ws-mb">Wireless</span><span class="ws-mb">Tools</span><span class="ws-mb">Help</span>
+  </div>
+  <!-- Toolbar -->
+  <div class="ws-tb">
+    <button class="ws-tbb" title="New capture">📄</button>
+    <button class="ws-tbb" title="Open">📂</button>
+    <button class="ws-tbb" title="Save">💾</button>
+    <button class="ws-tbb" title="Close">✕</button>
+    <div class="ws-tb-sep"></div>
+    <button class="ws-tbb active" title="Start capture" id="ws-start-btn">▶</button>
+    <button class="ws-tbb" title="Stop capture" id="ws-stop-btn">⏹</button>
+    <button class="ws-tbb" title="Restart capture">↺</button>
+    <div class="ws-tb-sep"></div>
+    <button class="ws-tbb" title="Find packet">🔍</button>
+    <button class="ws-tbb" title="Back">←</button>
+    <button class="ws-tbb" title="Forward">→</button>
+    <button class="ws-tbb" title="First">⏮</button>
+    <button class="ws-tbb" title="Last">⏭</button>
+    <div class="ws-tb-sep"></div>
+    <button class="ws-tbb active" title="Packet list">▤</button>
+    <button class="ws-tbb active" title="Packet detail">▥</button>
+    <button class="ws-tbb" title="Packet bytes">☰</button>
+    <div class="ws-tb-sep"></div>
+    <button class="ws-tbb" title="Zoom in">+</button>
+    <button class="ws-tbb" title="Zoom out">-</button>
+    <button class="ws-tbb" title="Normal size">1</button>
+    <button class="ws-tbb" title="Resize columns">⊞</button>
+  </div>
+  <!-- Filter bar -->
+  <div class="ws-filterbar">
+    <span class="ws-f-bm" title="Bookmark">🔖</span>
+    <input class="ws-f-inp" id="ws-filter" type="text" placeholder="Apply a display filter … &lt;Ctrl-/&gt;" autocomplete="off" spellcheck="false">
+    <div class="ws-f-dd" title="Dropdown">▾</div>
+    <div class="ws-f-plus" title="Add filter">+</div>
+  </div>
+  <!-- 3-Pane area -->
+  <div class="ws-panes" id="ws-panes">
+    <!-- Top: Packet list -->
+    <div style="display:flex;flex-direction:column;flex:1 1 45%;min-height:80px;overflow:hidden">
+      <div class="ws-col-hdr-row">
+        <div class="ws-ch ws-c-no">No.</div>
+        <div class="ws-ch ws-c-t">Time</div>
+        <div class="ws-ch ws-c-src">Source</div>
+        <div class="ws-ch ws-c-dst">Destination</div>
+        <div class="ws-ch ws-c-pr">Protocol</div>
+        <div class="ws-ch ws-c-ln">Length</div>
+        <div class="ws-ch ws-c-inf">Info</div>
+      </div>
+      <div class="ws-pkt-list" id="ws-pktlist"></div>
+    </div>
+    <!-- Sep 1 -->
+    <div class="ws-sep" id="ws-sep1"></div>
+    <!-- Middle: Packet detail -->
+    <div class="ws-detail" id="ws-detail" style="flex:0 0 28%;min-height:60px;overflow-y:auto"></div>
+    <!-- Sep 2 -->
+    <div class="ws-sep" id="ws-sep2"></div>
+    <!-- Bottom: Hex dump -->
+    <div class="ws-hex" id="ws-hex" style="flex:0 0 27%;min-height:50px;overflow-y:auto"></div>
+  </div>
+  <!-- Status bar -->
+  <div class="ws-statusbar">
+    <span class="ws-status-pkts" id="ws-pkt-count">0 Packets</span>
+    <div class="ws-status-sep"></div>
+    <span id="ws-disp-count">0 Displayed</span>
+    <div class="ws-status-sep"></div>
+    <span>Marked: 0</span>
+    <div class="ws-status-sep"></div>
+    <span>Dropped: 0</span>
+    <div class="ws-status-sep"></div>
+    <span style="margin-left:auto">Profile: Default</span>
+  </div>
+</div>`;
+}
+
+/* Packet data */
+const WS_PACKETS=[
+  {proto:'DHCP', src:'0.0.0.0',        dst:'255.255.255.255', len:342, col:'ws-dhcp',
+   info:'DHCP Discover - Transaction ID 0x3d1d',
+   detail:[
+     {t:'Frame 1: 342 bytes on wire, 342 bytes captured on interface eth0',sec:true,children:[
+       {t:'Encapsulation type: Ethernet (1)'},
+       {t:'Arrival Time: Dec 15, 2024 14:30:00.000'},
+       {t:'Frame Length: 342 bytes'},
+     ]},
+     {t:'Ethernet II, Src: aa:bb:cc:dd:ee:ff, Dst: ff:ff:ff:ff:ff:ff',sec:true,children:[
+       {t:'Destination: ff:ff:ff:ff:ff:ff (Broadcast)'},
+       {t:'Source: aa:bb:cc:dd:ee:ff'},
+       {t:'Type: IPv4 (0x0800)'},
+     ]},
+     {t:'Internet Protocol Version 4, Src: 0.0.0.0, Dst: 255.255.255.255',sec:true,children:[
+       {t:'Version: 4'},{t:'Total Length: 328'},{t:'TTL: 64'},{t:'Protocol: UDP (17)'},
+     ]},
+     {t:'Bootstrap Protocol (Discover)',sec:true,children:[
+       {t:'Message type: Boot Request (1)'},{t:'Client IP: 0.0.0.0'},{t:'Option 53: DHCP Discover'},
+     ]},
+   ],
+   hex:'0000  ff ff ff ff ff ff aa bb  cc dd ee ff 08 00 45 00   .......... ...E.\n0010  01 48 00 00 40 00 40 11  00 00 00 00 00 00 ff ff   .H..@.@.........\n0020  ff ff 00 44 00 43 01 34  00 00 01 01 06 00 3d 1d   ...D.C.4......=.\n0030  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ................'},
+  {proto:'DNS',  src:'192.168.1.10',   dst:'8.8.8.8',          len:75,  col:'ws-dns',
+   info:'Standard query 0x1234 A portfolio.lucio',
+   detail:[
+     {t:'Frame 2: 75 bytes on wire',sec:true,children:[{t:'Frame Length: 75 bytes'},{t:'Protocols: eth:ethertype:ip:udp:dns'}]},
+     {t:'Internet Protocol Version 4',sec:true,children:[{t:'Src: 192.168.1.10'},{t:'Dst: 8.8.8.8'},{t:'Protocol: UDP (17)'}]},
+     {t:'User Datagram Protocol, Src Port: 54321, Dst Port: 53',sec:true,children:[{t:'Source Port: 54321'},{t:'Destination Port: 53'},{t:'Length: 41'}]},
+     {t:'Domain Name System (query)',sec:true,children:[{t:'Transaction ID: 0x1234'},{t:'Questions: 1'},{t:'Query: portfolio.lucio, type A, class IN'}]},
+   ],
+   hex:'0000  08 00 27 ab cd ef 08 00  27 12 34 56 08 00 45 00   ..\'....\'.4V..E.\n0010  00 3d 12 34 40 00 40 11  ab cd c0 a8 01 0a 08 08   .=.4@.@.........\n0020  08 08 d4 31 00 35 00 29  12 34 12 34 01 00 00 01   ...1.5.).4.4....'},
+  {proto:'TCP',  src:'192.168.1.10',   dst:'104.21.80.1',       len:66,  col:'ws-tcp',
+   info:'[SYN] Seq=0 Win=64240 Len=0 MSS=1460 SACK_PERM',
+   detail:[
+     {t:'Frame 3: 66 bytes on wire',sec:true,children:[{t:'Frame Length: 66 bytes'}]},
+     {t:'Internet Protocol Version 4',sec:true,children:[{t:'Src: 192.168.1.10'},{t:'Dst: 104.21.80.1'},{t:'Protocol: TCP (6)'}]},
+     {t:'Transmission Control Protocol, Src Port: 49832, Dst Port: 443',sec:true,children:[
+       {t:'Source Port: 49832'},{t:'Destination Port: 443'},{t:'Sequence Number: 0 (relative)'},{t:'Flags: 0x002 (SYN)'},{t:'Window: 64240'},{t:'Checksum: 0xa3f1 [correct]'},
+     ]},
+   ],
+   hex:'0000  08 00 27 ab cd ef 00 1a  2b 3c 4d 5e 08 00 45 00   ..\'...+<M^..E.\n0010  00 34 1a 2b 40 00 40 06  00 00 c0 a8 01 0a 68 15   .4.+@.@.......h.\n0020  50 01 c2 a8 01 bb 00 00  00 00 00 00 00 00 80 02   P...............'},
+  {proto:'TLS',  src:'104.21.80.1',    dst:'192.168.1.10',      len:583, col:'ws-tls',
+   info:'Server Hello, Certificate, Server Hello Done',
+   detail:[
+     {t:'Frame 4: 583 bytes on wire',sec:true,children:[{t:'Frame Length: 583 bytes'}]},
+     {t:'Transmission Control Protocol',sec:true,children:[{t:'Src Port: 443'},{t:'Dst Port: 49832'},{t:'Flags: 0x018 (PSH, ACK)'}]},
+     {t:'Transport Layer Security',sec:true,children:[
+       {t:'TLSv1.3 Record Layer: Handshake Protocol'},{t:'Handshake Protocol: Server Hello'},
+       {t:'Version: TLS 1.2 (0x0303)'},{t:'Cipher Suite: TLS_AES_256_GCM_SHA384'},
+     ]},
+   ],
+   hex:'0000  08 00 27 12 34 56 08 00  27 ab cd ef 08 00 45 00   ..\'4V..\'......E.\n0010  02 43 ab 12 40 00 34 06  00 00 68 15 50 01 c0 a8   .C..@.4...h.P...\n0020  01 0a 01 bb c2 a8 de ad  be ef ca fe ba be 80 18   ................'},
+  {proto:'HTTP', src:'192.168.1.10',   dst:'104.21.80.1',       len:412, col:'ws-http',
+   info:'GET /api/portfolio HTTP/1.1',
+   detail:[
+     {t:'Frame 5: 412 bytes on wire',sec:true,children:[{t:'Frame Length: 412 bytes'}]},
+     {t:'Transmission Control Protocol',sec:true,children:[{t:'Src Port: 49832'},{t:'Dst Port: 80'},{t:'Flags: 0x018 (PSH, ACK)'}]},
+     {t:'Hypertext Transfer Protocol',sec:true,http:true,children:[
+       {t:'GET /api/portfolio HTTP/1.1\\r\\n'},{t:'Host: portfolio.lucio\\r\\n'},
+       {t:'User-Agent: Mozilla/5.0 Kali Linux\\r\\n'},{t:'Accept: application/json\\r\\n'},
+       {t:'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...\\r\\n'},
+     ]},
+   ],
+   hex:'0000  47 45 54 20 2f 61 70 69  2f 70 6f 72 74 66 6f 6c   GET /api/portfol\n0010  69 6f 20 48 54 54 50 2f  31 2e 31 0d 0a 48 6f 73   io HTTP/1.1..Hos\n0020  74 3a 20 70 6f 72 74 66  6f 6c 69 6f 2e 6c 75 63   t: portfolio.luc'},
+  {proto:'HTTP', src:'104.21.80.1',    dst:'192.168.1.10',      len:891, col:'ws-http',
+   info:'HTTP/1.1 200 OK  (application/json)',
+   detail:[
+     {t:'Frame 6: 891 bytes on wire',sec:true,children:[{t:'Frame Length: 891 bytes'}]},
+     {t:'Hypertext Transfer Protocol',sec:true,http:true,children:[
+       {t:'HTTP/1.1 200 OK\\r\\n'},{t:'Content-Type: application/json\\r\\n'},
+       {t:'X-Powered-By: Kali-Portfolio\\r\\n'},{t:'Content-Length: 512\\r\\n'},
+     ]},
+     {t:'JavaScript Object Notation (JSON)',sec:true,children:[
+       {t:'{"name":"Lucio Ucha"'},{t:' "role":"Red Team Developer"'},{t:' "status":"Available"}'},
+     ]},
+   ],
+   hex:'0000  48 54 54 50 2f 31 2e 31  20 32 30 30 20 4f 4b 0d   HTTP/1.1 200 OK.\n0010  0a 43 6f 6e 74 65 6e 74  2d 54 79 70 65 3a 20 61   .Content-Type: a\n0020  70 70 6c 69 63 61 74 69  6f 6e 2f 6a 73 6f 6e 0d   pplication/json.'},
+  {proto:'ARP',  src:'192.168.1.1',    dst:'Broadcast',          len:42,  col:'ws-arp',
+   info:'Who has 192.168.1.10? Tell 192.168.1.1',
+   detail:[
+     {t:'Frame 7: 42 bytes on wire',sec:true,children:[{t:'Frame Length: 42 bytes'}]},
+     {t:'Address Resolution Protocol (request)',sec:true,children:[
+       {t:'Hardware type: Ethernet (1)'},{t:'Protocol type: IPv4 (0x0800)'},
+       {t:'Sender IP: 192.168.1.1'},{t:'Target IP: 192.168.1.10'},{t:'Opcode: request (1)'},
+     ]},
+   ],
+   hex:'0000  ff ff ff ff ff ff c0 a8  01 01 01 02 03 04 08 06   ................\n0010  00 01 08 00 06 04 00 01  c0 a8 01 01 00 00 00 00   ................\n0020  00 00 c0 a8 01 0a                                  ......'},
+  {proto:'TCP',  src:'192.168.1.10',   dst:'104.21.80.1',       len:54,  col:'ws-tcp',
+   info:'[ACK] Seq=1 Ack=1 Win=64240 Len=0',
+   detail:[
+     {t:'Frame 8: 54 bytes',sec:true,children:[{t:'Frame Length: 54 bytes'}]},
+     {t:'Transmission Control Protocol',sec:true,children:[{t:'Flags: 0x010 (ACK)'},{t:'Seq: 1'},{t:'Ack: 1'},{t:'Win: 64240'}]},
+   ],
+   hex:'0000  08 00 27 ab cd ef 08 00  27 12 34 56 08 00 45 00   ..\'....\'.4V..E.\n0010  00 28 1b 2c 40 00 40 06  00 00 c0 a8 01 0a 68 15   .(.,@.@.......h.\n0020  50 01 c2 a8 01 bb 00 00  00 01 00 00 00 01 50 10   P.............P.'},
+  {proto:'ICMP', src:'192.168.1.10',   dst:'8.8.8.8',           len:98,  col:'ws-icmp',
+   info:'Echo (ping) request  id=0x0001, seq=1/256, ttl=64',
+   detail:[
+     {t:'Frame 9: 98 bytes',sec:true,children:[{t:'Frame Length: 98 bytes'}]},
+     {t:'Internet Control Message Protocol',sec:true,children:[{t:'Type: 8 (Echo)'},{t:'Code: 0'},{t:'Checksum: 0xf7ff [correct]'},{t:'Identifier: 0x0001'},{t:'Sequence: 1'}]},
+   ],
+   hex:'0000  08 00 27 ab cd ef 08 00  27 12 34 56 08 00 45 00   ..\'....\'.4V..E.\n0010  00 54 1c 00 40 00 40 01  00 00 c0 a8 01 0a 08 08   .T..@.@.........\n0020  08 08 08 00 f7 ff 00 01  00 01 61 62 63 64 65 66   ..........abcdef'},
+  {proto:'TLS',  src:'192.168.1.10',   dst:'104.21.80.1',       len:97,  col:'ws-tls',
+   info:'Application Data',
+   detail:[
+     {t:'Frame 10: 97 bytes',sec:true,children:[{t:'Frame Length: 97 bytes'}]},
+     {t:'Transport Layer Security',sec:true,children:[{t:'TLSv1.3 Application Data'},{t:'Encrypted data (87 bytes)'}]},
+   ],
+   hex:'0000  17 03 03 00 51 00 00 00  00 00 00 00 01 ab cd ef   ....Q...........\n0010  12 34 56 78 9a bc de f0  12 34 56 78 9a bc de f0   .4Vx.....4Vx....\n0020  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ................'},
+];
+
+function initWireshark(wEl){
+  const list=wEl.querySelector('#ws-pktlist');
+  const detPane=wEl.querySelector('#ws-detail');
+  const hexPane=wEl.querySelector('#ws-hex');
+  const cntEl=wEl.querySelector('#ws-pkt-count');
+  const filterInp=wEl.querySelector('#ws-filter');
+  const startBtn=wEl.querySelector('#ws-start-btn');
+  const stopBtn=wEl.querySelector('#ws-stop-btn');
+  if(!list)return;
+
+  let selRow=null, capturing=false, pktIdx=0, captureInterval=null;
+  const shownPkts=[];
+
+  // Render a single packet row
+  function addRow(pkt,idx){
+    shownPkts.push(pkt);
+    const row=document.createElement('div');
+    row.className=`ws-row ${pkt.col}`;
+    row.innerHTML=`
+      <div class="ws-c ws-c-no" style="color:#888">${idx+1}</div>
+      <div class="ws-c ws-c-t">${(idx*0.143+0.001).toFixed(6)}</div>
+      <div class="ws-c ws-c-src">${pkt.src}</div>
+      <div class="ws-c ws-c-dst">${pkt.dst}</div>
+      <div class="ws-c ws-c-pr" style="font-weight:600">${pkt.proto}</div>
+      <div class="ws-c ws-c-ln">${pkt.len}</div>
+      <div class="ws-c ws-c-inf">${pkt.info}</div>`;
+    row.addEventListener('click',()=>selectPkt(row,pkt,idx));
+    list.appendChild(row);
+    list.scrollTop=list.scrollHeight;
+    cntEl.textContent=shownPkts.length+' Packets';
+  }
+
+  // Select row → populate detail + hex
+  function selectPkt(row,pkt,idx){
+    if(selRow)selRow.classList.remove('ws-sel');
+    selRow=row;row.classList.add('ws-sel');
+
+    // Detail pane
+    detPane.innerHTML='';
+    pkt.detail.forEach(sec=>{
+      const wrap=document.createElement('div');
+      let open=true;
+      const hdr=document.createElement('div');
+      hdr.className='ws-ti ws-ti-sec';
+      hdr.innerHTML=`<span class="ws-ti-arr">▾</span><span>${sec.t}</span>`;
+      hdr.addEventListener('click',()=>{
+        open=!open;
+        hdr.querySelector('.ws-ti-arr').textContent=open?'▾':'▸';
+        childWrap.style.display=open?'':'none';
+      });
+      const childWrap=document.createElement('div');
+      (sec.children||[]).forEach(c=>{
+        const ci=document.createElement('div');
+        ci.className='ws-ti ws-ti-indent2'+(sec.http?' ws-ti-http':'');
+        ci.innerHTML=`<span class="ws-ti-arr"></span><span>${c.t}</span>`;
+        childWrap.appendChild(ci);
+      });
+      wrap.appendChild(hdr);wrap.appendChild(childWrap);
+      detPane.appendChild(wrap);
+    });
+
+    // Hex pane
+    hexPane.innerHTML='';
+    pkt.hex.split('\n').forEach(line=>{
+      const d=document.createElement('div');d.className='ws-hrow';
+      const m=line.match(/^([0-9a-f]+)\s+((?:[0-9a-f]{2}\s*){1,16})\s{2}(.+)$/i);
+      if(m){d.innerHTML=`<span class="ws-haddr">${m[1]}</span><span class="ws-hbytes">  ${m[2].padEnd(49)}</span><span class="ws-hascii">  ${m[3]}</span>`;}
+      else{d.textContent=line;}
+      hexPane.appendChild(d);
+    });
+  }
+
+  // Live capture simulation
+  function startCapture(){
+    if(capturing)return;
+    capturing=true;
+    startBtn.classList.remove('active');
+    stopBtn.classList.add('active');
+    captureInterval=setInterval(()=>{
+      const pkt=WS_PACKETS[pktIdx%WS_PACKETS.length];
+      addRow(pkt,shownPkts.length);
+      pktIdx++;
+    },600+Math.random()*400);
+  }
+
+  function stopCapture(){
+    if(!capturing)return;
+    capturing=false;
+    clearInterval(captureInterval);
+    startBtn.classList.add('active');
+    stopBtn.classList.remove('active');
+  }
+
+  startBtn.addEventListener('click',startCapture);
+  stopBtn.addEventListener('click',stopCapture);
+
+  // Filter input – colour-codes as user types
+  filterInp.addEventListener('input',()=>{
+    const v=filterInp.value.trim();
+    filterInp.style.background=v?'#122010':'#1a1a1a';
+    filterInp.style.color=v?'#90d890':'#d0d0d0';
+  });
+
+  // Resizable panes via drag on .ws-sep handles
+  function makeSepDraggable(sepEl,topEl,botEl){
+    let drag=false,sy=0,th=0,bh=0;
+    sepEl.addEventListener('mousedown',e=>{
+      e.preventDefault();drag=true;sy=e.clientY;th=topEl.offsetHeight;bh=botEl.offsetHeight;
+      document.body.style.cursor='row-resize';
+    });
+    document.addEventListener('mousemove',e=>{
+      if(!drag)return;
+      const dy=e.clientY-sy;
+      const newT=Math.max(40,th+dy);
+      const newB=Math.max(40,bh-dy);
+      topEl.style.flex=`0 0 ${newT}px`;
+      botEl.style.flex=`0 0 ${newB}px`;
+    });
+    document.addEventListener('mouseup',()=>{if(drag){drag=false;document.body.style.cursor='';}});
+  }
+  const panes=wEl.querySelectorAll('.ws-panes > div');
+  // panes: [top-wrapper, sep1, detail, sep2, hex]
+  const topWrapper=panes[0],sep1=panes[1],detail=panes[2],sep2=panes[3],hexP=panes[4];
+  makeSepDraggable(sep1,topWrapper,detail);
+  makeSepDraggable(sep2,detail,hexP);
+
+  // Auto-start capture after short delay
+  setTimeout(startCapture, 200);
+}
+
+/* ═══════════════════════════════════════
+   BURP SUITE — REPEATER GUI
+═══════════════════════════════════════ */
+function openBurp(){
+  const el=WM.open('burp','Burp Suite Community Edition v2025.9.5 – Temporary Project',buildBurp(),{w:1000,h:640});
+  if(el&&el.dataset.burpInited!=='1'){el.dataset.burpInited='1';setTimeout(()=>{initBurp(el);wireBurp(el);},80);}
+}
+
+function buildBurp(){
+  /* Request content */
+  const REQ=[
+    ['GET /api/whoami HTTP/1.1','ht-mth','ht-path','ht-proto'],
+    'Host: portfolio.lucio',
+    'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0',
+    'Accept: application/json, text/plain, */*',
+    'Accept-Language: en-US,en;q=0.5',
+    'Accept-Encoding: gzip, deflate, br',
+    'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyb290IiwiaWF0IjoxNzAzNTk2ODAwfQ',
+    'X-Custom-Header: pentest-1337',
+    'Connection: keep-alive',
+    'Sec-Fetch-Dest: empty',
+    'Sec-Fetch-Mode: cors',
+    'Sec-Fetch-Site: same-origin',
+    '',
+  ].map((line,i)=>{
+    const ln=`<span class="ht-ln">${i+1}</span>`;
+    if(Array.isArray(line)){
+      const parts=line[0].split(' ');
+      return `${ln}<span class="ht-mth">${parts[0]}</span> <span class="ht-path">${parts[1]}</span> <span class="ht-proto">${parts[2]}</span>`;
+    }
+    if(!line)return `${ln}`;
+    const ci=line.indexOf(':');
+    if(ci>0){
+      return `${ln}<span class="ht-hk">${H(line.slice(0,ci))}:</span><span class="ht-hv">${H(line.slice(ci+1))}</span>`;
+    }
+    return `${ln}${H(line)}`;
+  }).join('\n');
+
+  /* Response content */
+  const RESP=[
+    'HTTP/1.1 200 OK',
+    'Date: Sun, 15 Dec 2024 14:30:00 GMT',
+    'Content-Type: application/json; charset=utf-8',
+    'Content-Length: 312',
+    'X-Powered-By: Kali-Portfolio/2.0',
+    'X-Frame-Options: DENY',
+    'X-Content-Type-Options: nosniff',
+    'Strict-Transport-Security: max-age=31536000; includeSubDomains',
+    'Access-Control-Allow-Origin: *',
+    '',
+    '{',
+    '  "name":     "Lucio Ucha",',
+    '  "role":     "Cybersecurity Engineer & Red Team Dev",',
+    '  "status":   "Available for hire",',
+    '  "skills":   ["Python", "C++", "ARM ASM", "JavaScript", "PHP"],',
+    '  "security": ["Pentesting", "Red Team", "CTF", "Malware Dev"],',
+    '  "contact":  "contact@portfolio.dev",',
+    '  "flag":     "HTB{r3d_t34m_4lw4ys_w1ns_8f2a91c}",',
+    '}',
+  ].map((line,i)=>{
+    const ln=`<span class="ht-ln">${i+1}</span>`;
+    if(i===0)return `${ln}<span class="ht-proto">HTTP/1.1</span> <span class="ht-stat-ok">200 OK</span>`;
+    if(!line)return `${ln}`;
+    if(line==='{')return `${ln}<span class="ht-hv">{</span>`;
+    if(line==='}')return `${ln}<span class="ht-hv">}</span>`;
+    const ci=line.indexOf(':');
+    if(i<9&&ci>0)return `${ln}<span class="ht-hk">${H(line.slice(0,ci))}:</span><span class="ht-hv">${H(line.slice(ci+1))}</span>`;
+    // JSON highlight
+    const jLine=line
+      .replace(/"flag":\s*"([^"]+)"/g,'<span class="ht-jk">"flag"</span>: <span class="ht-flag">"$1"</span>')
+      .replace(/"([^"]+)":/g,'<span class="ht-jk">"$1"</span>:')
+      .replace(/:\s*"([^"]+)"/g,': <span class="ht-js">"$1"</span>')
+      .replace(/:\s*(\[)/g,': <span class="ht-hv">$1</span>')
+      .replace(/\]/g,'<span class="ht-hv">]</span>');
+    return `${ln}${jLine}`;
+  }).join('\n');
+
+  return `<div class="burp-app">
+  <div class="burp-main">
+    <!-- Native window menu bar -->
+    <div class="burp-nmbar">
+      <span class="burp-nm">Burp</span><span class="burp-nm">Project</span>
+      <span class="burp-nm">Intruder</span><span class="burp-nm">Repeater</span>
+      <span class="burp-nm">View</span><span class="burp-nm">Help</span>
+      <span class="burp-nm-title">Burp Suite Community Edition v2025.9.5 – Temporary Project</span>
+      <span class="burp-nm-ctrls">
+        <span class="burp-nm-ctrl">─</span>
+        <span class="burp-nm-ctrl">□</span>
+        <span class="burp-nm-ctrl">✕</span>
+      </span>
+    </div>
+    <!-- App tab bar -->
+    <div class="burp-tabbar">
+      <div class="burp-tab">Dashboard</div>
+      <div class="burp-tab">Target</div>
+      <div class="burp-tab">Proxy</div>
+      <div class="burp-tab">Intruder</div>
+      <div class="burp-tab act">Repeater</div>
+      <div class="burp-tab">Collaborator</div>
+      <div class="burp-tab">Sequencer</div>
+      <div class="burp-tab">Decoder</div>
+      <div class="burp-tab">Comparer</div>
+      <div class="burp-tab">Logger</div>
+      <div class="burp-tab">Organizer</div>
+      <div class="burp-tab">Extensions</div>
+      <div class="burp-tab">Learn</div>
+      <div class="burp-tab-space"></div>
+      <div class="burp-tab-icons">
+        <button class="burp-ti-btn" title="Search">🔍</button>
+        <button class="burp-ti-btn" title="Settings">⚙</button>
+      </div>
+    </div>
+    <!-- Repeater sub-tabs -->
+    <div class="burp-rep-stabs">
+      <div class="burp-stab act">
+        <span>1</span>
+        <span class="bsc" title="close">✕</span>
+      </div>
+      <div class="burp-stab-add">+</div>
+    </div>
+    <!-- Repeater toolbar -->
+    <div class="burp-rep-tb">
+      <button class="burp-send" id="burp-send-btn">Send</button>
+      <button class="burp-cancel">Cancel</button>
+      <div class="burp-nav">
+        <button class="burp-navb" title="Previous">◀</button>
+        <button class="burp-navb" title="Drop">▾</button>
+        <button class="burp-navb" title="Next">▶</button>
+        <button class="burp-navb" title="Drop">▾</button>
+      </div>
+      <button class="burp-ai"><span class="burp-ai-ico">✦</span> Burp AI</button>
+      <div class="burp-target">
+        <span>Target:</span>
+        <span class="burp-target-lbl" id="burp-target-lbl">Not specified</span>
+        <span class="burp-target-ico" title="Edit">✏</span>
+        <span class="burp-target-ico" title="Help">?</span>
+      </div>
+      <div class="burp-layout">
+        <button class="burp-layb on" title="Vertical split">⬛</button>
+        <button class="burp-layb" title="Horizontal split">⬜</button>
+        <button class="burp-layb" title="Single pane">▭</button>
+      </div>
+    </div>
+    <!-- Split body -->
+    <div class="burp-split" id="burp-split">
+      <!-- Request pane -->
+      <div class="burp-pane" id="burp-req-pane">
+        <div class="burp-pane-hdr">Request</div>
+        <div class="burp-ptabs">
+          <div class="burp-ptab">Pretty</div>
+          <div class="burp-ptab on">Raw</div>
+          <div class="burp-ptab">Hex</div>
+          <div class="burp-ptab-icons">
+            <button class="burp-ptab-ico" title="Inspector">🔍</button>
+            <button class="burp-ptab-ico" title="In/Out">⇅</button>
+            <button class="burp-ptab-ico" title="More">☰</button>
+          </div>
         </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12">
-        
-        <!-- Hero / Terminal Section -->
-        <section id="about" class="mb-20 pt-8">
-            <div class="bg-terminal-card rounded-lg border border-terminal-border shadow-2xl overflow-hidden max-w-4xl mx-auto">
-                <!-- Terminal Header -->
-                <div class="bg-[#161B22] border-b border-terminal-border px-4 py-2 flex items-center gap-2">
-                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                    <div class="ml-2 text-xs text-gray-500 font-sans">guest@kali:~</div>
-                </div>
-                <!-- Terminal Body -->
-                <div class="p-6 text-sm sm:text-base leading-relaxed">
-                    <div class="mb-4">
-                        <span class="text-terminal-green font-bold">┌──(guest㉿kali)-[~]</span><br>
-                        <span class="text-terminal-green font-bold">└─$</span> <span class="text-white">whoami</span>
-                    </div>
-                    <div class="mb-6 text-gray-300">
-                        <p class="mb-2">> Junior Offensive Security Specialist & Python Developer.</p>
-                        <p class="mb-2">> Currently pursuing <span class="text-terminal-accent">Hack The Box (CPTS Path)</span> and mastering Active Directory.</p>
-                        <p>> Purple Teaming focus: I code offensive tools in Python and study their detection in SIEM environments.</p>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <span class="text-terminal-green font-bold">┌──(guest㉿kali)-[~]</span><br>
-                        <span class="text-terminal-green font-bold">└─$</span> <span id="typewriter-text" class="text-terminal-accent"></span><span class="cursor-blink bg-gray-400 inline-block w-2 h-4 ml-1 align-middle"></span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="mb-20 pt-16">
-            <h2 class="text-2xl font-bold text-white mb-8 border-b border-terminal-border pb-2">
-                <i class="fa-solid fa-folder-open mr-2 text-terminal-accent"></i> ~/featured_projects
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                <!-- Project 1: UCHA Scanner -->
-                <div class="bg-terminal-card border border-terminal-border rounded-lg p-6 hover:border-terminal-green transition-all duration-300 group">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-xl font-bold text-white group-hover:text-terminal-green transition-colors">ucha-scanner</h3>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fa-brands fa-github text-xl"></i></a>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">Multithreaded network scanner developed from scratch in Python. Uses the sockets library for fast port enumeration, banner grabbing, and basic web directory fuzzing.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                        <span class="px-2 py-1 text-xs rounded bg-blue-900/30 text-blue-400 border border-blue-800">Python 3</span>
-                        <span class="px-2 py-1 text-xs rounded bg-purple-900/30 text-purple-400 border border-purple-800">Sockets</span>
-                        <span class="px-2 py-1 text-xs rounded bg-red-900/30 text-red-400 border border-red-800">Offensive Tooling</span>
-                    </div>
-                </div>
-
-                <!-- Project 2: Purple Team Lab -->
-                <div class="bg-terminal-card border border-terminal-border rounded-lg p-6 hover:border-terminal-accent transition-all duration-300 group">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-xl font-bold text-white group-hover:text-terminal-accent transition-colors">Purple Team SIEM Lab</h3>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fa-solid fa-arrow-up-right-from-square text-lg"></i></a>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">Local lab documenting the execution of automated attacks (Nmap, dirb, custom scripts) and their corresponding detection and log analysis using Splunk Enterprise.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                        <span class="px-2 py-1 text-xs rounded bg-green-900/30 text-green-400 border border-green-800">Splunk</span>
-                        <span class="px-2 py-1 text-xs rounded bg-blue-900/30 text-blue-400 border border-blue-800">Blue Team</span>
-                        <span class="px-2 py-1 text-xs rounded bg-orange-900/30 text-orange-400 border border-orange-800">Log Analysis</span>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Write-ups Carousel Section -->
-        <section id="writeups" class="mb-20 pt-16">
-            <h2 class="text-2xl font-bold text-white mb-8 border-b border-terminal-border pb-2">
-                <i class="fa-solid fa-flag mr-2 text-terminal-accent"></i> ~/htb_writeups
-            </h2>
-
-            <div class="relative w-full max-w-4xl mx-auto">
-                <!-- Carousel Wrapper -->
-                <div class="overflow-hidden rounded-lg border border-terminal-border bg-terminal-card relative shadow-2xl">
-                    <div id="carousel-track" class="flex carousel-track w-full">
-                        
-                        <!-- Slide 1 -->
-                        <div class="w-full flex-shrink-0 p-8 sm:p-12">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-3xl font-bold text-white"><i class="fa-brands fa-windows text-blue-400 mr-3"></i>HTB: Active</h3>
-                                <span class="px-3 py-1 bg-green-900/30 text-green-400 border border-green-800 rounded-full text-xs font-bold uppercase tracking-wider">Easy</span>
-                            </div>
-                            <div class="space-y-4 mb-8 text-gray-300">
-                                <p><strong class="text-terminal-accent">OS:</strong> Windows</p>
-                                <p><strong class="text-terminal-accent">Vulnerabilities / Techniques:</strong></p>
-                                <ul class="list-disc pl-5 space-y-1 text-sm text-gray-400">
-                                    <li>SMB Null Session Enumeration</li>
-                                    <li>Exploiting Group Policy Preferences (GPP) Passwords</li>
-                                    <li>Kerberoasting & Ticket Extraction</li>
-                                    <li>Active Directory Privilege Escalation</li>
-                                </ul>
-                            </div>
-                            <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-terminal-green hover:bg-terminal-greenHover transition-colors w-full sm:w-auto">
-                                <i class="fa-solid fa-book-open mr-2"></i> Read Write-up
-                            </a>
-                        </div>
-
-                        <!-- Slide 2 -->
-                        <div class="w-full flex-shrink-0 p-8 sm:p-12">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-3xl font-bold text-white"><i class="fa-brands fa-linux text-yellow-500 mr-3"></i>HTB: Lame</h3>
-                                <span class="px-3 py-1 bg-green-900/30 text-green-400 border border-green-800 rounded-full text-xs font-bold uppercase tracking-wider">Easy</span>
-                            </div>
-                            <div class="space-y-4 mb-8 text-gray-300">
-                                <p><strong class="text-terminal-accent">OS:</strong> Linux</p>
-                                <p><strong class="text-terminal-accent">Vulnerabilities / Techniques:</strong></p>
-                                <ul class="list-disc pl-5 space-y-1 text-sm text-gray-400">
-                                    <li>Samba v3.0.20 CVE-2007-2447</li>
-                                    <li>Distcc Daemon Command Execution</li>
-                                    <li>Anonymous FTP Enumeration</li>
-                                    <li>Linux Privilege Escalation via SUID</li>
-                                </ul>
-                            </div>
-                            <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-terminal-green hover:bg-terminal-greenHover transition-colors w-full sm:w-auto">
-                                <i class="fa-solid fa-book-open mr-2"></i> Read Write-up
-                            </a>
-                        </div>
-
-                        <!-- Slide 3 -->
-                        <div class="w-full flex-shrink-0 p-8 sm:p-12">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-3xl font-bold text-white"><i class="fa-brands fa-windows text-blue-400 mr-3"></i>HTB: Forest</h3>
-                                <span class="px-3 py-1 bg-orange-900/30 text-orange-400 border border-orange-800 rounded-full text-xs font-bold uppercase tracking-wider">Medium</span>
-                            </div>
-                            <div class="space-y-4 mb-8 text-gray-300">
-                                <p><strong class="text-terminal-accent">OS:</strong> Windows (Domain Controller)</p>
-                                <p><strong class="text-terminal-accent">Vulnerabilities / Techniques:</strong></p>
-                                <ul class="list-disc pl-5 space-y-1 text-sm text-gray-400">
-                                    <li>AS-REP Roasting (Impacket-GetNPUsers)</li>
-                                    <li>BloodHound Graph Enumeration</li>
-                                    <li>Abusing Account Operators Group</li>
-                                    <li>DCSync Attack (secretsdump)</li>
-                                </ul>
-                            </div>
-                            <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-terminal-green hover:bg-terminal-greenHover transition-colors w-full sm:w-auto">
-                                <i class="fa-solid fa-book-open mr-2"></i> Read Write-up
-                            </a>
-                        </div>
-
-                    </div>
-
-                    <!-- Navigation Arrows -->
-                    <button id="prevBtn" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-terminal-green text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors focus:outline-none z-10 border border-gray-600 hover:border-transparent">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    <button id="nextBtn" class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-terminal-green text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors focus:outline-none z-10 border border-gray-600 hover:border-transparent">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </div>
-                
-                <!-- Dots Indicators -->
-                <div class="flex justify-center mt-6 space-x-3" id="carousel-dots">
-                    <!-- Dots will be populated by JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="mb-20 pt-16">
-            <h2 class="text-2xl font-bold text-white mb-8 border-b border-terminal-border pb-2">
-                <i class="fa-solid fa-microchip mr-2 text-terminal-accent"></i> ~/skills_&_technologies
-            </h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Offensive -->
-                <div class="bg-[#0D1117] border border-terminal-border rounded-lg p-5">
-                    <h4 class="text-terminal-accent font-bold mb-4 border-b border-terminal-border/50 pb-2">Offensive Security</h4>
-                    <ul class="space-y-3 text-sm text-gray-400">
-                        <li>
-                            <i class="fa-solid fa-angle-right text-terminal-green mr-2"></i><strong class="text-gray-300">Web Pentesting:</strong><br>
-                            <span class="pl-5 text-xs text-gray-500 leading-tight block mt-1">Burp Suite, SQLi, Command Injection, Web Fuzzing, Brute Force</span>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-angle-right text-terminal-green mr-2"></i><strong class="text-gray-300">Network Enum & Exploit:</strong><br>
-                            <span class="pl-5 text-xs text-gray-500 leading-tight block mt-1">Nmap, Metasploit Framework, Netcat</span>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-angle-right text-terminal-green mr-2"></i><strong class="text-gray-300">Active Directory:</strong><br>
-                            <span class="pl-5 text-xs text-gray-500 leading-tight block mt-1">BloodHound, Impacket, NetExec</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Defensive -->
-                <div class="bg-[#0D1117] border border-terminal-border rounded-lg p-5">
-                    <h4 class="text-terminal-accent font-bold mb-4 border-b border-terminal-border/50 pb-2">Defensive / SOC</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <i class="fa-solid fa-angle-right text-terminal-green mr-2"></i><strong class="text-gray-300">Splunk SIEM Basics</strong></br>
-                        <i class="fa-solid fa-angle-right text-terminal-green mr-2"></i><strong class="text-gray-300">Log Analysis & Detection</strong></br>
-                        <i class="fa-solid fa-angle-right text-terminal-green mr-2"></i><strong class="text-gray-300">Network Traffic Analysis</strong></br>
-                    </ul>
-                </div>
-
-                <!-- Development -->
-                <div class="bg-[#0D1117] border border-terminal-border rounded-lg p-5">
-                    <h4 class="text-terminal-accent font-bold mb-4 border-b border-terminal-border/50 pb-2">Development</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <i class="fa-brands fa-python text-terminal-green mr-2"></i><strong class="text-gray-300">Python 3 (Sockets, Auto)</strong></br>
-                        <i class="fa-solid fa-angle-right text-terminal-green mr-2"></i><strong class="text-gray-300">Bash Scripting</strong></br>
-                        <i class="fa-brands fa-git-alt text-terminal-green mr-2"></i><strong class="text-gray-300">Git & GitHub</strong></br>
-                    </ul>
-                </div>
-
-                <!-- Core -->
-                <div class="bg-[#0D1117] border border-terminal-border rounded-lg p-5">
-                    <h4 class="text-terminal-accent font-bold mb-4 border-b border-terminal-border/50 pb-2">Core OS & Net</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <i class="fa-brands fa-linux text-terminal-green mr-2"></i><strong class="text-gray-300">Linux (Kali, Fedora)</strong></br>
-                        <i class="fa-brands fa-windows text-terminal-green mr-2"></i><strong class="text-gray-300">Windows Server</strong></br>
-                        <i class="fa-solid fa-network-wired text-terminal-green mr-2"></i><strong class="text-gray-300">TCP/IP & Subnetting</strong></br>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Additional Technologies (Web & Software) -->
-            <div class="mt-8 bg-[#0D1117] border border-terminal-border rounded-lg p-6">
-                <h4 class="text-terminal-accent font-bold mb-4 border-b border-terminal-border/50 pb-2">
-                    <i class="fa-solid fa-layer-group mr-2"></i>Additional Stack & Familiar Technologies
-                </h4>
-                <p class="text-sm text-gray-400 mb-5">
-                    > Technologies I have practical experience with through development projects, academic background, and self-hosting. This foundational knowledge enhances my code review and web exploitation capabilities:
-                </p>
-                <div class="flex flex-wrap gap-3">
-                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-orange-500 transition-colors cursor-default"><i class="fa-brands fa-html5 mr-2 text-orange-500"></i>HTML/CSS</span>
-                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-yellow-400 transition-colors cursor-default"><i class="fa-brands fa-js mr-2 text-yellow-400"></i>JavaScript</span>
-                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-400 transition-colors cursor-default"><i class="fa-brands fa-react mr-2 text-blue-400"></i>React</span>
-                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-300 transition-colors cursor-default"><i class="fa-solid fa-database mr-2 text-blue-300"></i>SQL</span>
-                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-indigo-400 transition-colors cursor-default"><i class="fa-brands fa-php mr-2 text-indigo-400"></i>PHP</span>
-                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-red-500 transition-colors cursor-default"><i class="fa-brands fa-java mr-2 text-red-500"></i>Java</span>
-                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-500 transition-colors cursor-default"><i class="fa-brands fa-wordpress mr-2 text-blue-500"></i>WordPress</span>
-                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-green-500 transition-colors cursor-default"><i class="fa-brands fa-joomla mr-2 text-green-500"></i>Joomla</span>
-                    <span class="px-3 py-1.5 text-sm rounded bg-gray-800 text-gray-300 border border-gray-700 hover:border-teal-400 transition-colors cursor-default"><i class="fa-solid fa-microchip mr-2 text-teal-400"></i>C++ (Arduino)</span>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-terminal-border mt-auto">
-        <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-gray-500 text-sm">© 2026 Lucio Ucha. Developed with <i class="fa-solid fa-code"></i> and 🧉.</p> 
-            <div class="flex space-x-6">
-                <a href="mailto:lucioucha@gmail.com" class="text-gray-500 hover:text-white transition-colors"><i class="fa-solid fa-envelope text-lg"></i></a>
-                <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-hackerrank text-lg"></i></a>
-            </div>
+        <div class="burp-ed" id="burp-req-ed" contenteditable="true" spellcheck="false">${REQ}</div>
+        <div class="burp-pfooter">
+          <div class="burp-srchwrap">
+            <span class="burp-srch-ico">🔍</span>
+            <input class="burp-si" type="text" placeholder="Search" autocomplete="off" spellcheck="false">
+          </div>
+          <span class="burp-hlc">0 highlights</span>
         </div>
-    </footer>
+      </div>
+      <!-- Drag handle -->
+      <div class="burp-sph" id="burp-sph"></div>
+      <!-- Response pane -->
+      <div class="burp-pane" id="burp-resp-pane">
+        <div class="burp-pane-hdr">Response</div>
+        <div class="burp-ptabs">
+          <div class="burp-ptab">Pretty</div>
+          <div class="burp-ptab on">Raw</div>
+          <div class="burp-ptab">Hex</div>
+          <div class="burp-ptab">Render</div>
+          <div class="burp-ptab-icons">
+            <button class="burp-ptab-ico" title="Inspector">🔍</button>
+            <button class="burp-ptab-ico" title="In/Out">⇅</button>
+            <button class="burp-ptab-ico" title="More">☰</button>
+          </div>
+        </div>
+        <div class="burp-ed" id="burp-resp-ed" style="color:#5c6370;font-style:italic"></div>
+        <div class="burp-pfooter">
+          <div class="burp-srchwrap">
+            <span class="burp-srch-ico">🔍</span>
+            <input class="burp-si" type="text" placeholder="Search" autocomplete="off" spellcheck="false">
+          </div>
+          <span class="burp-hlc">0 highlights</span>
+        </div>
+      </div>
+    </div>
+    <!-- Bottom search bar -->
+    <div class="burp-bottom">
+      <div class="burp-bbtngroup">
+        <button class="burp-bbt" title="Back">←</button>
+        <button class="burp-bbt" title="Forward">→</button>
+      </div>
+      <div class="burp-bsrchwrap">
+        <input class="burp-bsi" type="text" placeholder="Search" autocomplete="off" spellcheck="false">
+      </div>
+      <span class="burp-hlc" id="burp-hlc-bottom">0 highlights</span>
+      <span class="burp-bstatus" id="burp-status">Ready</span>
+    </div>
+  </div>
+  <!-- Right sidebar -->
+  <div class="burp-sidebar">
+    <div class="burp-sb-item on"><span class="burp-sb-ico">🔍</span>Inspector</div>
+    <div class="burp-sb-item"><span class="burp-sb-ico">📝</span>Notes</div>
+    <div class="burp-sb-item"><span class="burp-sb-ico">⚡</span>Custom actions</div>
+  </div>
+</div>`;
+}
 
-    <!-- Scripts -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- Typewriter Effect ---
-            const textToType = "./execute_cpts_path.sh && init_soc_defense";
-            const typeWriterElement = document.getElementById('typewriter-text');
-            let i = 0;
+function initBurp(wEl){
+  const sendBtn=wEl.querySelector('#burp-send-btn');
+  const respEd=wEl.querySelector('#burp-resp-ed');
+  const statusEl=wEl.querySelector('#burp-status');
+  const targetLbl=wEl.querySelector('#burp-target-lbl');
+  const splitHandle=wEl.querySelector('#burp-sph');
+  const splitContainer=wEl.querySelector('#burp-split');
+  const reqPane=wEl.querySelector('#burp-req-pane');
+  const respPane=wEl.querySelector('#burp-resp-pane');
+  if(!sendBtn||!respEd)return;
 
-            function typeWriter() {
-                if (i < textToType.length) {
-                    typeWriterElement.innerHTML += textToType.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, Math.random() * 50 + 50);
-                }
-            }
-            setTimeout(typeWriter, 1000);
+  // Set target label
+  if(targetLbl)targetLbl.textContent='portfolio.lucio:80';
 
-            // --- Carousel Logic ---
-            const track = document.getElementById('carousel-track');
-            const slides = Array.from(track.children);
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const dotsContainer = document.getElementById('carousel-dots');
-            
-            let currentIndex = 0;
+  /* ── Send button — simulates round-trip ── */
+  sendBtn.addEventListener('click',()=>{
+    if(sendBtn.classList.contains('busy'))return;
+    sendBtn.classList.add('busy');
+    sendBtn.textContent='Sending…';
+    if(statusEl)statusEl.textContent='Sending request…';
+    respEd.style.color='#5c6370';
+    respEd.style.fontStyle='italic';
+    respEd.textContent='Waiting for response…';
 
-            // Create dots dynamically
-            slides.forEach((_, idx) => {
-                const dot = document.createElement('button');
-                dot.classList.add('w-3', 'h-3', 'rounded-full', 'transition-colors', 'focus:outline-none');
-                dot.classList.add(idx === 0 ? 'bg-terminal-green' : 'bg-gray-600');
-                dot.addEventListener('click', () => goToSlide(idx));
-                dotsContainer.appendChild(dot);
-            });
+    const delay=600+Math.random()*400;
+    setTimeout(()=>{
+      sendBtn.classList.remove('busy');
+      sendBtn.textContent='Send';
+      if(statusEl)statusEl.textContent='200 OK — 312 bytes — 0.24 secs';
 
-            const dots = Array.from(dotsContainer.children);
+      const RESP_LINES=[
+        '<span class="ht-proto">HTTP/1.1</span> <span class="ht-stat-ok">200 OK</span>',
+        '<span class="ht-hk">Date:</span><span class="ht-hv"> '+new Date().toUTCString()+'</span>',
+        '<span class="ht-hk">Content-Type:</span><span class="ht-hv"> application/json; charset=utf-8</span>',
+        '<span class="ht-hk">Content-Length:</span><span class="ht-hv"> 312</span>',
+        '<span class="ht-hk">X-Powered-By:</span><span class="ht-hv"> Kali-Portfolio/2.0</span>',
+        '<span class="ht-hk">X-Frame-Options:</span><span class="ht-hv"> DENY</span>',
+        '<span class="ht-hk">Strict-Transport-Security:</span><span class="ht-hv"> max-age=31536000</span>',
+        '<span class="ht-hk">Access-Control-Allow-Origin:</span><span class="ht-hv"> *</span>',
+        '',
+        '<span class="ht-hv">{</span>',
+        '  <span class="ht-jk">"name"</span>:     <span class="ht-js">"Lucio Ucha"</span>,',
+        '  <span class="ht-jk">"role"</span>:     <span class="ht-js">"Cybersecurity Engineer &amp; Red Team Dev"</span>,',
+        '  <span class="ht-jk">"status"</span>:   <span class="ht-js">"Available for hire"</span>,',
+        '  <span class="ht-jk">"skills"</span>:   <span class="ht-hv">[</span><span class="ht-js">"Python"</span>, <span class="ht-js">"C++"</span>, <span class="ht-js">"ARM ASM"</span>, <span class="ht-js">"JavaScript"</span>, <span class="ht-js">"PHP"</span><span class="ht-hv">]</span>,',
+        '  <span class="ht-jk">"security"</span>: <span class="ht-hv">[</span><span class="ht-js">"Pentesting"</span>, <span class="ht-js">"Red Team"</span>, <span class="ht-js">"CTF"</span><span class="ht-hv">]</span>,',
+        '  <span class="ht-jk">"flag"</span>:     <span class="ht-flag">"HTB{r3d_t34m_4lw4ys_w1ns_8f2a91c}"</span>',
+        '<span class="ht-hv">}</span>',
+      ];
+      respEd.style.color='';
+      respEd.style.fontStyle='';
+      respEd.innerHTML=RESP_LINES.map((l,i)=>`<span class="ht-ln">${i+1}</span>${l}`).join('\n');
+    },delay);
+  });
 
-            function updateCarousel() {
-                track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                
-                // Update dots styling
-                dots.forEach((dot, idx) => {
-                    if(idx === currentIndex) {
-                        dot.classList.remove('bg-gray-600');
-                        dot.classList.add('bg-terminal-green');
-                    } else {
-                        dot.classList.remove('bg-terminal-green');
-                        dot.classList.add('bg-gray-600');
-                    }
-                });
-            }
+  /* ── Horizontal split-pane drag ── */
+  let splitDrag=false,splitSx=0,splitLw=0;
+  splitHandle.addEventListener('mousedown',e=>{
+    e.preventDefault();
+    splitDrag=true;splitSx=e.clientX;splitLw=reqPane.offsetWidth;
+    splitHandle.classList.add('drag');
+    document.body.style.cursor='col-resize';
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!splitDrag)return;
+    const containerW=splitContainer.offsetWidth-splitHandle.offsetWidth;
+    const newLw=Math.max(200,Math.min(containerW-200,splitLw+(e.clientX-splitSx)));
+    reqPane.style.flex=`0 0 ${newLw}px`;
+    respPane.style.flex='1 1 0';
+  });
+  document.addEventListener('mouseup',()=>{
+    if(splitDrag){splitDrag=false;splitHandle.classList.remove('drag');document.body.style.cursor='';}
+  });
 
-            function goToSlide(index) {
-                currentIndex = index;
-                updateCarousel();
-            }
+  /* ── Tab switching (Pretty / Raw / Hex) ── */
+  wEl.querySelectorAll('.burp-ptabs').forEach(tabBar=>{
+    tabBar.querySelectorAll('.burp-ptab').forEach(tab=>{
+      tab.addEventListener('click',()=>{
+        tabBar.querySelectorAll('.burp-ptab').forEach(t=>t.classList.remove('on'));
+        tab.classList.add('on');
+      });
+    });
+  });
 
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex === slides.length - 1) ? 0 : currentIndex + 1;
-                updateCarousel();
-            });
+  /* ── Sidebar items ── */
+  wEl.querySelectorAll('.burp-sb-item').forEach(item=>{
+    item.addEventListener('click',()=>{
+      wEl.querySelectorAll('.burp-sb-item').forEach(i=>i.classList.remove('on'));
+      item.classList.add('on');
+    });
+  });
 
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex === 0) ? slides.length - 1 : currentIndex - 1;
-                updateCarousel();
-            });
-        });
-    </script>
+  /* ── Layout buttons ── */
+  wEl.querySelectorAll('.burp-layb').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      wEl.querySelectorAll('.burp-layb').forEach(b=>b.classList.remove('on'));
+      btn.classList.add('on');
+    });
+  });
+}
+
+/* ═══════════════════════════════════════
+   SYSTEM NOTIFY — TOAST ENGINE
+═══════════════════════════════════════ */
+const TOAST_ICONS={info:'fa-circle-info',warn:'fa-triangle-exclamation',ok:'fa-circle-check',err:'fa-circle-xmark'};
+function systemNotify(msg,type='info',dur=3500){
+  const stack=document.getElementById('toast-stack');
+  const t=document.createElement('div');
+  t.className='toast';
+  t.innerHTML=`<i class="fa-solid ${TOAST_ICONS[type]||TOAST_ICONS.info} toast-ico"></i><span class="toast-txt">${msg}</span><span class="toast-close" onclick="this.parentElement.remove()">×</span>`;
+  stack.appendChild(t);
+  // Auto-dismiss
+  setTimeout(()=>{
+    t.classList.add('toast-out');
+    t.addEventListener('animationend',()=>t.remove(),{once:true});
+  },dur);
+}
+
+/* ═══════════════════════════════════════
+   LOCK SCREEN
+═══════════════════════════════════════ */
+function openLock(){
+  closeAll();
+  updateLockClock();
+  document.getElementById('lockscreen').classList.add('active');
+  setTimeout(()=>document.getElementById('lock-pw-input')?.focus(),350);
+}
+function unlock(){
+  const ls=document.getElementById('lockscreen');
+  ls.style.animation='lock-in .25s ease-in reverse';
+  setTimeout(()=>{ls.classList.remove('active');ls.style.animation='';document.getElementById('lock-pw-input').value='';},250);
+}
+function updateLockClock(){
+  const n=new Date(),p=v=>String(v).padStart(2,'0');
+  const days=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+  const months=['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+  const el=document.getElementById('lock-time');
+  const de=document.getElementById('lock-date');
+  if(el)el.textContent=`${p(n.getHours())}:${p(n.getMinutes())}`;
+  if(de)de.textContent=`${days[n.getDay()]}, ${months[n.getMonth()]} ${n.getDate()}`;
+}
+setInterval(()=>{if(document.getElementById('lockscreen').classList.contains('active'))updateLockClock();},15000);
+// Enter key unlocks
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&document.getElementById('lockscreen').classList.contains('active'))unlock();
+  if(e.key==='Escape'&&document.getElementById('lockscreen').classList.contains('active'))unlock();
+});
+
+/* ═══════════════════════════════════════
+   DEAD-BUTTON WIRING — called after DOM
+═══════════════════════════════════════ */
+function wireDeadButtons(wEl,context){
+  // Generic notify for any button not already wired
+  wEl.querySelectorAll('button,a').forEach(btn=>{
+    if(btn.dataset.wired)return;
+    if(btn.closest('.win-dots'))return; // skip window controls
+    if(btn.closest('#taskbar'))return;
+    btn.dataset.wired='1';
+    const orig=btn.onclick;
+    if(!orig){
+      btn.addEventListener('click',()=>systemNotify(`${context} — feature disabled in demo environment`));
+    }
+  });
+}
+
+/* Wireshark dead menus / toolbar buttons */
+function wireWireshark(wEl){
+  wEl.querySelectorAll('.ws-menubar .ws-mb').forEach(btn=>{
+    btn.addEventListener('click',()=>systemNotify(`Wireshark: ${btn.textContent} — disabled in demo`));
+  });
+  wEl.querySelectorAll('.ws-tbb').forEach(btn=>{
+    const id=btn.id;
+    if(id==='ws-start-btn'||id==='ws-stop-btn')return; // already wired in initWireshark
+    btn.addEventListener('click',()=>systemNotify('Wireshark toolbar — disabled in demo environment'));
+  });
+}
+
+/* Burp Suite dead tabs & menus */
+function wireBurp(wEl){
+  wEl.querySelectorAll('.burp-tab:not(.act)').forEach(tab=>{
+    tab.addEventListener('click',()=>systemNotify(`Burp Suite: ${tab.textContent.trim()} — disabled in demo environment`));
+  });
+  wEl.querySelectorAll('.burp-nm').forEach(m=>{
+    m.addEventListener('click',()=>systemNotify(`Burp Suite menu: ${m.textContent.trim()} — disabled in demo environment`));
+  });
+  wEl.querySelectorAll('.burp-ti-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>systemNotify('Burp Suite: settings — disabled in demo environment'));
+  });
+  wEl.querySelectorAll('.burp-nav button').forEach(btn=>{
+    btn.addEventListener('click',()=>systemNotify('Burp Suite: no history to navigate'));
+  });
+  wEl.querySelectorAll('.burp-ptab').forEach(tab=>{
+    if(tab.classList.contains('on'))return;
+    tab.addEventListener('click',()=>systemNotify(`Burp Suite: ${tab.textContent.trim()} view — disabled in demo`));
+  });
+  wEl.querySelectorAll('.burp-sb-item').forEach(item=>{
+    const name=item.textContent.trim();
+    item.addEventListener('click',()=>systemNotify(`Burp Suite: ${name} panel — disabled in demo`));
+  });
+}
+
+/* Explorer nav buttons */
+function wireExplorer(wEl){
+  wEl.querySelectorAll('.expl-nav-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>systemNotify('File manager navigation — disabled in demo environment'));
+  });
+  wEl.querySelectorAll('.expl-si:not(.active)').forEach(item=>{
+    item.addEventListener('click',()=>systemNotify('File manager: '+item.textContent.trim()+' — disabled in demo'));
+  });
+}
+
+/* App menu dead items */
+document.querySelectorAll('#app-menu .menu-item').forEach(item=>{
+  if(item.onclick||item.getAttribute('onclick'))return;
+  item.addEventListener('click',()=>systemNotify('Feature disabled in demo environment'));
+});
+
+/* ═══════════════════════════════════════
+   ICON SYSTEM
+═══════════════════════════════════════ */
+const iconActions={
+  'ico-whoami':  ()=>WM.open('whoami','whoami.txt — GNU nano 7.2',buildNano(),{w:680,h:520}),
+  'ico-cv':      ()=>WM.open('cv','CV_Ucha.pdf',buildCV(),{w:720,h:580}),
+  'ico-projects':()=>{const el=WM.open('projects','Projects/ — Thunar',buildExplorer('/root/Desktop/Projects',projectItems()),{w:680,h:440});if(el&&el.dataset.exInited!=='1'){el.dataset.exInited='1';setTimeout(()=>wireExplorer(el),80);}},
+  'ico-labs':    ()=>{const el=WM.open('labs','Labs/ — Thunar',buildExplorer('/root/Desktop/Labs',labItems()),{w:680,h:440});if(el&&el.dataset.exInited!=='1'){el.dataset.exInited='1';setTimeout(()=>wireExplorer(el),80);}},
+  'ico-contact': ()=>openContact(),
+  'ico-terminal':()=>openTerminal(),
+  'ico-github':  ()=>window.open('https://github.com','_blank'),
+  'ico-nmap':    ()=>WM.open('nmap','Nmap 7.94 — Network Scanner',buildAutoTerm('nmap'),{w:720,h:500,onOpen:e=>runNmap(e)}),
+  'ico-gobuster':()=>WM.open('gobuster','Gobuster 3.6 — Dir Fuzzer',buildAutoTerm('gobuster'),{w:740,h:500,onOpen:e=>runGobuster(e)}),
+  'ico-msf':     ()=>WM.open('msf','Metasploit Framework 6',buildAutoTerm('msf'),{w:750,h:520,onOpen:e=>runMSF(e)}),
+  'ico-sqlmap':  ()=>WM.open('sqlmap','SQLmap 1.8 — SQL Injector',buildAutoTerm('sqlmap'),{w:760,h:520,onOpen:e=>runSQLmap(e)}),
+  'ico-wireshark':()=>openWireshark(),
+  'ico-burp':    ()=>openBurp(),
+  'ico-hashcat': ()=>WM.open('hashcat','Hashcat 6.2.6 — Hash Cracker',buildAutoTerm('hashcat'),{w:740,h:500,onOpen:e=>runHashcat(e)}),
+  'ico-hydra':   ()=>WM.open('hydra','Hydra 9.5 — Login Cracker',buildAutoTerm('hydra'),{w:740,h:500,onOpen:e=>runHydra(e)}),
+  'ico-cme':     ()=>WM.open('cme','CrackMapExec 5.4 — SMB Enum',buildAutoTerm('cme'),{w:780,h:520,onOpen:e=>runCME(e)}),
+  'ico-undercover':()=>systemNotify('kali-undercover — Switches to Windows 10 theme (disabled in demo)','info'),
+};
+
+/* ═══════════════════════════════════════
+   ORGANIC SCATTER — place icons naturally
+   Avoids overlaps, stays within desktop
+═══════════════════════════════════════ */
+function organicScatter(){
+  const desk=document.getElementById('desktop');
+  const dw=desk.offsetWidth, dh=desk.offsetHeight;
+  const IW=86, IH=96; // icon bounding box with label
+  const PAD=14;
+  const placed=[]; // {x,y,w,h}
+
+  // Undercover is always pinned — skip it
+  const icons=[...document.querySelectorAll('.icon:not(#ico-undercover)')];
+
+  // Shuffle icons for natural variety
+  for(let i=icons.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[icons[i],icons[j]]=[icons[j],icons[i]];}
+
+  // Safe zone: avoid right edge (sys-info is top-left, watermark is bottom-left)
+  const MARGIN_LEFT=PAD, MARGIN_TOP=PAD;
+  const MARGIN_RIGHT=PAD, MARGIN_BOTTOM=PAD;
+  const MAX_X=dw-IW-MARGIN_RIGHT, MAX_Y=dh-IH-MARGIN_BOTTOM;
+
+  function overlaps(nx,ny){
+    for(const p of placed){
+      const gx=12, gy=10; // gap between icons
+      if(nx<p.x+IW+gx && nx+IW+gx>p.x && ny<p.y+IH+gy && ny+IH+gy>p.y)return true;
+    }
+    return false;
+  }
+
+  icons.forEach(icon=>{
+    let x,y,tries=0;
+    do{
+      x=MARGIN_LEFT+Math.floor(Math.random()*(MAX_X-MARGIN_LEFT));
+      y=MARGIN_TOP+Math.floor(Math.random()*(MAX_Y-MARGIN_TOP));
+      tries++;
+    }while(overlaps(x,y)&&tries<120);
+    icon.style.left=x+'px';
+    icon.style.top=y+'px';
+    placed.push({x,y});
+  });
+}
+
+let iconZ=200;
+function initIcon(icon){
+  // skip undercover drag setup (it's static)
+  if(icon.id==='ico-undercover'){
+    icon.addEventListener('dblclick',e=>{e.stopPropagation();const a=iconActions[icon.id];if(a)a();});
+    icon.addEventListener('contextmenu',e=>e.preventDefault());
+    return;
+  }
+
+  let dragging=false,moved=false,ox=0,oy=0;
+  const tilt=(Math.random()-.5)*2.5;
+  icon.style.transform=`rotate(${tilt}deg)`;
+
+  icon.addEventListener('mousedown',e=>{
+    if(e.button!==0)return;e.preventDefault();e.stopPropagation();
+    dragging=true;moved=false;
+    const r=icon.getBoundingClientRect();ox=e.clientX-r.left;oy=e.clientY-r.top;
+    icon.style.zIndex=++iconZ;icon.style.transform='rotate(0deg)';
+    document.querySelectorAll('.icon').forEach(i=>i.classList.remove('selected'));
+    icon.classList.add('selected');closeAll();
+  });
+  const onM=e=>{if(!dragging)return;moved=true;icon.classList.add('dragging');
+    const desk=document.getElementById('desktop'),dr=desk.getBoundingClientRect();
+    icon.style.left=Math.max(0,Math.min(e.clientX-dr.left-ox,desk.offsetWidth-icon.offsetWidth))+'px';
+    icon.style.top=Math.max(0,Math.min(e.clientY-dr.top-oy,desk.offsetHeight-icon.offsetHeight))+'px';
+  };
+  const onU=()=>{if(!dragging)return;dragging=false;icon.classList.remove('dragging');};
+  document.addEventListener('mousemove',onM);
+  document.addEventListener('mouseup',onU);
+  icon.addEventListener('touchstart',e=>{const t=e.touches[0],r=icon.getBoundingClientRect();ox=t.clientX-r.left;oy=t.clientY-r.top;icon.classList.add('dragging');icon.style.zIndex=++iconZ;icon.style.transform='rotate(0deg)';},{passive:true});
+  icon.addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches[0],desk=document.getElementById('desktop'),dr=desk.getBoundingClientRect();icon.style.left=Math.max(0,Math.min(t.clientX-dr.left-ox,desk.offsetWidth-icon.offsetWidth))+'px';icon.style.top=Math.max(0,Math.min(t.clientY-dr.top-oy,desk.offsetHeight-icon.offsetHeight))+'px';},{passive:false});
+  icon.addEventListener('touchend',()=>icon.classList.remove('dragging'));
+  icon.addEventListener('click',e=>{e.stopPropagation();document.querySelectorAll('.icon').forEach(i=>i.classList.remove('selected'));icon.classList.add('selected');});
+  icon.addEventListener('dblclick',e=>{
+    e.stopPropagation();if(moved)return;
+    icon.classList.add('flash');icon.addEventListener('animationend',()=>icon.classList.remove('flash'),{once:true});
+    const a=iconActions[icon.id];if(a)a();
+  });
+  icon.addEventListener('contextmenu',e=>e.preventDefault());
+}
+
+document.querySelectorAll('.icon').forEach(initIcon);
+// Run organic scatter after DOM is ready (icons have offsetWidth/Height)
+window.addEventListener('load',()=>{ setTimeout(organicScatter,50); });
+document.getElementById('desktop').addEventListener('click',()=>{document.querySelectorAll('.icon').forEach(i=>i.classList.remove('selected'));closeAll();});
+</script>
 </body>
 </html>
