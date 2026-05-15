@@ -584,10 +584,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 .pdf-btn{background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.2);color:var(--green);font-family:var(--font);font-size:10px;padding:3px 10px;border-radius:3px;cursor:pointer;transition:background .12s}
 .pdf-btn:hover{background:rgba(57,255,20,.18)}
 .pdf-info{font-size:10px;color:var(--dim);flex:1;text-align:center}
-.pdf-body{flex:1;overflow-y:auto;background:#1c1c1c;display:flex;justify-content:center;align-items:flex-start;padding:20px 16px}
+.pdf-body{flex:1;overflow-y:auto;background:#1c1c1c;display:flex;justify-content:center;padding:20px 16px}
 .pdf-body::-webkit-scrollbar{width:5px}
 .pdf-body::-webkit-scrollbar-thumb{background:rgba(57,255,20,.25);border-radius:3px}
-.pdf-pg{background:#f5f2ea;color:#1a1a1a;width:100%;max-width:560px;min-height:fit-content;padding:44px 52px;font-family:Georgia,serif;font-size:12px;line-height:1.75;border-radius:2px;box-shadow:0 4px 30px rgba(0,0,0,.6);margin-bottom:20px}
+.pdf-pg{background:#f5f2ea;color:#1a1a1a;width:100%;max-width:560px;padding:44px 52px;font-family:Georgia,serif;font-size:12px;line-height:1.75;border-radius:2px;box-shadow:0 4px 30px rgba(0,0,0,.6)}
 .pdf-n1{font-size:22px;font-weight:700;letter-spacing:1px;margin-bottom:2px;color:#111;font-family:Georgia,serif}
 .pdf-n2{font-size:10px;color:#444;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
 .pdf-ct{font-size:11px;color:#555;margin-bottom:20px;border-bottom:2px solid #222;padding-bottom:16px}
@@ -968,13 +968,13 @@ const WM_CATS = {
   dev: {
     label: 'Development',
     items: [
-      { ico:'iconos/react-original.svg',     name:'React Native',  desc:'Cross-platform mobile apps',    fn:"systemNotify('Feature disabled in demo environment')" },
-      { ico:'iconos/cplusplus-original.svg', name:'C++',           desc:'Systems & logic development',   fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/asm.svg',                name:'ARM Assembly',  desc:'.asm low-level programming',    fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/cplusplus-original.svg', name:'C++',           desc:'Systems & exploit development', fn:"systemNotify('Feature disabled in demo environment')" },
       { ico:'iconos/css3-original.svg',      name:'CSS3',          desc:'Stylesheets & UI design',       fn:"systemNotify('Feature disabled in demo environment')" },
       { ico:'iconos/html5-original.svg',     name:'HTML5',         desc:'Markup & web structure',        fn:"systemNotify('Feature disabled in demo environment')" },
       { ico:'iconos/java-original.svg',      name:'Java',          desc:'JVM language & Android dev',    fn:"systemNotify('Feature disabled in demo environment')" },
       { ico:'iconos/javascript-original.svg',name:'JavaScript',    desc:'Browser & Node.js scripting',   fn:"systemNotify('Feature disabled in demo environment')" },
-      { ico:'iconos/wordpress-original.svg', name:'WordPress',     desc:'CMS management & development',  fn:"systemNotify('Feature disabled in demo environment')" },
+      { ico:'iconos/laravel-original.svg',   name:'Laravel',       desc:'PHP MVC web framework',         fn:"systemNotify('Feature disabled in demo environment')" },
       { ico:'iconos/mysql-original.svg',     name:'MySQL',         desc:'Relational database server',    fn:"systemNotify('Feature disabled in demo environment')" },
       { ico:'iconos/php-original.svg',       name:'PHP',           desc:'Server-side scripting',         fn:"systemNotify('Feature disabled in demo environment')" },
       { ico:'iconos/python-original.svg',    name:'Python',        desc:'Scripting & automation',        fn:"systemNotify('Feature disabled in demo environment')" },
@@ -1168,38 +1168,38 @@ function buildNano(){
   ╚═══════════════════════════════════════════════╝
 
   Handle   :  Lucio Ucha
-  Role     :  Programming Technician | Junior Developer
-  Location :  San Martín de los Andes, Neuquén, Argentina
+  Role     :  Cybersecurity Engineer & Red Team Dev
+  Location :  [Your City / Country]
   Contact  :  ./Contact.sh  |  GitHub → ico-github
 
   ─────────────────────────────────────────────────
 
   [[ ABOUT ]]
 
-  Final-year technical student with a profile oriented
-  towards software development and cybersecurity.
-  
-  Mental focus on continuous learning within the 
-  security field (Purple Teaming). Experience in 
-  task automation, lab auditing, and system maintenance.
+  Full-stack developer who lives in the terminal.
+  Specializing in offensive security, red teaming,
+  and building tools that break things — ethically.
+
+  When I'm not hacking  →  I'm building the web.
+  When I'm not building →  I'm breaking things.
 
   ─────────────────────────────────────────────────
 
   [[ STACK ]]
 
-  Languages  :  Python · C++ · Java · PHP
-                JavaScript · SQL · Bash
-  Frameworks :  React Native · WordPress · Joomla
-  Security   :  Metasploit · Wireshark · Nmap
-                SQLmap · FFuf · Hydra · Medusa
-  Focus      :  Purple Teaming · Pentesting
-                Web & Mobile Security
+  Languages  :  Python · C++ · ARM Assembly
+                JavaScript · PHP · SQL
+  Frameworks :  Laravel · React · Node.js
+  Security   :  Metasploit · Burp Suite
+                Nmap · SQLmap · Wireshark
+  Focus      :  Red Teaming · Pentesting
+                CTF · OSCP (in progress)
 
   ─────────────────────────────────────────────────
 
   [[ PHILOSOPHY ]]
 
-  "There is more than meets the eye."
+  "There is more than meet the eye."
 
   ─────────────────────────────────────────────────
   // EOF  —  whoami.txt  —  root@portfolio`);
@@ -1208,24 +1208,26 @@ function buildNano(){
 
 /* ── CV PDF ── */
 function buildCV(){
-  return`<div class="pdf-wrap"><div class="pdf-bar"><span class="pdf-info">📄 CV_Ucha_EN.pdf — Page 1 / 1</span><button class="pdf-btn" onclick="alert('In a real deployment this would download your CV PDF!')">⬇ Download PDF</button><button class="pdf-btn">🔍 100%</button></div><div class="pdf-body"><div class="pdf-pg">
-<div class="pdf-n1">LUCIO UCHA</div><div class="pdf-n2">Programming Technician | Junior Developer &amp; Security Researcher</div>
-<div class="pdf-ct">✉ lucioucha@gmail.com &nbsp;·&nbsp; 🌐 github.com/uchalm &nbsp;·&nbsp; 📍 San Martín de los Andes, Neuquén &nbsp;·&nbsp; 🔗 linkedin.com/in/uchalm</div>
-<div class="pdf-sec"><div class="pdf-sh">Professional Summary</div><div class="pdf-eb">Final-year technical student with a profile oriented towards software development and cybersecurity. Solid foundation in multiple programming languages and a mindset focused on continuous learning within the security field (Purple Teaming). Practical experience in task automation, technical lab auditing, and system maintenance.</div></div>
-<div class="pdf-sec"><div class="pdf-sh">Experience &amp; Projects</div>
-<div class="pdf-en"><div class="pdf-et">Code Auditing and PoCs</div><div class="pdf-eb">Development of Proof of Concepts (PoC) to validate vulnerabilities and security bypasses in controlled environments, analyzing software behavior at runtime.</div></div>
-<div class="pdf-en"><div class="pdf-et">Security Labs &amp; Pentesting</div><div class="pdf-eb">Constant practice on cybersecurity platforms, covering everything from reconnaissance to the post-exploitation and reporting phases.</div></div>
-<div class="pdf-en"><div class="pdf-et">Application Development</div><div class="pdf-eb">Implementation of school and personal projects applying structured and object-oriented programming logic (Python, C++, Java, JS).</div></div></div>
+  return`<div class="pdf-wrap"><div class="pdf-bar"><span class="pdf-info">📄 CV_Ucha.pdf — Page 1 / 1</span><button class="pdf-btn" onclick="alert('In a real deployment this would download your CV PDF!')">⬇ Download PDF</button><button class="pdf-btn">🔍 100%</button></div><div class="pdf-body"><div class="pdf-pg">
+<div class="pdf-n1">LUCIO UCHA</div><div class="pdf-n2">Cybersecurity Engineer &amp; Red Team Developer</div>
+<div class="pdf-ct">✉ lucioucha@gmail.com &nbsp;·&nbsp; 🌐 github.com/UchaLM &nbsp;·&nbsp; 📍 [San Martin de los Andes, Argentina] &nbsp;·&nbsp; 🔗 portfolio.lucio</div>
+<div class="pdf-sec"><div class="pdf-sh">Professional Summary</div><div class="pdf-eb">Results-driven cybersecurity professional with expertise in offensive security, penetration testing, and full-stack web development. Proven ability to identify and exploit vulnerabilities across web applications and network infrastructure. Passionate about building secure systems and sharing knowledge through CTF writeups and open-source tooling.</div></div>
+<div class="pdf-sec"><div class="pdf-sh">Experience</div>
+<div class="pdf-en"><div class="pdf-et">Senior Penetration Tester</div><div class="pdf-es">SecureTech Ltd · 2022 – Present</div><div class="pdf-eb">Led red team engagements for financial and healthcare clients. Developed custom C2 frameworks and evasion tooling in Python and C++. Reported 40+ critical vulnerabilities.</div></div>
+<div class="pdf-en"><div class="pdf-et">Full-Stack Developer (Laravel / JS)</div><div class="pdf-es">WebForge Agency · 2020 – 2022</div><div class="pdf-eb">Built enterprise Laravel applications. Implemented security hardening across REST APIs and authentication flows.</div></div></div>
 <div class="pdf-sec"><div class="pdf-sh">Education</div>
-<div class="pdf-en"><div class="pdf-et">Programming Technician</div><div class="pdf-es">EPET N°12 "Ing. Juan Carlos Fontanive" · Expected 2026</div></div>
-<div class="pdf-en"><div class="pdf-et">Continuous Training</div><div class="pdf-es">Self-taught learning in new technologies, frameworks, and security methodologies.</div></div></div>
-<div class="pdf-sec"><div class="pdf-sh">Technical Skills</div><div class="pdf-sg"><span class="pdf-si">Python</span><span class="pdf-si">C++</span><span class="pdf-si">Java</span><span class="pdf-si">JavaScript</span><span class="pdf-si">PHP</span><span class="pdf-si">SQL</span><span class="pdf-si">Bash</span><span class="pdf-si">React Native</span><span class="pdf-si">WordPress</span><span class="pdf-si">Metasploit</span><span class="pdf-si">Wireshark</span><span class="pdf-si">Nmap</span><span class="pdf-si">SQLmap</span><span class="pdf-si">FFuf</span><span class="pdf-si">Hydra</span><span class="pdf-si">Docker</span><span class="pdf-si">Git</span><span class="pdf-si">Linux</span></div></div>
-<div style="text-align:center;font-size:10px;color:#888;margin-top:24px;border-top:1px solid #ccc;padding-top:10px;">References available on request · Last updated May 2026</div>
+<div class="pdf-en"><div class="pdf-et">B.Sc. Computer Science — Security Track</div><div class="pdf-es">University of [City] · 2016 – 2020</div></div>
+<div class="pdf-en"><div class="pdf-et">Certifications</div><div class="pdf-es">OSCP (in progress) · CEH · CompTIA Security+</div></div></div>
+<div class="pdf-sec"><div class="pdf-sh">Technical Skills</div><div class="pdf-sg"><span class="pdf-si">Python</span><span class="pdf-si">C++ / C</span><span class="pdf-si">ARM Assembly</span><span class="pdf-si">JavaScript / Node.js</span><span class="pdf-si">PHP / Laravel</span><span class="pdf-si">SQL / PostgreSQL</span><span class="pdf-si">Metasploit</span><span class="pdf-si">Burp Suite</span><span class="pdf-si">Nmap / Masscan</span><span class="pdf-si">SQLmap</span><span class="pdf-si">Ghidra / GDB</span><span class="pdf-si">Wireshark</span><span class="pdf-si">Docker / Linux</span><span class="pdf-si">Git / CI/CD</span></div></div>
+<div class="pdf-sec"><div class="pdf-sh">Notable Projects</div>
+<div class="pdf-en"><div class="pdf-et">ARM Shellcode Lab</div><div class="pdf-eb">Custom shellcode crafting toolkit for ARM64 Linux targets with automated gadget chaining.</div></div>
+<div class="pdf-en"><div class="pdf-et">Web Vulnerability Scanner</div><div class="pdf-eb">Python-based scanner combining SQLi, XSS, SSRF, and LFI detection modules.</div></div></div>
+<div style="text-align:center;font-size:10px;color:#888;margin-top:24px;border-top:1px solid #ccc;padding-top:10px;">References available on request · Last updated Dec 2024</div>
 </div></div></div>`;
 }
 
 /* ── EXPLORER ── */
-function projectItems(){return[{i:'📁',n:'code-auditing-poc'},{i:'📁',n:'security-labs'},{i:'📁',n:'react-native-apps'},{i:'📁',n:'python-automation'},{i:'📁',n:'web-security-audits'},{i:'📁',n:'school-projects'},{i:'📄',n:'README.md'},{i:'⚙',n:'.gitconfig'}];}
+function projectItems(){return[{i:'📁',n:'web-vuln-scanner'},{i:'📁',n:'arm-shellcode-lab'},{i:'📁',n:'ctf-writeups'},{i:'📁',n:'laravel-pentest-api'},{i:'📁',n:'c2-framework-poc'},{i:'📁',n:'network-mapper'},{i:'📄',n:'README.md'},{i:'⚙',n:'.gitconfig'}];}
 function labItems(){return[{i:'📄',n:'buffer-overflow-101.md'},{i:'📄',n:'sql-injection-lab.md'},{i:'📄',n:'priv-escalation.md'},{i:'📄',n:'xss-payloads.txt'},{i:'🔧',n:'reverse-shells.sh'},{i:'📄',n:'lfi-rfi-notes.md'},{i:'📄',n:'ssrf-techniques.md'},{i:'🔧',n:'auto-enum.py'},{i:'📄',n:'ctf-template.md'}];}
 function buildExplorer(path,items){
   const its=items.map(it=>`<div class="expl-item"><div class="expl-item-ico">${it.i}</div><div class="expl-item-name">${H(it.n)}</div></div>`).join('');
@@ -1279,11 +1281,11 @@ function runNmap(wEl){
     {t:'instant',s:'╠════════════════════════════════════════════════╣',d:50},
     {t:'pause',d:300},
     {t:'instant',s:'║  /python         Python 3        [EXPERT]      ║',d:90},
-    {t:'instant',s:'║  /cpp            C++             [ADVANCED]    ║',d:90},
-    {t:'instant',s:'║  /web            Web (HTML/JS/PHP)[EXPERT]     ║',d:90},
-    {t:'instant',s:'║  /java           Java / Android  [ADVANCED]    ║',d:90},
-    {t:'instant',s:'║  /db             SQL (MySQL)     [PROFICIENT]  ║',d:90},
-    {t:'instant',s:'║  /security       Purple Teaming  [ADVANCED]    ║',d:90},
+    {t:'instant',s:'║  /cpp            C++ / ARM ASM   [ADVANCED]    ║',d:90},
+    {t:'instant',s:'║  /web            HTML · CSS · JS [EXPERT]      ║',d:90},
+    {t:'instant',s:'║  /php            PHP · Laravel   [ADVANCED]    ║',d:90},
+    {t:'instant',s:'║  /db             SQL · NoSQL     [PROFICIENT]  ║',d:90},
+    {t:'instant',s:'║  /security       Red Teaming     [ADVANCED]    ║',d:90},
     {t:'instant',s:'║  /ctf            CTF / Pwn       [ADVANCED]    ║',d:90},
     {t:'instant',s:'╚════════════════════════════════════════════════╝',d:200},
     {t:'instant',s:'',d:150},
@@ -1406,15 +1408,15 @@ function runSQLmap(wEl){
         {t:'instant',s:'+────+────────────────────+────────────+─────────────+',d:50},
         {t:'instant',s:'| id | name               | level      | category    |',d:50},
         {t:'instant',s:'+────+────────────────────+────────────+─────────────+',d:50},
-        {t:'instant',s:'| 1  | Python             | Expert     | Scripting   |',d:80},
-        {t:'instant',s:'| 2  | C++ / Java         | Advanced   | Languages   |',d:80},
-        {t:'instant',s:'| 3  | Java / Android     | Advanced   | Mobile      |',d:80},
-        {t:'instant',s:'| 4  | JavaScript / React | Expert     | Web/Mobile  |',d:80},
-        {t:'instant',s:'| 5  | PHP / WordPress    | Advanced   | CMS/Web     |',d:80},
-        {t:'instant',s:'| 6  | SQL / MySQL        | Proficient | Databases   |',d:80},
-        {t:'instant',s:'| 7  | Pentesting         | Advanced   | Security    |',d:80},
-        {t:'instant',s:'| 8  | Purple Teaming     | Advanced   | Security    |',d:80},
-        {t:'instant',s:'| 9  | Security Labs      | Advanced   | Research    |',d:80},
+        {t:'instant',s:'| 1  | Python             | Expert     | Languages   |',d:80},
+        {t:'instant',s:'| 2  | C++                | Advanced   | Languages   |',d:80},
+        {t:'instant',s:'| 3  | ARM Assembly       | Advanced   | Low-Level   |',d:80},
+        {t:'instant',s:'| 4  | JavaScript         | Expert     | Web         |',d:80},
+        {t:'instant',s:'| 5  | PHP / Laravel      | Advanced   | Web         |',d:80},
+        {t:'instant',s:'| 6  | SQL / NoSQL        | Proficient | Databases   |',d:80},
+        {t:'instant',s:'| 7  | Penetration Test   | Advanced   | Security    |',d:80},
+        {t:'instant',s:'| 8  | Red Teaming        | Advanced   | Security    |',d:80},
+        {t:'instant',s:'| 9  | CTF / Pwning       | Advanced   | Security    |',d:80},
         {t:'instant',s:'+────+────────────────────+────────────+─────────────+',d:200},
         {t:'instant',s:'',d:100},
         {t:'instant',s:'[14:40:31] [INFO] table dumped to /tmp/sqlmap/portfolio_db/skills.csv',d:200},
@@ -1553,9 +1555,9 @@ function initTerminal(wEl){
     'cat whoami.txt'(){
       [
         `<span class="g">Handle</span>   :  Lucio Ucha`,
-        `<span class="g">Role</span>     :  Programming Technician | Junior Developer`,
-        `<span class="g">Stack</span>    :  Python · C++ · Java · PHP · JavaScript · React Native`,
-        `<span class="g">Focus</span>    :  Purple Teaming · Pentesting · Web/Mobile Security`,
+        `<span class="g">Role</span>     :  Cybersecurity Engineer &amp; Red Team Developer`,
+        `<span class="g">Stack</span>    :  Python · C++ · ARM ASM · JavaScript · PHP · Laravel`,
+        `<span class="g">Focus</span>    :  Red Teaming · Penetration Testing · CTF`,
         ``,
         `<span class="d">"The quieter you become, the more you can hear."</span>`,
         `<span class="d">                                      — Kali Linux</span>`,
@@ -1577,8 +1579,8 @@ function initTerminal(wEl){
         `<span class="g"> lKXK00000000000000000000</span>          <span class="d">DE:</span>      <span class="w">XFCE 4.18</span>`,
         `<span class="g"> OKXK0000000000000000000.</span>          <span class="d">WM:</span>      <span class="w">Xfwm4</span>`,
         `<span class="g"> .xKXK00000000000000000</span>           <span class="d">CPU:</span>     <span class="w">portfolio.lucio</span>`,
-        `<span class="g">   .dKXK000000000000000.</span>          <span class="d">Skills:</span>  <span class="g">Python C++ Java JS PHP Bash</span>`,
-        `<span class="g">     .d0XK0000000KXkdl.</span>          <span class="d">Focus:</span>   <span class="r">Purple Team · Pentesting</span>`,
+        `<span class="g">   .dKXK000000000000000.</span>          <span class="d">Skills:</span>  <span class="g">Python C++ JS PHP ARM SQL</span>`,
+        `<span class="g">     .d0XK0000000KXkdl.</span>          <span class="d">Focus:</span>   <span class="r">Red Team · Pentesting · CTF</span>`,
         `<span class="g">       .;ldkO000Okdl;.</span>`,
       ].forEach(l=>pr(l));
     },
@@ -1965,7 +1967,7 @@ const WS_PACKETS=[
        {t:'X-Powered-By: Kali-Portfolio\\r\\n'},{t:'Content-Length: 512\\r\\n'},
      ]},
      {t:'JavaScript Object Notation (JSON)',sec:true,children:[
-       {t:'{"name":"Lucio Ucha"'},{t:' "role":"Programming Technician"'},{t:' "status":"Available"}'},
+       {t:'{"name":"Lucio Ucha"'},{t:' "role":"Red Team Developer"'},{t:' "status":"Available"}'},
      ]},
    ],
    hex:'0000  48 54 54 50 2f 31 2e 31  20 32 30 30 20 4f 4b 0d   HTTP/1.1 200 OK.\n0010  0a 43 6f 6e 74 65 6e 74  2d 54 79 70 65 3a 20 61   .Content-Type: a\n0020  70 70 6c 69 63 61 74 69  6f 6e 2f 6a 73 6f 6e 0d   pplication/json.'},
@@ -2184,10 +2186,10 @@ function buildBurp(){
     '',
     '{',
     '  "name":     "Lucio Ucha",',
-    '  "role":     "Programming Technician | Junior Developer",',
+    '  "role":     "Cybersecurity Engineer & Red Team Dev",',
     '  "status":   "Available for hire",',
-    '  "skills":   ["Python", "C++", "Java", "JavaScript", "PHP"],',
-    '  "security": ["Purple Teaming", "Pentesting", "Web/Mobile Security"],',
+    '  "skills":   ["Python", "C++", "ARM ASM", "JavaScript", "PHP"],',
+    '  "security": ["Pentesting", "Red Team", "CTF", "Malware Dev"],',
     '  "contact":  "lucioucha@gmail.com",',
     '  "flag":     "HTB{purpl3_t34m_4lw4ys_w1ns_8f2a91c}",',
     '}',
@@ -2389,11 +2391,11 @@ function initBurp(wEl){
         '',
         '<span class="ht-hv">{</span>',
         '  <span class="ht-jk">"name"</span>:     <span class="ht-js">"Lucio Ucha"</span>,',
-        '  <span class="ht-jk">"role"</span>:     <span class="ht-js">"Programming Technician | Junior Developer"</span>,',
+        '  <span class="ht-jk">"role"</span>:     <span class="ht-js">"Cybersecurity Engineer &amp; Red Team Dev"</span>,',
         '  <span class="ht-jk">"status"</span>:   <span class="ht-js">"Available for hire"</span>,',
-        '  <span class="ht-jk">"skills"</span>:   <span class="ht-hv">[</span><span class="ht-js">"Python"</span>, <span class="ht-js">"C++"</span>, <span class="ht-js">"Java"</span>, <span class="ht-js">"JavaScript"</span>, <span class="ht-js">"PHP"</span><span class="ht-hv">]</span>,',
-        '  <span class="ht-jk">"security"</span>: <span class="ht-hv">[</span><span class="ht-js">"Purple Teaming"</span>, <span class="ht-js">"Pentesting"</span>, <span class="ht-js">"Web/Mobile Security"</span><span class="ht-hv">]</span>,',
-        '  <span class="ht-jk">"flag"</span>:     <span class="ht-flag">"HTB{purpl3_t34m_4lw4ys_w1ns_8f2a91c}"</span>',
+        '  <span class="ht-jk">"skills"</span>:   <span class="ht-hv">[</span><span class="ht-js">"Python"</span>, <span class="ht-js">"C++"</span>, <span class="ht-js">"ARM ASM"</span>, <span class="ht-js">"JavaScript"</span>, <span class="ht-js">"PHP"</span><span class="ht-hv">]</span>,',
+        '  <span class="ht-jk">"security"</span>: <span class="ht-hv">[</span><span class="ht-js">"Pentesting"</span>, <span class="ht-js">"Red Team"</span>, <span class="ht-js">"CTF"</span><span class="ht-hv">]</span>,',
+        '  <span class="ht-jk">"flag"</span>:     <span class="ht-flag">"HTB{r3d_t34m_4lw4ys_w1ns_8f2a91c}"</span>',
         '<span class="ht-hv">}</span>',
       ];
       respEd.style.color='';
